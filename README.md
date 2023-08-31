@@ -6,14 +6,14 @@ This template refers to itself as `group-00-web`. In your project, use your grou
 
 ## Project Structure
 
-| File        | Purpose           | What you do?  |
-| ------------- | ------------- | ----- |
-| `server/` | Backend server code | All your server code |
-| [server/README.md](server/README.md) | Everything about the server | **READ ME** carefully! |
-| `client/` | Frontend client code | All your client code |
-| [client/README.md](client/README.md) | Everything about the client | **READ ME** carefully! |
-| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Free online production deployment | Deploy your app online in production mode |
-| [docs/LOCAL_DEPLOYMENT.md](docs/LOCAL_DEPLOYMENT.md) | Local production deployment | Deploy your app local in production mode |
+| File                                                 | Purpose                           | What you do?                              |
+| ---------------------------------------------------- | --------------------------------- | ----------------------------------------- |
+| `server/`                                            | Backend server code               | All your server code                      |
+| [server/README.md](server/README.md)                 | Everything about the server       | **READ ME** carefully!                    |
+| `client/`                                            | Frontend client code              | All your client code                      |
+| [client/README.md](client/README.md)                 | Everything about the client       | **READ ME** carefully!                    |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)             | Free online production deployment | Deploy your app online in production mode |
+| [docs/LOCAL_DEPLOYMENT.md](docs/LOCAL_DEPLOYMENT.md) | Local production deployment       | Deploy your app local in production mode  |
 
 ## Requirements
 
@@ -63,17 +63,48 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 
 ### Purpose
 
-2-5 sentences describing what the system does
+Our project is focused on improving the experience of the `SEM` (Software Engineering and Management) students by providing a tool
+that allows them to easily **visualize** the programme's structure.
+This would allow the students to **plan** their studies, **track** their progress, and understand the **pre-requisites** of each course.
+Furthermore, the users would also be able to interact with the course curriculum to **personalize their study plan**.
+For instance, in the event that the student wants to take a study break, failed a course, is doing an exchange year, etc.
 
 ### Pages
 
-* Home: 1-3 sentences describing what the page displays and what a user can do
-* Shopping cart: ...
+The following section contains the description of the pages that will be implemented in the project.
+
+#### Login screen
+
+This page will be the first page that the user will see when accessing the website.
+There's two possible scenarios: (i) guest user, and (ii) registered user.
+
+A **guest** user will simply want to explore the program's structure and courses.
+Therefore, the user will be able to access the main dashboard (home) without having to login.
+
+A **registered** user will be able to access the main dashboard (home) with a personalized
+experience based on the user's profile & preferences.
+
+#### Main Dashboard (Home)
+
+The **main dashboard** is a fundamental page of the website. It is essentially a much improved version of
+the current **static** picture with the structure of the programme. The user will be able to interact with the
+courses to highlight a **study path** and create a personalized *"study journey"*.
+
+#### Course Page (Pop-up)
+
+When the user clicks on a course, the application will display all the relevant **course information** such as
+its study period, teaching staff, pre-requisites, etc. Herein, the user can mark a course as **completed**,
+**in progress** or **failed**. They can similarly input their grade and other relevant information in regards to the course.
+
+#### User Profile (Settings)
+
+This page will contain the user's visual preferences for the tool (themes, animations, etc.) and other relevant
+personal information.
 
 ### Entity-Relationship (ER) Diagram
 
 ![ER Diagram](./images/er_diagram.png)
 
-## Teaser (MS3)
+## Teaser (MS3) [TODO]
 
 ![Teaser](./images/teaser.png)
