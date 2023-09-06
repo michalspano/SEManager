@@ -7,7 +7,10 @@ const path      = require('path');
 const cors      = require('cors');
 const history   = require('connect-history-api-fallback');
 
-// Define variables
+// set-up environment variables (.env)
+require('dotenv').config();
+
+// Attempt to access env. variables, otherwise replace by the default values
 const port      = process.env.PORT || 3000;
 const mongoURI  = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/animalDevelopmentDB';
 
