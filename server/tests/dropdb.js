@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 // Variables
 var mongoURI = process.env.MONGODB_URI;

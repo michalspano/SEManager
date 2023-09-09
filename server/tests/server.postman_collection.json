@@ -1,17 +1,321 @@
 {
 	"info": {
-		"_postman_id": "f7ee95b5-9cb9-442f-a6a9-42de46138872",
+		"_postman_id": "a746828e-6b20-476c-8416-f4d1a3145bf8",
 		"name": "server",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"description": "The collection of versioned API CRUD operations for the server.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29461036",
+		"_collection_link": "https://lively-robot-331309.postman.co/workspace/SEMProgramProject~7a29e83c-9fda-4a9d-9373-b8ef48c7414e/collection/29461036-a746828e-6b20-476c-8416-f4d1a3145bf8?action=share&source=collection_link&creator=29461036"
 	},
 	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "courses",
+					"item": [
+						{
+							"name": "GET /courses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /courses/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT023"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /courses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"pm.test(\"There's at least one course staff per course\", function () {",
+											"    pm.expect(pm.response.json().courseStaff).to.be.an('array').and.to.not.be.empty;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"courseCode\": \"DIT012\",\n    \"courseName\": \"Test Course\",\n    \"courseStaff\": [\"Daniel\"],\n    \"dependencies\": []\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/courses",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /courses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /courses/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT012"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT /courses/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"All fields to be updated are non-empty\", function () {",
+											"    const responseJSON = pm.response.json();",
+											"",
+											"    pm.expect(responseJSON.courseName).to.not.be.empty;",
+											"    // there's at least one person responsible for a course",
+											"    pm.expect(responseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
+											"    // a course can have 0 dependencies",
+											"    pm.expect(responseJSON.dependencies).to.be.an('array');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"dependencies\": []\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/courses/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT023"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH /courses/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"courseName\": \"Mathematical Foundations for Software Engineering\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/courses/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT023"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "RESTful API for the Courses entity."
+				}
+			],
+			"description": "Version 1.0 of the **API**."
+		},
+		{
+			"name": "v2",
+			"item": [],
+			"description": "Version 2.0 of the **API**."
+		},
 		{
 			"name": "GET /api",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "b58d92ec-5214-450c-adb0-28e068aa71b9",
 						"exec": [
 							""
 						],
@@ -45,7 +349,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "05864cff-5cba-4070-bac3-a59328954ebf",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -55,7 +358,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "e9c319be-3306-4fc5-ba34-fcf64391213a",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -65,11 +367,9 @@
 	],
 	"variable": [
 		{
-			"id": "cd185905-a834-4211-8030-583d17702534",
 			"key": "host",
 			"value": "http://localhost:3000",
 			"type": "string"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
