@@ -10,7 +10,19 @@ const router    = express.Router();
 const Course    = require('../../models/course');
 
 // TODO: add CRUD operations with relationships
-// TODO: provide HATEOAS at PUT/PATCH
+
+// To support HATEOAS
+// TODO: extract this functionality to a stand-alone file, so
+// that it can be used in several controllers (without repetition).
+const VERSION   = "v1"
+const RESOURCE  = "courses"
+const PORT      = process.env.PORT || 3000;
+const HOST      = process.env.HOST || "http://localhost";
+ 
+// Function to format href for HATEOAS (given an ID)
+const formatHref = (id) => {
+    return`${HOST}:${PORT}/${VERSION}/${RESOURCE}/${id}`;
+};
 
 // Add a new course
 router.post('/', (req, res, next) => {
@@ -75,8 +87,10 @@ router.put('/:id', (req, res, next) => {
 });
 
 // Update a course partially (PATCH)
+// Apply HATEOAS to the response
 router.patch('/:id', (req, res, next) => {
-    Course.findOne({ courseCode: req.params.id }).exec()
+    const courseID = req.params.id;
+    Course.findOne({ courseCode: courseID }).exec()
         .then((course) => {
             if (course == null) {
                 return res.status(404).json({
@@ -90,7 +104,30 @@ router.patch('/:id', (req, res, next) => {
 
             // Save and populate the response
             course.save().catch(next);
-            res.json(course);
+
+            // Add HATEOAS support
+            const links = {
+                "links": [
+                    {
+                        rel: 'self',
+                        href: formatHref(courseID),
+                        method: 'GET'
+                    },
+                    {
+                        rel: 'delete',
+                        href: formatHref(courseID),
+                        method: 'DELETE'
+                    },
+                    {
+                        rel: 'update',
+                        href: formatHref(courseID),
+                        method: 'PUT'
+                    }
+                ]
+            };
+            // Combine the resource Object with the links in the
+            // body of the response.
+            res.json({course, ...links});
         }).catch(next);
 });
 
