@@ -10,6 +10,10 @@ const router    = express.Router();
 const Course    = require('../../models/course');
 
 // TODO: add CRUD operations with relationships
+// Note: the convention is, when returning the Entity object
+// to wrap it in an Object which carries the name of the entity.
+// Example: given `Course` -> {"course": {}, "links": {}}
+// this is one of the conventions for HATEOAS
 
 // To support HATEOAS
 // TODO: extract this functionality to a stand-alone file, so
@@ -26,16 +30,41 @@ const formatHref = (id) => {
 
 // Add a new course
 router.post('/', (req, res, next) => {
-    const course = new Course(req.body);
+    const course    = new Course(req.body);
+    const courseID  = req.body.courseCode;
+    const links     = {
+        "links": [
+            {
+                rel: "self",
+                href: formatHref(courseID),
+                method: "GET"
+            },
+            {
+                rel: "update",
+                href: formatHref(courseID),
+                method: "PUT"
+            },
+            {
+                rel: "edit",
+                href: formatHref(courseID),
+                method: "PATCH"
+            },
+            {
+                rel: "delete",
+                href: formatHref(courseID),
+                method: "DELETE"
+            }
+        ]
+    };
     course.save().catch(next);
-    res.status(201).json(course);
+    res.status(201).json({ course, ...links });
 });
 
 // Return the list of all courses
 router.get('/', (_, res, next) => {
     Course.find({})
         .then((courses) => {
-            res.json(courses);
+            res.json({ "course": courses });
         })
         .catch(next);
 });
@@ -55,20 +84,41 @@ router.delete('/', (_, res, next) => {
 router.get('/:id', (req, res, next) => {
     // Note: the function `findOne()` is assumed, because
     // the courseCode is a unique identifier of a course.
-    Course.findOne({ courseCode: req.params.id }).exec()
+    const courseID = req.params.id;
+    Course.findOne({ courseCode: courseID }).exec()
         .then((course) => {
             if (course == null) {
                 return res.status(404).json({
                     "message": "Course not found."
                 });
             }
-            res.json(course);
+            const links = {
+                "links": [
+                    {
+                        rel: "update",
+                        href: formatHref(courseID),
+                        method: "PUT"
+                    },
+                    {
+                        rel: "edit",
+                        href: formatHref(courseID),
+                        method: "PATCH"
+                    },
+                    {
+                        rel: "delete",
+                        href: formatHref(courseID),
+                        method: "DELETE"
+                    }
+                ]
+            };
+            res.json({ course, ...links});
         }).catch(next);
 });
 
 // Update a whole course given an ID (PUT)
 router.put('/:id', (req, res, next) => {
-    Course.findOne({ courseCode: req.params.id }).exec()
+    const courseID = req.params.id;
+    Course.findOne({ courseCode: courseID }).exec()
         .then((course) => {
             if (course == null) {
                 return res.status(404).json({
@@ -80,9 +130,29 @@ router.put('/:id', (req, res, next) => {
             course.courseStaff  = req.body.courseStaff;
             course.dependencies = req.body.dependencies;
 
+            const links = {
+                "links": [
+                    {
+                        rel: "self",
+                        href: formatHref(courseID),
+                        method: "GET"
+                    },
+                    {
+                        rel: "edit",
+                        href: formatHref(courseID),
+                        method: "PATCH"
+                    },
+                    {
+                        rel: "delete",
+                        href: formatHref(courseID),
+                        method: "DELETE"
+                    }
+                ]
+            };
+
             // Save and populate the response
             course.save().catch(next);
-            res.json(course);
+            res.json({ course, ...links });
         }).catch(next);
 });
 
@@ -109,25 +179,25 @@ router.patch('/:id', (req, res, next) => {
             const links = {
                 "links": [
                     {
-                        rel: 'self',
+                        rel: "self",
                         href: formatHref(courseID),
-                        method: 'GET'
+                        method: "GET"
                     },
                     {
-                        rel: 'delete',
+                        rel: "update",
                         href: formatHref(courseID),
-                        method: 'DELETE'
+                        method: "PUT"
                     },
                     {
-                        rel: 'update',
+                        rel: "delete",
                         href: formatHref(courseID),
-                        method: 'PUT'
+                        method: "DELETE"
                     }
                 ]
             };
             // Combine the resource Object with the links in the
             // body of the response.
-            res.json({course, ...links});
+            res.json({ course, ...links });
         }).catch(next);
 });
 
@@ -140,7 +210,7 @@ router.delete('/:id', (req, res, next) => {
                     "message": "Course not found."
                 });
             }
-            res.json(course);
+            res.json({ "course": course });
         }).catch(next);
 });
 
