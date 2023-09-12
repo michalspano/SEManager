@@ -4,14 +4,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// TODO: Add employee name
 const EmployeeModel = new Schema({
     emailAddress: {
         type: String,
         unique: true,
         required: true
     },
-    contactInfo: String
+    name: {
+        type: String,
+        required: true,
+    },
+    contactInfo: {
+        type: String,
+    }
 })
 
 module.exports = mongoose.model("Employee", EmployeeModel);

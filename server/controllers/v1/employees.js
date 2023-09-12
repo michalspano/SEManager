@@ -15,13 +15,13 @@ const Employee = require('../../models/employee');
 router.post('/', (req, res, next) => {
     const employee = new Employee(req.body);
     employee.save().catch(next);
-    res.status(201).json(employee);
+    res.status(201).json({"employee": employee});
 });
 
 // Return the list of all employees
 router.get('/', (_, res, next) => {
     Employee.find({}).then((employees) => {
-        res.json(employees);
+        res.json({"employees": employees});
     })
     .catch(next);
 })
@@ -43,7 +43,7 @@ router.get('/:id', (req, res, next) => {
                 "message": "Employee not found."
             });
         }
-        res.json(employee);
+        res.json({"employee": employee});
     }).catch(next);
 });
 
@@ -56,7 +56,7 @@ router.delete('/:id', (req, res, next) => {
                 "message": "Employee not found."
             });
         }
-        res.json(employee);
+        res.json({"employee": employee});
     }).catch(next);
 })
 
@@ -71,10 +71,11 @@ router.put('/:id', (req, res, next) => {
         }
 
         employee.emailAddress = req.body.emailAddress;
+        employee.name = req.body.name;
         employee.contactInfo = req.body.contactInfo;
 
         employee.save().catch(next);
-        res.json(employee);
+        res.json({"employee": employee});
     }).catch(next);
 });
 
@@ -89,12 +90,13 @@ router.patch('/:id', (req, res, next) => {
         }
 
         employee.emailAddress = req.body.emailAddress || employee.emailAddress;
+        employee.name = req.body.name || employee.name;
         employee.contactInfo = req.body.contactInfo || employee.contactInfo;
 
         // Save and populate the response
         employee.save().catch(next);
 
-        res.json(employee);
+        res.json({"employee": employee});
     }).catch(next);
 });
 
