@@ -18,8 +18,8 @@ const Course    = require('../../models/course');
 // To support HATEOAS
 // TODO: extract this functionality to a stand-alone file, so
 // that it can be used in several controllers (without repetition).
-const VERSION   = "v1"
-const RESOURCE  = "courses"
+const VERSION   = "v1";
+const RESOURCE  = "courses";
 const PORT      = process.env.PORT || 3000;
 const HOST      = process.env.HOST || "http://localhost";
  

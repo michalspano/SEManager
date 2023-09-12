@@ -79,20 +79,17 @@ router.put('/:id', (req, res, next) => {
 });
 
 // Update partially an employee
-// TODO: This is not working
 router.patch('/:id', (req, res, next) => {
     Employee.findOne({emailAddress: req.params.id}).exec()
     .then((employee) => {
-        if (course == null) {
+        if (employee == null) {
             return res.status(404).json({
                 "message": "Employee not found."
             });
         }
 
-        // Update provided fields
-        for(key in req.body) {
-            employee[key] = req.body.key;
-        }
+        employee.emailAddress = req.body.emailAddress || employee.emailAddress;
+        employee.contactInfo = req.body.contactInfo || employee.contactInfo;
 
         // Save and populate the response
         employee.save().catch(next);

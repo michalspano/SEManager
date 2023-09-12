@@ -4,6 +4,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// TODO: Add employee name
 const EmployeeModel = new Schema({
     emailAddress: {
         type: String,
