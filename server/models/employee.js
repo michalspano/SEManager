@@ -1,5 +1,5 @@
 // File: ./models/course.js
-// A mongoose model for a Course
+// A mongoose model for a Employee
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -12,10 +12,10 @@ const EmployeeModel = new Schema({
     },
     name: {
         type: String,
-        required: true,
+        required: true
     },
     contactInfo: {
-        type: String,
+        type: String
     }
 })
 
