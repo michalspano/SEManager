@@ -38,7 +38,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"dependencies\": []\n}",
+									"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"courseStaff\": [\"generic-email@gu.se\", \"foo@gmail.com\"],\n    \"dependencies\": []\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -81,7 +81,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"courseStaff\": [\"foo\", \"bar\"],\n    \"dependencies\": [\"baz\"]\n}",
+									"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -96,6 +96,94 @@
 									"path": [
 										"v1",
 										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /courses/:id/employees/:employee_id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses/:id/employees/:employee_id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id",
+										"employees",
+										":employee_id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT111"
+										},
+										{
+											"key": "employee_id",
+											"value": "another-generic-email@gu.se"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /courses/:id/employees/:employee_id (2)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 409\", function () {",
+											"    pm.response.to.have.status(409);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses/:id/employees/:employee_id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id",
+										"employees",
+										":employee_id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT111"
+										},
+										{
+											"key": "employee_id",
+											"value": "another-generic-email@gu.se"
+										}
 									]
 								}
 							},
@@ -164,6 +252,133 @@
 										{
 											"key": "id",
 											"value": "DIT023"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /courses/:id/employees",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses/:id/employees",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id",
+										"employees"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT111"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /courses/:id/employees/:employee_id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses/:id/employees/:employee_id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id",
+										"employees",
+										":employee_id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT111"
+										},
+										{
+											"key": "employee_id",
+											"value": "another-generic-email@gu.se"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /courses/:id/employees/:employee_id (invalid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses/:id/employees/:employee_id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id",
+										"employees",
+										":employee_id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT023"
+										},
+										{
+											"key": "employee_id",
+											"value": "another-generic-email@gu.se"
 										}
 									]
 								}
@@ -301,6 +516,50 @@
 										{
 											"key": "id",
 											"value": "DIT023"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /courses/:id/employees/:employee_id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses/:id/employees/:employee_id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id",
+										"employees",
+										":employee_id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT111"
+										},
+										{
+											"key": "employee_id",
+											"value": "another-generic-email@gu.se"
 										}
 									]
 								}
