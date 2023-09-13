@@ -12,7 +12,75 @@
 			"name": "v1",
 			"item": [
 				{
-					"name": "POST",
+					"name": "DROP_DB",
+					"item": [
+						{
+							"name": "DELETE /courses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /employees",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/employees",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"employees"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Always **drop the database** when running a new test."
+				},
+				{
+					"name": "POPULATE_DB",
 					"item": [
 						{
 							"name": "courses",
@@ -41,7 +109,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"courseStaff\": [\"generic-email@gu.se\", \"foo@gmail.com\"],\n    \"dependencies\": []\n}",
+											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": []\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -188,14 +256,9 @@
 										}
 									},
 									"response": []
-								}
-							]
-						},
-						{
-							"name": "relationships",
-							"item": [
+								},
 								{
-									"name": "POST /courses/:id/employees/:employee_id",
+									"name": "POST /courses/:id/employees",
 									"event": [
 										{
 											"listen": "test",
@@ -212,8 +275,17 @@
 									"request": {
 										"method": "POST",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"emailAddress\": \"foo@gmail.com\",\n    \"name\": \"Jennifer Horkoff\",\n    \"contactInfo\": \"+46 111 222 333\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": {
-											"raw": "{{host}}/v1/courses/:id/employees/:employee_id",
+											"raw": "{{host}}/v1/courses/:id/employees/",
 											"host": [
 												"{{host}}"
 											],
@@ -222,16 +294,12 @@
 												"courses",
 												":id",
 												"employees",
-												":employee_id"
+												""
 											],
 											"variable": [
 												{
 													"key": "id",
 													"value": "DIT111"
-												},
-												{
-													"key": "employee_id",
-													"value": "another-generic-email@gu.se"
 												}
 											]
 										}
@@ -239,14 +307,15 @@
 									"response": []
 								},
 								{
-									"name": "POST /courses/:id/employees/:employee_id (2)",
+									"name": "POST /courses/:id/employees (invalid)",
 									"event": [
 										{
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Response status code is 409\", function () {",
-													"    pm.response.to.have.status(409);",
+													"// This course does not exist",
+													"pm.test(\"Response status code is 404\", function () {",
+													"    pm.response.to.have.status(404);",
 													"});"
 												],
 												"type": "text/javascript"
@@ -256,8 +325,17 @@
 									"request": {
 										"method": "POST",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"emailAddress\": \"foo@gmail.com\",\n    \"name\": \"Jennifer Horkoff\",\n    \"contactInfo\": \"+46 111 222 333\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": {
-											"raw": "{{host}}/v1/courses/:id/employees/:employee_id",
+											"raw": "{{host}}/v1/courses/:id/employees/",
 											"host": [
 												"{{host}}"
 											],
@@ -266,16 +344,12 @@
 												"courses",
 												":id",
 												"employees",
-												":employee_id"
+												""
 											],
 											"variable": [
 												{
 													"key": "id",
-													"value": "DIT111"
-												},
-												{
-													"key": "employee_id",
-													"value": "another-generic-email@gu.se"
+													"value": "DIT333"
 												}
 											]
 										}
@@ -284,13 +358,14 @@
 								}
 							]
 						}
-					]
+					],
+					"description": "Populate the DB with some _dummy_ data."
 				},
 				{
-					"name": "OTHER",
+					"name": "courses",
 					"item": [
 						{
-							"name": "courses",
+							"name": "GET",
 							"item": [
 								{
 									"name": "GET /courses",
@@ -437,7 +512,7 @@
 												},
 												{
 													"key": "employee_id",
-													"value": "another-generic-email@gu.se"
+													"value": "foo@gmail.com"
 												}
 											]
 										}
@@ -520,7 +595,12 @@
 										}
 									},
 									"response": []
-								},
+								}
+							]
+						},
+						{
+							"name": "PUT",
+							"item": [
 								{
 									"name": "PUT /courses/:id",
 									"event": [
@@ -577,7 +657,12 @@
 										}
 									},
 									"response": []
-								},
+								}
+							]
+						},
+						{
+							"name": "PATCH",
+							"item": [
 								{
 									"name": "PATCH /courses/:id",
 									"event": [
@@ -624,7 +709,12 @@
 										}
 									},
 									"response": []
-								},
+								}
+							]
+						},
+						{
+							"name": "DEL",
+							"item": [
 								{
 									"name": "DELETE /courses/:id/employees/:employee_id",
 									"event": [
@@ -706,43 +796,17 @@
 										}
 									},
 									"response": []
-								},
-								{
-									"name": "DELETE /courses",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 204\", function () {",
-													"    pm.response.to.have.status(204);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "DELETE",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/v1/courses",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"v1",
-												"courses"
-											]
-										}
-									},
-									"response": []
 								}
-							],
-							"description": "RESTful API for the Courses entity."
-						},
+							]
+						}
+					],
+					"description": "RESTful API for the Courses entity."
+				},
+				{
+					"name": "employees",
+					"item": [
 						{
-							"name": "employees",
+							"name": "GET",
 							"item": [
 								{
 									"name": "GET /employees",
@@ -846,7 +910,12 @@
 										}
 									},
 									"response": []
-								},
+								}
+							]
+						},
+						{
+							"name": "PUT",
+							"item": [
 								{
 									"name": "PUT /employees/:id",
 									"event": [
@@ -893,7 +962,12 @@
 										}
 									},
 									"response": []
-								},
+								}
+							]
+						},
+						{
+							"name": "PATCH",
+							"item": [
 								{
 									"name": "PATCH /employees/:id",
 									"event": [
@@ -940,7 +1014,12 @@
 										}
 									},
 									"response": []
-								},
+								}
+							]
+						},
+						{
+							"name": "DEL",
+							"item": [
 								{
 									"name": "DELETE /employees/:id",
 									"event": [
@@ -974,37 +1053,6 @@
 													"key": "id",
 													"value": "generic-email-new@gu.se"
 												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "DELETE /employees",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 204\", function () {",
-													"    pm.response.to.have.status(204);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "DELETE",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/v1/employees",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"v1",
-												"employees"
 											]
 										}
 									},

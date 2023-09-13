@@ -218,8 +218,8 @@ router.delete('/:id', (req, res, next) => {
 });
 
 // Create a relationship between a course and an employee
-router.post('/:id/employees/:employee_id', (req, res, next) => {
-    const employeeID = req.params.employee_id;
+// and create that employee
+router.post('/:id/employees', (req, res, next) => {
     Course.findOne({ courseCode: req.params.id }).exec()
         .then((course) => {
             if (course == null) {
@@ -227,26 +227,14 @@ router.post('/:id/employees/:employee_id', (req, res, next) => {
                     "message": "Course not found."
                 });
             }
-            Employee.exists({ emailAddress: employeeID })
-                .then((exists) => {
-                    if (exists) {
-                        // Add the employee to the course iff such a relationship does not exist
-                        // and save the changes
-                        if (!course.courseStaff.includes(employeeID)) {
-                            course.courseStaff.push(employeeID);
-                            course.save().catch(next);
-                            return res.status(201).json({ "course": course });
-                        }
-                        // The relationship already exists, which causes a conflict, return 409.
-                        return res.status(409).json({
-                            "message": "The relationship already exists."
-                        });
-                    }
-                    // If the employee has not been found, notify the user
-                    return res.status(404).json({
-                        "message": "Employee not found."
-                    });
-                }).catch(next);
+            // Create an employee, update the dependency in the course
+            const employee = new Employee(req.body);
+            course.courseStaff.push(employee.emailAddress);
+
+            // Reflect the changes in the database
+            employee.save().catch(next);
+            course.save().catch(next);
+            res.status(201).json({ "employee": employee });
         }).catch(next);
 });
 
