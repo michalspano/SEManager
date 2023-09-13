@@ -64,8 +64,16 @@ router.post('/', (req, res, next) => {
 });
 
 // Return the list of all courses
-router.get('/', (_, res, next) => {
-    Course.find({})
+router.get('/', (req, res, next) => {
+
+    const sortBy = req.query.sortBy || 'courseName';
+    const order = req.query.order || 'ascending';
+    const limit = req.query.limit || 100;
+
+    let querySelector = {};
+    querySelector[sortBy] = order;
+
+    Course.find({}).sort(querySelector).limit(limit)
         .then((courses) => {
             res.json({ "courses": courses });
         })

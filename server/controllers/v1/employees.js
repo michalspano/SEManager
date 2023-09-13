@@ -25,15 +25,14 @@ router.get('/', (req, res, next) => {
     const limit = req.query.limit || 10;
     const order = req.query.order || 'ascending';
 
-    console.log(`${req.query.sortBy} ${req.query.order} ${req.query.limit}`);
+    let querySelector = {};
+    querySelector[sortBy] = order;
 
-    let sortQuery = {};
-    sortQuery[sortBy] = order;
-
-    Employee.find({}).sort(sortQuery).limit(limit).then((employees) => {
-        res.json({"employees": employees});
-    })
-    .catch(next);
+    Employee.find({}).sort(querySelector).limit(limit)
+        .then((employees) => {
+            res.json({"employees": employees});
+        })
+        .catch(next);
 })
 
 // Delete all employees
