@@ -75,6 +75,37 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "DELETE /students",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 204\", function () {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/students",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"students"
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"description": "Always **drop the database** when running a new test."
@@ -357,9 +388,697 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "students",
+							"item": [
+								{
+									"name": "POST /students",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"SSN\": \"0123456789\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/students",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"students"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST /students (2)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"SSN\": \"9876543210\",\r\n    \"firstName\": \"Adam\",\r\n    \"lastName\": \"Namesson\",\r\n    \"courses\": [\"DIT111\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/students",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"students"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					],
 					"description": "Populate the DB with some _dummy_ data."
+				},
+				{
+					"name": "employees",
+					"item": [
+						{
+							"name": "GET",
+							"item": [
+								{
+									"name": "GET /employees",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/employees/",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"employees",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /employees (sort)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/employees/?sortBy=emailAddress&limit=4&order=descending",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"employees",
+												""
+											],
+											"query": [
+												{
+													"key": "sortBy",
+													"value": "emailAddress"
+												},
+												{
+													"key": "limit",
+													"value": "4"
+												},
+												{
+													"key": "order",
+													"value": "descending"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /employees/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "generic-email@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /employees/*/invalid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 404\", function () {",
+													"    pm.response.to.have.status(404);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/employees/foo/bar",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"employees",
+												"foo",
+												"bar"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "PUT",
+							"item": [
+								{
+									"name": "PUT /employees/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"generic-email-new@gu.se\",\r\n    \"name\": \"RBS 2.0\",\r\n    \"contactInfo\": \"+46 555 444 V2\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "generic-email@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "PATCH",
+							"item": [
+								{
+									"name": "PATCH /employees/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"contactInfo\": \"JUPITER 402\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "another-generic-email@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "DEL",
+							"item": [
+								{
+									"name": "DELETE /employees/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "generic-email-new@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "students",
+					"item": [
+						{
+							"name": "GET",
+							"item": [
+								{
+									"name": "GET /students",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/students",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"students"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /students/*/invalid",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/students/foo/bar",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"students",
+												"foo",
+												"bar"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /students/:id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/students/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"students",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "0123456789"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "PUT",
+							"item": [
+								{
+									"name": "PUT /students/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"All fields to be updated are non-empty\", function () {\r",
+													"    const studentResponseJSON = pm.response.json().student;\r",
+													"\r",
+													"    pm.expect(studentResponseJSON.firstName).to.not.be.empty;\r",
+													"    pm.expect(studentResponseJSON.lastName).to.not.be.empty;\r",
+													"    pm.expect(studentResponseJSON.courses).to.be.an('array').and.to.not.be.empty;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Sven\",\r\n    \"lastName\": \"Svensson\",\r\n    \"courses\": [\"DIT111\", \"DIT023\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/students/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"students",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "9876543210"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "PATCH",
+							"item": [
+								{
+									"name": "PATCH /students/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"lastName\": \"Adamsson\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/students/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"students",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "9876543210"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "DEL",
+							"item": [
+								{
+									"name": "DEL /students/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/students/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"students",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "0123456789"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
 				},
 				{
 					"name": "courses",
@@ -801,266 +1520,6 @@
 						}
 					],
 					"description": "RESTful API for the Courses entity."
-				},
-				{
-					"name": "employees",
-					"item": [
-						{
-							"name": "GET",
-							"item": [
-								{
-									"name": "GET /employees",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/v1/employees/",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"v1",
-												"employees",
-												""
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET /employees/:id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/v1/employees/:id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"v1",
-												"employees",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "generic-email@gu.se"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET /employees/*/invalid",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 404\", function () {",
-													"    pm.response.to.have.status(404);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/v1/employees/foo/bar",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"v1",
-												"employees",
-												"foo",
-												"bar"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "PUT",
-							"item": [
-								{
-									"name": "PUT /employees/:id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "PUT",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"generic-email-new@gu.se\",\r\n    \"name\": \"RBS 2.0\",\r\n    \"contactInfo\": \"+46 555 444 V2\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/v1/employees/:id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"v1",
-												"employees",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "generic-email@gu.se"
-												}
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "PATCH",
-							"item": [
-								{
-									"name": "PATCH /employees/:id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"contactInfo\": \"JUPITER 402\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/v1/employees/:id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"v1",
-												"employees",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "another-generic-email@gu.se"
-												}
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "DEL",
-							"item": [
-								{
-									"name": "DELETE /employees/:id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "DELETE",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/v1/employees/:id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"v1",
-												"employees",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "generic-email-new@gu.se"
-												}
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						}
-					]
 				}
 			],
 			"description": "Version 1.0 of the **API**."

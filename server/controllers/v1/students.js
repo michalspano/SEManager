@@ -79,7 +79,7 @@ router.put('/:id', (req, res, next) => {
             student.lastName    = req.body.lastName;
             student.courses     = courseIds;
         }).catch((error) => {
-            res.status(400).json({ 
+            return res.status(400).json({ 
                 "message": error.message
             });
         })
@@ -107,7 +107,7 @@ router.patch('/:id', (req, res, next) => {
             .then((courseIds) => {
                 student.courses = courseIds;
             }).catch((error) => {
-                res.status(400).json({
+                return res.status(400).json({
                     "message": error.message
                 });
             })
