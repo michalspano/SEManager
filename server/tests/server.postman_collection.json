@@ -4,8 +4,8 @@
 		"name": "server",
 		"description": "The collection of versioned API CRUD operations for the server.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29461036",
-		"_collection_link": "https://lively-robot-331309.postman.co/workspace/SEMProgramProject~7a29e83c-9fda-4a9d-9373-b8ef48c7414e/collection/29461036-a746828e-6b20-476c-8416-f4d1a3145bf8?action=share&source=collection_link&creator=29461036"
+		"_exporter_id": "18528997",
+		"_collection_link": "https://lively-robot-331309.postman.co/workspace/SEMProgramProject~7a29e83c-9fda-4a9d-9373-b8ef48c7414e/collection/29461036-a746828e-6b20-476c-8416-f4d1a3145bf8?action=share&source=collection_link&creator=18528997"
 	},
 	"item": [
 		{
@@ -792,6 +792,52 @@
 									"response": []
 								},
 								{
+									"name": "GET /courses (sort)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/courses/?sortBy=courseName&limit=4&order=descending",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"courses",
+												""
+											],
+											"query": [
+												{
+													"key": "sortBy",
+													"value": "courseName"
+												},
+												{
+													"key": "limit",
+													"value": "4"
+												},
+												{
+													"key": "order",
+													"value": "descending"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "GET /courses/:id",
 									"event": [
 										{
@@ -957,7 +1003,7 @@
 									"response": []
 								},
 								{
-									"name": "GET /course/*/invalid",
+									"name": "GET /courses/*/invalid",
 									"event": [
 										{
 											"listen": "test",

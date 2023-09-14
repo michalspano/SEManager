@@ -1,4 +1,4 @@
-// File: ./models/course.js
+// File: ./models/employees.js
 // A mongoose model for a Employee
 
 const mongoose = require('mongoose');
