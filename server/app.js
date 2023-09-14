@@ -43,6 +43,7 @@ app.use(cors());
 // Import version 1.0 of the API
 app.use('/v1/courses', require('./controllers/v1/courses'));
 app.use('/v1/employees', require('./controllers/v1/employees'));
+app.use('/v1/students', require('./controllers/v1/students'));
 
 // TODO: add remaining version 1.0 API middleware
 
