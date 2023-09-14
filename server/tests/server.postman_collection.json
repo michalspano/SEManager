@@ -1,17 +1,749 @@
 {
 	"info": {
-		"_postman_id": "f7ee95b5-9cb9-442f-a6a9-42de46138872",
+		"_postman_id": "a746828e-6b20-476c-8416-f4d1a3145bf8",
 		"name": "server",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"description": "The collection of versioned API CRUD operations for the server.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29461036",
+		"_collection_link": "https://lively-robot-331309.postman.co/workspace/SEMProgramProject~7a29e83c-9fda-4a9d-9373-b8ef48c7414e/collection/29461036-a746828e-6b20-476c-8416-f4d1a3145bf8?action=share&source=collection_link&creator=29461036"
 	},
 	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "courses",
+					"item": [
+						{
+							"name": "POST /courses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"pm.test(\"There's at least one course staff per course\", function () {",
+											"    pm.expect(pm.response.json().course.courseStaff).to.be.an('array').and.to.not.be.empty;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"dependencies\": []\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/courses",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /courses (2)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"pm.test(\"There's at least one course staff per course\", function () {",
+											"    pm.expect(pm.response.json().course.courseStaff).to.be.an('array').and.to.not.be.empty;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"courseStaff\": [\"foo\", \"bar\"],\n    \"dependencies\": [\"baz\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/courses",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /courses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /courses/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT023"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /course/*/invalid",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses/foo/bar",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										"foo",
+										"bar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT /courses/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"All fields to be updated are non-empty\", function () {",
+											"    const courseResponseJSON = pm.response.json().course;",
+											"",
+											"    pm.expect(courseResponseJSON.courseName).to.not.be.empty;",
+											"    // there's at least one person responsible for a course",
+											"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
+											"    // a course can have 0 dependencies",
+											"    pm.expect(courseResponseJSON.dependencies).to.be.an('array');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"courseName\": \"MAT Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"dependencies\": []\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/courses/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT023"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH /courses/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"courseName\": \"Mathematical Foundations for Software Engineering\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/courses/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT023"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /courses/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT111"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /courses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/courses",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "RESTful API for the Courses entity."
+				},
+				{
+					"name": "employees",
+					"item": [
+						{
+							"name": "POST /employees",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"emailAddress\": \"generic-email@gu.se\",\r\n    \"name\": \"RBS\",\r\n    \"contactInfo\": \"+46 555 444\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/employees",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"employees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /employees (2)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"emailAddress\": \"another-generic-email@gu.se\",\r\n    \"name\": \"Francisco Fernando Riquelme Gomes Oliveira de Neto\",\r\n    \"contactInfo\": \"JUPITER 400-something\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/employees",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"employees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/employees/",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"employees",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/employees/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"employees",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "generic-email@gu.se"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees/*/invalid",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/employees/foo/bar",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"employees",
+										"foo",
+										"bar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT /employees/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"emailAddress\": \"generic-email-new@gu.se\",\r\n    \"name\": \"RBS 2.0\",\r\n    \"contactInfo\": \"+46 555 444 V2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/employees/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"employees",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "generic-email@gu.se"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH /employees/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"contactInfo\": \"JUPITER 402\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/v1/employees/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"employees",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "another-generic-email@gu.se"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /employees/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/employees/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"employees",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "generic-email-new@gu.se"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /employees",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/v1/employees",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v1",
+										"employees"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Version 1.0 of the **API**."
+		},
+		{
+			"name": "v2",
+			"item": [],
+			"description": "Version 2.0 of the **API**."
+		},
 		{
 			"name": "GET /api",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "b58d92ec-5214-450c-adb0-28e068aa71b9",
 						"exec": [
 							""
 						],
@@ -45,7 +777,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "05864cff-5cba-4070-bac3-a59328954ebf",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -55,7 +786,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "e9c319be-3306-4fc5-ba34-fcf64391213a",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -65,11 +795,9 @@
 	],
 	"variable": [
 		{
-			"id": "cd185905-a834-4211-8030-583d17702534",
 			"key": "host",
 			"value": "http://localhost:3000",
 			"type": "string"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
