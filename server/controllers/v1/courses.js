@@ -217,27 +217,6 @@ router.delete('/:id', (req, res, next) => {
         }).catch(next);
 });
 
-// Create a relationship between a course and an employee
-// and create that employee
-router.post('/:id/employees', (req, res, next) => {
-    Course.findOne({ courseCode: req.params.id }).exec()
-        .then((course) => {
-            if (course == null) {
-                return res.status(404).json({
-                    "message": "Course not found."
-                });
-            }
-            // Create an employee, update the dependency in the course
-            const employee = new Employee(req.body);
-            course.courseStaff.push(employee.emailAddress);
-
-            // Reflect the changes in the database
-            employee.save().catch(next);
-            course.save().catch(next);
-            res.status(201).json({ "employee": employee });
-        }).catch(next);
-});
-
 // Get all employees of a given course
 router.get('/:id/employees/', (req, res, next) => {
     Course.findOne({ courseCode: req.params.id }).exec()

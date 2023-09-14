@@ -34,7 +34,7 @@ router.post('/', (req, res, next) => {
 router.get('/', (_, res, next) => {
     Student.find({})
         .then((students) => {
-            res.json({"student": students}); 
+            res.json({"students": students}); 
         })
         .catch(next);
 });
@@ -134,6 +134,66 @@ router.delete('/:id', (req, res, next) => {
         res.json({ "student": student })
     }).catch(next);
 });
+
+// Get all courses of a given student
+router.get('/:id/courses', (req, res, next) => {
+    const studentSSN = req.params.id;
+    Student.findOne({ SSN: studentSSN }).exec()
+        .then((student) => {
+            if (student == null) {
+                return res.status(404).json({
+                    "message": "Student not found."
+                });
+            }
+            Course.find( {_id: { $in: student.courses }} ).exec()
+                .then((courses) => {
+                    if (courses == null) {
+                        return res.status(404).json({
+                            "message": "Courses not found."
+                        });
+                    }
+                    res.json({ "courses": courses });
+                }).catch(next);
+        }).catch(next);
+});
+
+// Get a specific course of a given student
+router.get('/:id/courses/:course_id', (req, res, next) => {
+    const studentSSN    = req.params.id;
+    const courseCode    = req.params.course_id;
+
+    Student.findOne({ SSN: studentSSN }).exec()
+        .then((student) => {
+            if (student == null) {
+                return res.status(404).json({
+                    "message": "Student not found."
+                });
+            }
+            validateCourseCodes([courseCode])
+                .then((course) => {
+                    if (!student.courses.includes(course)) {
+                        return res.status(404).json({
+                            "message": `${studentSSN} is not enrolled in ${courseCode}.`
+                        });
+                    }
+                    Course.find( {_id: course } ).exec()
+                        .then((courses) => {
+                            if (courses == null) {
+                                return res.status(404).json({
+                                    "message": "Courses not found."
+                                });
+                            }
+                            res.json({ "course": courses });
+                        }).catch(next);
+                }).catch((error) => {
+                    return res.status(404).json({
+                        "message": error.message
+                    });
+                });
+        }).catch(next);
+});
+
+// TODO: Delete a relationship between a student and a course
 
 // Catch other undefined paths (404 - not found)
 router.use('/:id/*', (_, res) => {
