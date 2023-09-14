@@ -1,5 +1,5 @@
 /**
- * controllers/v1/courses.js
+ * controllers/v1/employees.js
  * 
  * @description :: CRUD operations for the Staff entity.
  * @version     :: 1.0
