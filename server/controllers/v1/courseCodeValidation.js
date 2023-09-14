@@ -2,8 +2,8 @@
 
 const Course = require("../../models/course");
 
-// Returns the list of course._id values corresponding to the valid course codes.
-// Function returns an error if any are invalid.
+// Returns the list (or a single value) of course._id values corresponding to the
+// valid course code(s). Function returns an error if any are invalid.
 function validateCourseCodes(courseCodes) {
     return Course.find({ courseCode: { $in: courseCodes} })
         .then((courses) => {
@@ -12,7 +12,11 @@ function validateCourseCodes(courseCodes) {
                 throw new Error("One or more course codes are invalid.");
             }
 
-            return courses.map(course => course._id);
+            const result = courses.map(course => course._id);
+
+            // Note: if only one element is found, return a single non-array value
+            if (result.length == 1) return result[0];
+            return result;
         });
 }
 

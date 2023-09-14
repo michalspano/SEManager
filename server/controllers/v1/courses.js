@@ -8,12 +8,15 @@
 const express   = require('express');
 const router    = express.Router();
 const Course    = require('../../models/course');
+const Employee  = require('../../models/employee');
 
-// TODO: add CRUD operations with relationships
 // Note: the convention is, when returning the Entity object
 // to wrap it in an Object which carries the name of the entity.
 // Example: given `Course` -> {"course": {}, "links": {}}
 // this is one of the conventions for HATEOAS
+
+// TODO: extract the middleware with relationships to a stand-alone
+// controller?
 
 // To support HATEOAS
 // TODO: extract this functionality to a stand-alone file, so
@@ -64,7 +67,7 @@ router.post('/', (req, res, next) => {
 router.get('/', (_, res, next) => {
     Course.find({})
         .then((courses) => {
-            res.json({ "course": courses });
+            res.json({ "courses": courses });
         })
         .catch(next);
 });
@@ -210,6 +213,83 @@ router.delete('/:id', (req, res, next) => {
                     "message": "Course not found."
                 });
             }
+            res.json({ "course": course });
+        }).catch(next);
+});
+
+// Get all employees of a given course
+router.get('/:id/employees/', (req, res, next) => {
+    Course.findOne({ courseCode: req.params.id }).exec()
+        .then((course) => {
+            if (course == null) {
+                return res.status(404).json({
+                    "message": "Course not found."
+                });
+            }
+            Employee.find({ emailAddress: { $in: course.courseStaff } }).exec()
+                .then((employees) => {
+                    if (course == null) {
+                        return res.status(404).json({
+                            "message": "Employees not found."
+                        });
+                    }
+                    res.json({ "employees": employees });
+                }).catch(next);
+        }).catch(next);
+});
+
+// Get an employee of a course, given the ID of the employee
+router.get('/:id/employees/:employee_id', (req, res, next) => {
+    const courseCode = req.params.id;
+    const employeeID = req.params.employee_id;
+    Course.findOne({ courseCode: courseCode }).exec()
+        .then((course) => {
+            if (course == null) {
+                return res.status(404).json({
+                    "message": "Course not found."
+                });
+            // Do not proceed to query the Employee if the employeeID is
+            // not given in the course.
+            } else if (!course.courseStaff.includes(employeeID)) {
+                return res.status(404).json({
+                    "message": `${employeeID} not found in ${courseCode}`
+                });
+            }
+            Employee.findOne({ emailAddress: employeeID }).exec()
+                .then((employee) => {
+                    if (employee == null) {
+                        return res.status(404).json({
+                            "message": "Employee not found."
+                        });
+                    }
+                    res.json({ "employee": employee })
+                }).catch(next);
+        }).catch(next);
+});
+
+// Delete a relationship between a course and an employee
+router.delete('/:id/employees/:employee_id', (req, res, next) => {
+    const courseCode = req.params.id;
+    const employeeID = req.params.employee_id;
+    Course.findOne({ courseCode: courseCode }).exec()
+        .then((course) => {
+            if (course == null) {
+                return res.status(404).json({
+                    "message": "Course not found."
+                });
+            }
+            const idxToRemove = course.courseStaff.indexOf(employeeID);
+            
+            // The relationship does not exist, so no need to delete anything.
+            if (idxToRemove == -1) {
+                return res.json({
+                    "message": "Relationship does not exist, nothing to delete."
+                });
+            }
+            // Remove the employee from the course
+            course.courseStaff.splice(idxToRemove, 1);
+
+            course.save().catch(next);
             res.json({ "course": course });
         }).catch(next);
 });
