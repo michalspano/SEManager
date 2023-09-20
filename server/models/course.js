@@ -1,8 +1,8 @@
 // File: ./models/course.js
 // A mongoose model for a Course
 
-const mongoose  = require("mongoose");
-const Schema    = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const CourseModel = new Schema({
     courseCode: {

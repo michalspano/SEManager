@@ -15,7 +15,7 @@ const Employee = require('../../models/employee');
 router.post('/', (req, res, next) => {
     const employee = new Employee(req.body);
     employee.save().catch(next);
-    res.status(201).json({"employee": employee});
+    res.status(201).json({ "employee": employee });
 });
 
 // Return the list of all employees
@@ -30,83 +30,83 @@ router.get('/', (req, res, next) => {
 
     Employee.find({}).sort(querySelector).limit(limit)
         .then((employees) => {
-            res.json({"employees": employees});
+            res.json({ "employees": employees });
         })
         .catch(next);
-})
+});
 
 // Delete all employees
 router.delete('/', (_, res, next) => {
     Employee.deleteMany({}).then(() => {
         res.status(204).send();
     })
-    .catch(next);
-})
+        .catch(next);
+});
 
 // Return an employee given an ID
 router.get('/:id', (req, res, next) => {
-    Employee.findOne({emailAddress: req.params.id}).exec()
-    .then((employee) => {
-        if (employee == null) {
-            return res.status(404).json({
-                "message": "Employee not found."
-            });
-        }
-        res.json({"employee": employee});
-    }).catch(next);
+    Employee.findOne({ emailAddress: req.params.id }).exec()
+        .then((employee) => {
+            if (employee == null) {
+                return res.status(404).json({
+                    "message": "Employee not found."
+                });
+            }
+            res.json({ "employee": employee });
+        }).catch(next);
 });
 
 // Delete an employee given an ID
 router.delete('/:id', (req, res, next) => {
-    Employee.findOneAndDelete({emailAddress: req.params.id}).exec()
-    .then((employee) => {
-        if (employee == null) {
-            return res.status(404).json({
-                "message": "Employee not found."
-            });
-        }
-        res.json({"employee": employee});
-    }).catch(next);
-})
+    Employee.findOneAndDelete({ emailAddress: req.params.id }).exec()
+        .then((employee) => {
+            if (employee == null) {
+                return res.status(404).json({
+                    "message": "Employee not found."
+                });
+            }
+            res.json({ "employee": employee });
+        }).catch(next);
+});
 
 // Update a whole employee given an ID
 router.put('/:id', (req, res, next) => {
-    Employee.findOne({emailAddress: req.params.id}).exec()
-    .then((employee) => {
-        if (employee == null) {
-            return res.status(404).json({
-                "message": "Employee not found."
-            })
-        }
+    Employee.findOne({ emailAddress: req.params.id }).exec()
+        .then((employee) => {
+            if (employee == null) {
+                return res.status(404).json({
+                    "message": "Employee not found."
+                });
+            }
 
-        employee.emailAddress = req.body.emailAddress;
-        employee.name = req.body.name;
-        employee.contactInfo = req.body.contactInfo;
+            employee.emailAddress = req.body.emailAddress;
+            employee.name = req.body.name;
+            employee.contactInfo = req.body.contactInfo;
 
-        employee.save().catch(next);
-        res.json({"employee": employee});
-    }).catch(next);
+            employee.save().catch(next);
+            res.json({ "employee": employee });
+        }).catch(next);
 });
 
 // Update partially an employee
 router.patch('/:id', (req, res, next) => {
-    Employee.findOne({emailAddress: req.params.id}).exec()
-    .then((employee) => {
-        if (employee == null) {
-            return res.status(404).json({
-                "message": "Employee not found."
-            });
-        }
+    Employee.findOne({ emailAddress: req.params.id }).exec()
+        .then((employee) => {
+            if (employee == null) {
+                return res.status(404).json({
+                    "message": "Employee not found."
+                });
+            }
 
-        employee.emailAddress = req.body.emailAddress || employee.emailAddress;
-        employee.name = req.body.name || employee.name;
-        employee.contactInfo = req.body.contactInfo || employee.contactInfo;
+            employee.emailAddress = req.body.emailAddress || employee.emailAddress;
+            employee.name = req.body.name || employee.name;
+            employee.contactInfo = req.body.contactInfo || employee.contactInfo;
 
-        // Save and populate the response
-        employee.save().catch(next);
+            // Save and populate the response
+            employee.save().catch(next);
 
-        res.json({"employee": employee});
-    }).catch(next);
+            res.json({ "employee": employee });
+        }).catch(next);
 });
 
 // Catch other undefined paths (404 - not found)

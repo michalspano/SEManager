@@ -5,10 +5,10 @@
  * @version     :: 1.0
  */
 
-const express   = require('express');
-const router    = express.Router();
-const Course    = require('../../models/course');
-const Employee  = require('../../models/employee');
+const express = require('express');
+const router = express.Router();
+const Course = require('../../models/course');
+const Employee = require('../../models/employee');
 
 // Note: the convention is, when returning the Entity object
 // to wrap it in an Object which carries the name of the entity.
@@ -21,21 +21,21 @@ const Employee  = require('../../models/employee');
 // To support HATEOAS
 // TODO: extract this functionality to a stand-alone file, so
 // that it can be used in several controllers (without repetition).
-const VERSION   = "v1";
-const RESOURCE  = "courses";
-const PORT      = process.env.PORT || 3000;
-const HOST      = process.env.HOST || "http://localhost";
- 
+const VERSION = "v1";
+const RESOURCE = "courses";
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || "http://localhost";
+
 // Function to format href for HATEOAS (given an ID)
 const formatHref = (id) => {
-    return`${HOST}:${PORT}/${VERSION}/${RESOURCE}/${id}`;
+    return `${HOST}:${PORT}/${VERSION}/${RESOURCE}/${id}`;
 };
 
 // Add a new course
 router.post('/', (req, res, next) => {
-    const course    = new Course(req.body);
-    const courseID  = req.body.courseCode;
-    const links     = {
+    const course = new Course(req.body);
+    const courseID = req.body.courseCode;
+    const links = {
         "links": [
             {
                 rel: "self",
@@ -122,7 +122,7 @@ router.get('/:id', (req, res, next) => {
                     }
                 ]
             };
-            res.json({ course, ...links});
+            res.json({ course, ...links });
         }).catch(next);
 });
 
@@ -137,8 +137,8 @@ router.put('/:id', (req, res, next) => {
                 });
             }
             // Update all fields of the given course
-            course.courseName   = req.body.courseName;
-            course.courseStaff  = req.body.courseStaff;
+            course.courseName = req.body.courseName;
+            course.courseStaff = req.body.courseStaff;
             course.dependencies = req.body.dependencies;
 
             const links = {
@@ -179,8 +179,8 @@ router.patch('/:id', (req, res, next) => {
                 });
             }
             // Update only the provided fields
-            course.courseName   = req.body.courseName   || course.courseName;
-            course.courseStaff  = req.body.courseStaff  || course.courseStaff;
+            course.courseName = req.body.courseName || course.courseName;
+            course.courseStaff = req.body.courseStaff || course.courseStaff;
             course.dependencies = req.body.dependencies || course.dependencies;
 
             // Save and populate the response
@@ -256,8 +256,8 @@ router.get('/:id/employees/:employee_id', (req, res, next) => {
                 return res.status(404).json({
                     "message": "Course not found."
                 });
-            // Do not proceed to query the Employee if the employeeID is
-            // not given in the course.
+                // Do not proceed to query the Employee if the employeeID is
+                // not given in the course.
             } else if (!course.courseStaff.includes(employeeID)) {
                 return res.status(404).json({
                     "message": `${employeeID} not found in ${courseCode}`
@@ -270,7 +270,7 @@ router.get('/:id/employees/:employee_id', (req, res, next) => {
                             "message": "Employee not found."
                         });
                     }
-                    res.json({ "employee": employee })
+                    res.json({ "employee": employee });
                 }).catch(next);
         }).catch(next);
 });
@@ -287,7 +287,7 @@ router.delete('/:id/employees/:employee_id', (req, res, next) => {
                 });
             }
             const idxToRemove = course.courseStaff.indexOf(employeeID);
-            
+
             // The relationship does not exist, so no need to delete anything.
             if (idxToRemove == -1) {
                 return res.json({

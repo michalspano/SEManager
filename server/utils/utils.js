@@ -14,7 +14,7 @@ const Course = require("../models/course");
  * @returns {Promise} Promise object representing the list of course._id values
  */
 const validateCourseCodes = async (courseCodes) => {
-    return Course.find({ courseCode: { $in: courseCodes} })
+    return Course.find({ courseCode: { $in: courseCodes } })
         .then((courses) => {
             // Compare the length of the arrays to determine if all of the course codes are valid.
             if (courses.length !== courseCodes.length) {
@@ -27,6 +27,6 @@ const validateCourseCodes = async (courseCodes) => {
             if (result.length == 1) return result[0];
             return result;
         });
-}
+};
 
 module.exports = validateCourseCodes;

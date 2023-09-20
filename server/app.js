@@ -1,18 +1,18 @@
 // app.js - back-end entry point (server)
 
-const express   = require('express');
-const mongoose  = require('mongoose');
-const morgan    = require('morgan');
-const path      = require('path');
-const cors      = require('cors');
-const history   = require('connect-history-api-fallback');
+const express = require('express');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const path = require('path');
+const cors = require('cors');
+const history = require('connect-history-api-fallback');
 
 // set-up environment variables (.env)
 require('dotenv').config();
 
 // Attempt to access .env variables, otherwise replace by the default values
-const port      = process.env.PORT || 3000;
-const mongoURI  = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/animalDevelopmentDB';
+const port = process.env.PORT || 3000;
+const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/animalDevelopmentDB';
 
 // Connect to MongoDB
 mongoose.connect(mongoURI).catch((err) => {
@@ -50,7 +50,7 @@ app.use('/v1/students', require('./controllers/v1/students'));
 // A test `api` route
 // TODO: remove in production
 app.get('/api', (req, res) => {
-    res.json({'message': 'Welcome to your DIT342 backend ExpressJS project!'});
+    res.json({ 'message': 'Welcome to your DIT342 backend ExpressJS project!' });
 });
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
@@ -66,8 +66,8 @@ app.use('/api/*', (req, res) => {
 app.use(history());
 
 // Serve static assets
-const root      = path.normalize(__dirname + '/..');
-const client    = path.join(root, 'client', 'dist');
+const root = path.normalize(__dirname + '/..');
+const client = path.join(root, 'client', 'dist');
 
 app.use(express.static(client));
 
@@ -76,7 +76,7 @@ const env = app.get('env');
 
 // Note: if the product is in development mode, the returned JSON object
 // contains the full stack off the error.
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     console.error(err.stack);
     let err_res = {
         'message': err.message,
