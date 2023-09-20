@@ -9,13 +9,48 @@ const express = require('express');
 const router = express.Router();
 const Employee = require('../../models/employee');
 
-// Add CRUD relationships here
+const VERSION   = "v1";
+const RESOURCE  = "employees";
+const PORT      = process.env.PORT || 3000;
+const HOST      = process.env.HOST || "http://localhost";
+
+const formatHref = (id) => {
+    return `${HOST}/${VERSION}/${RESOURCE}/${id}`;
+}
+
+// TODO: Check if it's better to get the response embedded in a JSON object
 
 // Add a new employee
 router.post('/', (req, res, next) => {
     const employee = new Employee(req.body);
     employee.save().catch(next);
-    res.status(201).json({ "employee": employee });
+
+    const emailAddress = req.body.emailAddress;
+
+    const links = [
+            {
+                rel : 'self',
+                href : formatHref(emailAddress),
+                method : 'GET',
+            },
+            {
+                rel : 'update',
+                href: formatHref(emailAddress),
+                method : 'PUT'
+            },
+            {
+                rel : 'edit',
+                href : formatHref(emailAddress),
+                method : 'PATCH'
+            },
+            {
+                rel : 'delete',
+                href : formatHref(emailAddress),
+                method : 'DELETE'
+            }
+    ];
+
+    res.status(201).json({employee, links});
 });
 
 // Return the list of all employees
@@ -107,6 +142,57 @@ router.patch('/:id', (req, res, next) => {
 
             res.json({ "employee": employee });
         }).catch(next);
+});
+
+// TODO: check for exceptions
+// Get all the courses of a given employee
+router.get('/:id/courses', (req, res, next) => {
+    Employee.findOne({emailAddress : req.params.id}).exec()
+    .then((employee) => {
+        if (employee == null) {
+            return res.status(404).json({
+                message: 'Employee not found.'
+            });
+        }
+        // Try to find the courses here
+        // Get all the courses whose courseStaff matches employee I think
+        // TODO: See why this works
+        Course.find({courseStaff : employee.emailAddress}).exec()
+        .then((courses) => {
+            if (courses == null) {
+                return res.status(404).json({
+                    message: "Courses not found."
+                });
+            }
+            res.json(courses);
+        }).catch(next);
+
+    })
+});
+
+// TODO: check for exceptions
+// Get a given course of a given employee
+// TODO: review this as it is pretty much useless
+router.get('/:id/courses/:course_id', (req, res, next) => {
+    const course_id = req.params.course_id;
+    Employee.findOne({emailAddress : req.params.id}).exec()
+    .then((employee) => {
+        if (employee == null) {
+            return res.status(404).json({
+                message: 'Employee not found.'
+            });
+        }
+        Course.findOne({courseCode: course_id, courseStaff : employee.emailAddress}).exec()
+        .then((course) => {
+            if (course == null) {
+                return res.status(404).json({
+                    message: "No courses found."
+                });
+            }
+            // Find the second :id that matches the course
+            res.json(course);
+        }).catch(next)
+    })
 });
 
 // Catch other undefined paths (404 - not found)
