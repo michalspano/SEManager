@@ -225,6 +225,34 @@ router.delete('/:id', (req, res, next) => {
         }).catch(next);
 });
 
+// Post a new employee to a given course
+// TODO: optimize this and check for exceptions
+router.post('/:id/employees', (req, res, next) => {
+    Course.findOne({courseCode : req.params.id}).exec()
+    .then((course) => {
+        if (course == null) {
+            return res.status(404).json({
+                message: "Course not found."
+            })
+        }
+
+        // Create the employee
+        const employee = new Employee(req.body);
+        employee.save().catch(next);
+
+        // Patch a course and assign the new employee to the course staff
+
+        let newCourseStaff = course.courseStaff;
+        newCourseStaff.push(req.body.emailAddress);
+
+        course.courseStaff = newCourseStaff;
+
+        // Save the changes that
+        course.save().catch(next);
+        res.json(course);
+    })
+})
+
 // Get all employees of a given course
 router.get('/:id/employees/', (req, res, next) => {
     Course.findOne({ courseCode: req.params.id }).exec()
@@ -236,7 +264,7 @@ router.get('/:id/employees/', (req, res, next) => {
             }
             Employee.find({ emailAddress: { $in: course.courseStaff } }).exec()
                 .then((employees) => {
-                    if (course == null) {
+                    if (employees == null) {
                         return res.status(404).json({
                             "message": "Employees not found."
                         });
