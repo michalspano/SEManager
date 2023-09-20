@@ -8,8 +8,8 @@
 const express               = require("express");
 const Student               = require("../../models/student");
 const Course                = require("../../models/course");
-const validateCourseCodes   = require("./courseCodeValidation");
 const router                = express.Router();
+const validateCourseCodes   = require("../../utils/utils")
 
 // Add a new student
 router.post('/', (req, res, next) => {
