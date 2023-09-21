@@ -10,21 +10,47 @@ const Student = require("../../models/student");
 const Course = require("../../models/course");
 const router = express.Router();
 const validateCourseCodes = require("../../utils/utils");
+const { formatHref } = require('./config');
+
+const RESOURCE = "students";
 
 // Add a new student
 router.post('/', (req, res, next) => {
     validateCourseCodes(req.body.courses)
         .then((courseIds) => {
 
+            const studentSSN = req.body.SSN;
             const student = new Student({
-                SSN: req.body.SSN,
+                SSN: studentSSN,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 courses: courseIds
             });
+            const links = [
+                {
+                    rel: "self",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "GET"
+                },
+                {
+                    rel: "update",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "PUT"
+                },
+                {
+                    rel: "edit",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "PATCH"
+                },
+                {
+                    rel: "delete",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "DELETE"
+                }
+            ];
 
             student.save().catch(next);
-            res.status(201).json({ "student": student });
+            res.status(201).json({ student, links });
         }).catch((error) => {
             res.status(400).json({ "message": error.message });
         });
@@ -58,7 +84,24 @@ router.get('/:id', (req, res, next) => {
                     "message": "Student not found."
                 });
             }
-            res.json({ "student": student });
+            const links = [
+                {
+                    rel: "update",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "PUT"
+                },
+                {
+                    rel: "edit",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "PATCH"
+                },
+                {
+                    rel: "delete",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "DELETE"
+                }
+            ];
+            res.json({ student, links });
         }).catch(next);
 });
 
@@ -84,9 +127,27 @@ router.put('/:id', (req, res, next) => {
                     });
                 });
 
+            const links = [
+                {
+                    rel: "self", 
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "GET"
+                },
+                {
+                    rel: "edit",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "PATCH"
+                },
+                {
+                    rel: "delete",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "DELETE"
+                }
+            ];
+              
             // Save updated student, resolve promise before sending response
-            student.save().then((updatedStudent) => {
-                res.json({ "student": updatedStudent });
+            student.save().then((student) => {
+                res.json({ student, links });
             }).catch(next); // perhaps too verbose - leaving it in for now (for consistency)
         }).catch(next);
 });
@@ -115,6 +176,23 @@ router.patch('/:id', (req, res, next) => {
             student.firstName = req.body.firstName || student.firstName;
             student.lastName = req.body.lastName || student.lastName;
 
+            const links= [
+                {
+                    rel: "self",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "GET"
+                },
+                {
+                    rel: "update",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "PUT"
+                },
+                {
+                    rel: "delete",
+                    href: formatHref(RESOURCE, studentSSN),
+                    method: "DELETE"
+                }
+            ];
             student.save().then((updatedStudent) => {
                 res.json({ "student": updatedStudent });
             }).catch(next);
