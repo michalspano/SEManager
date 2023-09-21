@@ -9,17 +9,9 @@ const express = require('express');
 const router = express.Router();
 const Employee = require('../../models/employee');
 const Course = require('../../models/course');
+const { formatHref } = require('./config');
 
-const VERSION = "v1";
 const RESOURCE = "employees";
-const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || "http://localhost";
-
-const formatHref = (id) => {
-    return `${HOST}:${PORT}/${VERSION}/${RESOURCE}/${id}`;
-};
-
-// TODO: Check if it's better to get the response embedded in a JSON object
 
 // Add a new employee
 router.post('/', (req, res, next) => {
@@ -31,22 +23,22 @@ router.post('/', (req, res, next) => {
     const links = [
         {
             rel: 'self',
-            href: formatHref(emailAddress),
+            href: formatHref(emailAddress, RESOURCE),
             method: 'GET',
         },
         {
             rel: 'update',
-            href: formatHref(emailAddress),
+            href: formatHref(emailAddress, RESOURCE),
             method: 'PUT'
         },
         {
             rel: 'edit',
-            href: formatHref(emailAddress),
+            href: formatHref(emailAddress, RESOURCE),
             method: 'PATCH'
         },
         {
             rel: 'delete',
-            href: formatHref(emailAddress),
+            href: formatHref(emailAddress, RESOURCE),
             method: 'DELETE'
         }
     ];
