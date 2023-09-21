@@ -23,22 +23,22 @@ router.post('/', (req, res, next) => {
     const links = [
         {
             rel: 'self',
-            href: formatHref(emailAddress, RESOURCE),
+            href: formatHref(RESOURCE, emailAddress),
             method: 'GET',
         },
         {
             rel: 'update',
-            href: formatHref(emailAddress, RESOURCE),
+            href: formatHref(RESOURCE, emailAddress),
             method: 'PUT'
         },
         {
             rel: 'edit',
-            href: formatHref(emailAddress, RESOURCE),
+            href: formatHref(RESOURCE, emailAddress),
             method: 'PATCH'
         },
         {
             rel: 'delete',
-            href: formatHref(emailAddress, RESOURCE),
+            href: formatHref(RESOURCE, emailAddress),
             method: 'DELETE'
         }
     ];
