@@ -4,8 +4,8 @@
 		"name": "server",
 		"description": "The collection of versioned API CRUD operations for the server.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18528997",
-		"_collection_link": "https://lively-robot-331309.postman.co/workspace/SEMProgramProject~7a29e83c-9fda-4a9d-9373-b8ef48c7414e/collection/29461036-a746828e-6b20-476c-8416-f4d1a3145bf8?action=share&source=collection_link&creator=18528997"
+		"_exporter_id": "29461036",
+		"_collection_link": "https://lively-robot-331309.postman.co/workspace/SEMProgramProject~7a29e83c-9fda-4a9d-9373-b8ef48c7414e/collection/29461036-a746828e-6b20-476c-8416-f4d1a3145bf8?action=share&source=collection_link&creator=29461036"
 	},
 	"item": [
 		{
@@ -202,6 +202,93 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "POST /courses (3)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"pm.test(\"There's at least one course staff per course\", function () {",
+													"    pm.expect(pm.response.json().course.courseStaff).to.be.an('array').and.to.not.be.empty;",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"courseCode\": \"DIT420\",\r\n    \"courseName\": \"Enjiner :3\",\r\n    \"courseStaff\": [\"another-generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST /courses (4)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"pm.test(\"There's at least one course staff per course\", function () {",
+													"    pm.expect(pm.response.json().course.courseStaff).to.be.an('array').and.to.not.be.empty;",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"courseCode\": \"DIT031\",\r\n    \"courseName\": \"Test course\",\r\n    \"courseStaff\": [\"generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/courses/",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"courses",
+												""
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
@@ -283,6 +370,54 @@
 											"path": [
 												"v1",
 												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST /courses/:course_id/employees",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"posted-email@gu.se\",\r\n    \"name\": \"Based Bro\",\r\n    \"contactInfo\": \"+46 420 69\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/courses/:id/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"courses",
+												":id",
+												"employees"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT023"
+												}
 											]
 										}
 									},
@@ -530,6 +665,89 @@
 												"employees",
 												"foo",
 												"bar"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /employees/:id/courses",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/employees/:id/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"employees",
+												":id",
+												"courses"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "generic-email@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /employees/:id/courses/:course_id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/v1/employees/:id/courses/:course_id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"employees",
+												":id",
+												"courses",
+												":course_id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "generic-email@gu.se"
+												},
+												{
+													"key": "course_id",
+													"value": "DIT111"
+												}
 											]
 										}
 									},
