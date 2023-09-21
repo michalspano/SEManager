@@ -9,58 +9,43 @@ const express = require('express');
 const router = express.Router();
 const Course = require('../../models/course');
 const Employee = require('../../models/employee');
+const { formatHref } = require('./config');
 
-// Note: the convention is, when returning the Entity object
-// to wrap it in an Object which carries the name of the entity.
-// Example: given `Course` -> {"course": {}, "links": {}}
-// this is one of the conventions for HATEOAS
+/* Note: the convention is, when returning the Entity object
+ * to wrap it in an Object which carries the name of the entity.
+ * Example: given `Course` -> {"course": {}, "links": {}}
+ * this is one of the conventions for HATEOAS */
 
-// TODO: extract the middleware with relationships to a stand-alone
-// controller?
-
-// To support HATEOAS
-// TODO: extract this functionality to a stand-alone file, so
-// that it can be used in several controllers (without repetition).
-const VERSION = "v1";
 const RESOURCE = "courses";
-const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || "http://localhost";
-
-// Function to format href for HATEOAS (given an ID)
-const formatHref = (id) => {
-    return `${HOST}:${PORT}/${VERSION}/${RESOURCE}/${id}`;
-};
 
 // Add a new course
 router.post('/', (req, res, next) => {
     const course = new Course(req.body);
     const courseID = req.body.courseCode;
-    const links = {
-        "links": [
-            {
-                rel: "self",
-                href: formatHref(courseID),
-                method: "GET"
-            },
-            {
-                rel: "update",
-                href: formatHref(courseID),
-                method: "PUT"
-            },
-            {
-                rel: "edit",
-                href: formatHref(courseID),
-                method: "PATCH"
-            },
-            {
-                rel: "delete",
-                href: formatHref(courseID),
-                method: "DELETE"
-            }
-        ]
-    };
+    const links = [
+        {
+            rel: "self",
+            href: formatHref(RESOURCE, courseID),
+            method: "GET"
+        },
+        {
+            rel: "update",
+            href: formatHref(RESOURCE, courseID),
+            method: "PUT"
+        },
+        {
+            rel: "edit",
+            href: formatHref(RESOURCE, courseID),
+            method: "PATCH"
+        },
+        {
+            rel: "delete",
+            href: formatHref(RESOURCE, courseID),
+            method: "DELETE"
+        }
+    ];
     course.save().catch(next);
-    res.status(201).json({ course, ...links });
+    res.status(201).json({ course, links });
 });
 
 // Return the list of all courses
@@ -103,26 +88,24 @@ router.get('/:id', (req, res, next) => {
                     "message": "Course not found."
                 });
             }
-            const links = {
-                "links": [
-                    {
-                        rel: "update",
-                        href: formatHref(courseID),
-                        method: "PUT"
-                    },
-                    {
-                        rel: "edit",
-                        href: formatHref(courseID),
-                        method: "PATCH"
-                    },
-                    {
-                        rel: "delete",
-                        href: formatHref(courseID),
-                        method: "DELETE"
-                    }
-                ]
-            };
-            res.json({ course, ...links });
+            const links = [
+                {
+                    rel: "update",
+                    href: formatHref(RESOURCE, courseID),
+                    method: "PUT"
+                },
+                {
+                    rel: "edit",
+                    href: formatHref(RESOURCE, courseID),
+                    method: "PATCH"
+                },
+                {
+                    rel: "delete",
+                    href: formatHref(RESOURCE, courseID),
+                    method: "DELETE"
+                }
+            ];
+            res.json({ course, links });
         }).catch(next);
 });
 
@@ -141,29 +124,27 @@ router.put('/:id', (req, res, next) => {
             course.courseStaff = req.body.courseStaff;
             course.dependencies = req.body.dependencies;
 
-            const links = {
-                "links": [
-                    {
-                        rel: "self",
-                        href: formatHref(courseID),
-                        method: "GET"
-                    },
-                    {
-                        rel: "edit",
-                        href: formatHref(courseID),
-                        method: "PATCH"
-                    },
-                    {
-                        rel: "delete",
-                        href: formatHref(courseID),
-                        method: "DELETE"
-                    }
-                ]
-            };
+            const links = [
+                {
+                    rel: "self",
+                    href: formatHref(RESOURCE, courseID),
+                    method: "GET"
+                },
+                {
+                    rel: "edit",
+                    href: formatHref(RESOURCE, courseID),
+                    method: "PATCH"
+                },
+                {
+                    rel: "delete",
+                    href: formatHref(RESOURCE, courseID),
+                    method: "DELETE"
+                }
+            ];
 
             // Save and populate the response
             course.save().catch(next);
-            res.json({ course, ...links });
+            res.json({ course, links });
         }).catch(next);
 });
 
@@ -187,28 +168,26 @@ router.patch('/:id', (req, res, next) => {
             course.save().catch(next);
 
             // Add HATEOAS support
-            const links = {
-                "links": [
-                    {
-                        rel: "self",
-                        href: formatHref(courseID),
-                        method: "GET"
-                    },
-                    {
-                        rel: "update",
-                        href: formatHref(courseID),
-                        method: "PUT"
-                    },
-                    {
-                        rel: "delete",
-                        href: formatHref(courseID),
-                        method: "DELETE"
-                    }
-                ]
-            };
+            const links = [
+                {
+                    rel: "self",
+                    href: formatHref(RESOURCE, courseID),
+                    method: "GET"
+                },
+                {
+                    rel: "update",
+                    href: formatHref(RESOURCE, courseID),
+                    method: "PUT"
+                },
+                {
+                    rel: "delete",
+                    href: formatHref(RESOURCE, courseID),
+                    method: "DELETE"
+                }
+            ];
             // Combine the resource Object with the links in the
             // body of the response.
-            res.json({ course, ...links });
+            res.json({ course, links });
         }).catch(next);
 });
 
