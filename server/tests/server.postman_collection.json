@@ -204,6 +204,46 @@
 									"response": []
 								},
 								{
+									"name": "POST /courses (2) invalid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 409\", function () {",
+													"    pm.response.to.have.status(409);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "POST /courses (3)",
 									"event": [
 										{
@@ -376,6 +416,46 @@
 									"response": []
 								},
 								{
+									"name": "POST /employees (2) invalid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 409\", function () {",
+													"    pm.response.to.have.status(409);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"another-generic-email@gu.se\",\r\n    \"name\": \"Francisco Fernando Riquelme Gomes Oliveira de Neto\",\r\n    \"contactInfo\": \"JUPITER 400-something\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "POST /courses/:course_id/employees",
 									"event": [
 										{
@@ -437,6 +517,47 @@
 												"exec": [
 													"pm.test(\"Response status code is 201\", function () {\r",
 													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"SSN\": \"0123456789\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/v1/students",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"v1",
+												"students"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST /students invalid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 409\", function () {\r",
+													"    pm.response.to.have.status(409);\r",
 													"});\r",
 													""
 												],
@@ -1064,7 +1185,22 @@
 												"exec": [
 													"pm.test(\"Response status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
-													"});"
+													"});",
+													"",
+													"// Parse the response JSON",
+													"var responseBody = pm.response.json();",
+													"",
+													"// Check if the \"links\" key exists in the response",
+													"pm.test(\"Response contains HATEOAS links\", function () {",
+													"    pm.expect(responseBody).to.have.property(\"links\");",
+													"",
+													"    // Check if the \"links\" property is an array (more links can be defined)",
+													"    pm.expect(responseBody.links).to.be.an(\"array\");",
+													"",
+													"    // Check if the \"links\" object is not empty",
+													"    pm.expect(Object.keys(responseBody.links).length).to.be.above(0);",
+													"});",
+													""
 												],
 												"type": "text/javascript"
 											}
@@ -1729,6 +1865,37 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "GET /api",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/v1/api",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"api"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"description": "Version 1.0 of the **API**."
