@@ -19,6 +19,9 @@ const CourseModel = new Schema({
         trim: true,
         required: true
     }],
+    // TODO: make this consistent with the `Student` entity.
+    // use the function from utils to map the courseCodes to the IDs
+    // to ensure consistency.
     dependencies: [{
         type: String, // unique courseCode
         trim: true
