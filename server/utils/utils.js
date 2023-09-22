@@ -5,6 +5,7 @@
  * @version     :: 1.0
  */
 
+const { formatHref } = require("../controllers/v1/config");
 const Course = require("../models/course");
 
 /**
@@ -13,7 +14,7 @@ const Course = require("../models/course");
  * @param {Array} courseCodes - An array of course codes to validate
  * @returns {Promise} Promise object representing the list of course._id values
  */
-const validateCourseCodes = async (courseCodes) => {
+const fetchCourseIds = async (courseCodes) => {
     return Course.find({ courseCode: { $in: courseCodes } })
         .then((courses) => {
             // Compare the length of the arrays to determine if all of the course codes are valid.
@@ -28,5 +29,24 @@ const validateCourseCodes = async (courseCodes) => {
             return result;
         });
 };
+/**
+ * Function to generate the HATEOAS links.
+ * @param {Array} data - an array of arrays where each individual array
+ * represents an instance of a 'link' (i.e. it contains the data).
+ * @returns {Array} A JSONArray that contains all the links.
+ */
+const generateLinks = (data) => {
+    return data.map((link) => {
+        try {
+            return {
+                rel: link[0],
+                href: formatHref(link[1]),
+                method: link[2]
+            };
+        } catch (error) {
+            throw new Error("Invalid link data.");
+        }
+    });
+};
 
-module.exports = validateCourseCodes;
+module.exports = { fetchCourseIds, generateLinks };
