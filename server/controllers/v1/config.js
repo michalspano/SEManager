@@ -23,12 +23,15 @@ const HOST = process.env.HOST || "http://localhost";
 /**
  * This function formats the resource's URI for the purpose
  * of the HATEOAS mechanism.
- * @param {String} resource - the type of the resource.
- * @param {String} id - the identifier of the resource.
+ * 
+ * @param {Array} parts - the consecutive parts of the URI
+ * (after the API version) taken as an Array. These parts
+ * are to be separated by the '/' character thereafter.
+ * TODO: (potentially) extract to `utils.js`
  * @returns {String} - the formatted URI.
  */
-const formatHref = (resource, id) => {
-    return `${HOST}:${PORT}/${CONFIG.version}/${resource}/${id}`;
+const formatHref = (parts) => {
+    return `${HOST}:${PORT}/${CONFIG.version}/${parts.join('/')}`;
 };
 
 module.exports = { formatHref, CONFIG };
