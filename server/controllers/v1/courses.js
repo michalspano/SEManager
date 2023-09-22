@@ -9,7 +9,7 @@ const express = require('express');
 const router = express.Router();
 const Course = require('../../models/course');
 const Employee = require('../../models/employee');
-const { formatHref } = require('./config');
+const { generateLinks } = require('../../utils/utils');
 
 /* Note: the convention is, when returning the Entity object
  * to wrap it in an Object which carries the name of the entity.
@@ -22,30 +22,23 @@ const RESOURCE = "courses";
 router.post('/', (req, res, next) => {
     const course = new Course(req.body);
     const courseID = req.body.courseCode;
-    const links = [
-        {
-            rel: "self",
-            href: formatHref(RESOURCE, courseID),
-            method: "GET"
-        },
-        {
-            rel: "update",
-            href: formatHref(RESOURCE, courseID),
-            method: "PUT"
-        },
-        {
-            rel: "edit",
-            href: formatHref(RESOURCE, courseID),
-            method: "PATCH"
-        },
-        {
-            rel: "delete",
-            href: formatHref(RESOURCE, courseID),
-            method: "DELETE"
-        }
-    ];
-    course.save().catch(next);
-    res.status(201).json({ course, links });
+
+    const links = generateLinks([
+        ["self", [RESOURCE, courseID], "get"],
+        ["update", [RESOURCE, courseID], "PUT"],
+        ["edit", [RESOURCE, courseID], "PATCH"],
+        ["delete", [RESOURCE, courseID], "DELETE"]
+    ]);
+
+    course.save()
+        .then(() => {
+            res.status(201).json({ course, links });
+        }).catch((error) => {
+            if (error.code === 11_000) { // duplicate unique key error is 11_000 by Mongoose
+                // HTTP error code 409 denotes a 'conflict'
+                res.status(409).json({ error: "Course with this unique key already exists" });
+            } else next(error);
+        });
 });
 
 // Return the list of all courses
@@ -88,23 +81,13 @@ router.get('/:id', (req, res, next) => {
                     "message": "Course not found."
                 });
             }
-            const links = [
-                {
-                    rel: "update",
-                    href: formatHref(RESOURCE, courseID),
-                    method: "PUT"
-                },
-                {
-                    rel: "edit",
-                    href: formatHref(RESOURCE, courseID),
-                    method: "PATCH"
-                },
-                {
-                    rel: "delete",
-                    href: formatHref(RESOURCE, courseID),
-                    method: "DELETE"
-                }
-            ];
+
+            const links = generateLinks([
+                ["update", [RESOURCE, courseID], "PUT"],
+                ["edit", [RESOURCE, courseID], "PATCH"],
+                ["delete", [RESOURCE, courseID], "DELETE"]
+            ]);
+
             res.json({ course, links });
         }).catch(next);
 });
@@ -124,23 +107,11 @@ router.put('/:id', (req, res, next) => {
             course.courseStaff = req.body.courseStaff;
             course.dependencies = req.body.dependencies;
 
-            const links = [
-                {
-                    rel: "self",
-                    href: formatHref(RESOURCE, courseID),
-                    method: "GET"
-                },
-                {
-                    rel: "edit",
-                    href: formatHref(RESOURCE, courseID),
-                    method: "PATCH"
-                },
-                {
-                    rel: "delete",
-                    href: formatHref(RESOURCE, courseID),
-                    method: "DELETE"
-                }
-            ];
+            const links = generateLinks([
+                ["self", [RESOURCE, courseID], "GET"],
+                ["edit", [RESOURCE, courseID], "PATCH"],
+                ["delete", [RESOURCE, courseID], "DELETE"]
+            ]);
 
             // Save and populate the response
             course.save().catch(next);
@@ -167,24 +138,12 @@ router.patch('/:id', (req, res, next) => {
             // Save and populate the response
             course.save().catch(next);
 
-            // Add HATEOAS support
-            const links = [
-                {
-                    rel: "self",
-                    href: formatHref(RESOURCE, courseID),
-                    method: "GET"
-                },
-                {
-                    rel: "update",
-                    href: formatHref(RESOURCE, courseID),
-                    method: "PUT"
-                },
-                {
-                    rel: "delete",
-                    href: formatHref(RESOURCE, courseID),
-                    method: "DELETE"
-                }
-            ];
+            const links = generateLinks([
+                ["self", [RESOURCE, courseID], "GET"],
+                ["update", [RESOURCE, courseID], "PUT"],
+                ["delete", [RESOURCE, courseID], "DELETE"]
+            ]);
+
             // Combine the resource Object with the links in the
             // body of the response.
             res.json({ course, links });
@@ -216,14 +175,14 @@ router.post('/:id/employees', (req, res, next) => {
             }
 
             // Create the employee
+            // TODO: properly handle the duplicates (when an employee)
+            // with an existing ID is passed.
             const employee = new Employee(req.body);
             employee.save().catch(next);
 
             // Patch a course and assign the new employee to the course staff
-
             let newCourseStaff = course.courseStaff;
             newCourseStaff.push(req.body.emailAddress);
-
             course.courseStaff = newCourseStaff;
 
             // Save the changes that

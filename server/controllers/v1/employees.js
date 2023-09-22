@@ -9,41 +9,30 @@ const express = require('express');
 const router = express.Router();
 const Employee = require('../../models/employee');
 const Course = require('../../models/course');
-const { formatHref } = require('./config');
+const { generateLinks } = require('../../utils/utils');
 
 const RESOURCE = "employees";
 
 // Add a new employee
 router.post('/', (req, res, next) => {
     const employee = new Employee(req.body);
-    employee.save().catch(next);
-
     const emailAddress = req.body.emailAddress;
 
-    const links = [
-        {
-            rel: 'self',
-            href: formatHref(RESOURCE, emailAddress),
-            method: 'GET',
-        },
-        {
-            rel: 'update',
-            href: formatHref(RESOURCE, emailAddress),
-            method: 'PUT'
-        },
-        {
-            rel: 'edit',
-            href: formatHref(RESOURCE, emailAddress),
-            method: 'PATCH'
-        },
-        {
-            rel: 'delete',
-            href: formatHref(RESOURCE, emailAddress),
-            method: 'DELETE'
-        }
-    ];
+    const links = generateLinks([
+        ["self", [RESOURCE, emailAddress], "GET"],
+        ["update", [RESOURCE, emailAddress], "PUT"],
+        ["edit", [RESOURCE, emailAddress], "PATCH"],
+        ["delete", [RESOURCE, emailAddress], "DELETE"]
+    ]);
 
-    res.status(201).json({ employee, links });
+    employee.save()
+        .then(() => {
+            res.status(201).json({ employee, links });
+        }).catch((error) => {
+            if (error.code === 11_000) {
+                res.status(409).json({ error: "Employee with this unique key already exists" });
+            } else next(error);
+        });
 });
 
 // Return the list of all employees
