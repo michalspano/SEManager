@@ -1,40 +1,37 @@
 <template>
-  <div>
-    <b-jumbotron header="DIT342 Frontend" lead="Welcome to your DIT342 Frontend Vue.js App">
-      <b-button class="btn_message" variant="primary" v-on:click="getMessage()" >Get Message from Server</b-button>
-      <p>Message from the server:<br/>
-      {{ message }}</p>
-    </b-jumbotron>
-  </div>
+    <!-- A simple simulation of the previous template -->
+    <div class="container py-4">
+        <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+            <button type="button" class="btn btn-outline-primary btn-lg" @click="getMessage">Get Message from Server</button>
+            <p>Message from the server:<br /> {{ message }}</p>
+        </div>
+        <h1>Try to access <code>/test</code> to <i>test</i> the <strong>router</strong>.</h1>
+    </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import { Api } from '@/Api'
+import { ref } from 'vue';
+import { Api } from '@/Api';
 
 export default {
-  name: 'home',
-  data() {
-    return {
-      message: 'none'
-    }
-  },
-  methods: {
-    getMessage() {
-      Api.get('/')
-        .then(response => {
-          this.message = response.data.message
-        })
-        .catch(error => {
-          this.message = error
-        })
-    }
-  }
-}
+    name: 'Home',
+    setup() {
+        const message = ref('none');
+
+        const getMessage = () => {
+            Api.get('/')
+                .then((response) => {
+                    message.value = response.data.message; // Update message using .value
+                })
+                .catch((error) => {
+                    message.value = error; // Update message using .value
+                });
+        };
+        return {
+            message,
+            getMessage,
+        };
+    },
+};
 </script>
 
-<style>
-.btn_message {
-  margin-bottom: 1em;
-}
-</style>
