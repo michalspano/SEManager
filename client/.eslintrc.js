@@ -1,17 +1,12 @@
+/* eslint-env node */
 module.exports = {
   root: true,
+  extends: [
+    'plugin:vue/vue3-essential',
+    'eslint:recommended',
+  ],
   env: {
     node: true
-  },
-  extends: [
-    'plugin:vue/essential',
-    '@vue/standard'
-  ],
-  rules: {
-    'space-before-function-paren': [2, { anonymous: 'always', named: 'never' }],
-    'no-console': 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'vue/multi-word-component-names': 'off'
   },
   parserOptions: {
     parser: '@babel/eslint-parser',
@@ -24,5 +19,11 @@ module.exports = {
       files: ['*.html'],
       processor: 'vue/.vue'
     }
-  ]
+  ],
+  rules: {
+    'space-before-function-paren': [2, { anonymous: 'always', named: 'never' }],
+    'no-console': 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'vue/multi-word-component-names': 'off'
+  }
 }
