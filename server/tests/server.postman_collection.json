@@ -645,6 +645,48 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "POST /students (3)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"SSN\": \"12341555551\",\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Fredriksson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/students",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"students"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						}
@@ -1590,6 +1632,88 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "PUT /courses/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"All fields to be updated are non-empty\", function () {",
+											"    const courseResponseJSON = pm.response.json().course;",
+											"",
+											"    pm.expect(courseResponseJSON.courseName).to.not.be.empty;",
+											"    // there's at least one person responsible for a course",
+											"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
+											"    // a course can have 0 dependencies",
+											"    pm.expect(courseResponseJSON.dependencies).to.be.an('array');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"followAuthorizationHeader": false,
+								"followRedirects": true,
+								"removeRefererHeaderOnRedirect": false,
+								"insecureHTTPParser": false,
+								"disableUrlEncoding": true,
+								"strictSSL": false
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-HTTP-Method-Override",
+										"value": "PUT",
+										"description": "POST -> PUT (sample request; works only for POST remapping).",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"courseName\": \"Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"dependencies\": []\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/courses/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "DIT023"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1617,6 +1741,60 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n    \"contactInfo\": \"JUPITER 402\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/employees/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"employees",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "another-generic-email@gu.se"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH /employees/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-HTTP-Method-Override",
+										"value": "PATCH",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"contactInfo\": \"JUPITER 472\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1901,6 +2079,96 @@
 										{
 											"key": "id",
 											"value": "generic-email-new@gu.se"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DEL /students/:id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-HTTP-Method-Override",
+										"value": "DELETE",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/api/v1/students/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"students",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "12341555551"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DEL /students/:id (invalid)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-HTTP-Method-Override",
+										"value": "DELETE",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/api/v1/students/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"students",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "12341555551"
 										}
 									]
 								}
