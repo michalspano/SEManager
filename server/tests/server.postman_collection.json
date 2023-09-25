@@ -33,11 +33,12 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/v1/courses",
+									"raw": "{{host}}/api/v1/courses",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"courses"
 									]
@@ -64,11 +65,12 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/v1/employees",
+									"raw": "{{host}}/api/v1/employees",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"employees"
 									]
@@ -95,11 +97,12 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/v1/students",
+									"raw": "{{host}}/api/v1/students",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"students"
 									]
@@ -148,11 +151,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/courses",
+											"raw": "{{host}}/api/v1/courses",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses"
 											]
@@ -191,11 +195,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/courses",
+											"raw": "{{host}}/api/v1/courses",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses"
 											]
@@ -231,11 +236,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/courses",
+											"raw": "{{host}}/api/v1/courses",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses"
 											]
@@ -274,11 +280,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/courses",
+											"raw": "{{host}}/api/v1/courses",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses"
 											]
@@ -317,11 +324,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/courses/",
+											"raw": "{{host}}/api/v1/courses/",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses",
 												""
@@ -363,11 +371,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/employees",
+											"raw": "{{host}}/api/v1/employees",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"employees"
 											]
@@ -403,11 +412,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/employees",
+											"raw": "{{host}}/api/v1/employees",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"employees"
 											]
@@ -443,11 +453,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/employees",
+											"raw": "{{host}}/api/v1/employees",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"employees"
 											]
@@ -483,11 +494,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/courses/:id/employees",
+											"raw": "{{host}}/api/v1/courses/:id/employees",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses",
 												":id",
@@ -537,11 +549,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/students",
+											"raw": "{{host}}/api/v1/students",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"students"
 											]
@@ -578,11 +591,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/students",
+											"raw": "{{host}}/api/v1/students",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"students"
 											]
@@ -619,11 +633,12 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/v1/students",
+											"raw": "{{host}}/api/v1/students",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"students"
 											]
@@ -661,11 +676,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/employees/",
+											"raw": "{{host}}/api/v1/employees/",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"employees",
 												""
@@ -693,11 +709,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/employees/?sortBy=emailAddress&limit=4&order=descending",
+											"raw": "{{host}}/api/v1/employees/?sortBy=emailAddress&limit=4&order=descending",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"employees",
 												""
@@ -739,11 +756,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/employees/:id",
+											"raw": "{{host}}/api/v1/employees/:id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"employees",
 												":id"
@@ -777,11 +795,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/employees/foo/bar",
+											"raw": "{{host}}/api/v1/employees/foo/bar",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"employees",
 												"foo",
@@ -810,11 +829,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/employees/:id/courses",
+											"raw": "{{host}}/api/v1/employees/:id/courses",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"employees",
 												":id",
@@ -849,11 +869,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/employees/:id/courses/:course_id",
+											"raw": "{{host}}/api/v1/employees/:id/courses/:course_id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"employees",
 												":id",
@@ -907,11 +928,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/students",
+											"raw": "{{host}}/api/v1/students",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"students"
 											]
@@ -947,11 +969,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/students/foo/bar",
+											"raw": "{{host}}/api/v1/students/foo/bar",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"students",
 												"foo",
@@ -990,11 +1013,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/students/:id",
+											"raw": "{{host}}/api/v1/students/:id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"students",
 												":id"
@@ -1029,11 +1053,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/students/:id/courses",
+											"raw": "{{host}}/api/v1/students/:id/courses",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"students",
 												":id",
@@ -1069,11 +1094,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/students/:id/courses/:course_id",
+											"raw": "{{host}}/api/v1/students/:id/courses/:course_id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"students",
 												":id",
@@ -1118,11 +1144,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/courses",
+											"raw": "{{host}}/api/v1/courses",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses"
 											]
@@ -1149,11 +1176,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/courses/?sortBy=courseName&limit=4&order=descending",
+											"raw": "{{host}}/api/v1/courses/?sortBy=courseName&limit=4&order=descending",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses",
 												""
@@ -1210,11 +1238,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/courses/:id",
+											"raw": "{{host}}/api/v1/courses/:id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses",
 												":id"
@@ -1248,11 +1277,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/courses/:id/employees",
+											"raw": "{{host}}/api/v1/courses/:id/employees",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses",
 												":id",
@@ -1287,11 +1317,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/courses/:id/employees/:employee_id",
+											"raw": "{{host}}/api/v1/courses/:id/employees/:employee_id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses",
 												":id",
@@ -1331,11 +1362,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/courses/:id/employees/:employee_id",
+											"raw": "{{host}}/api/v1/courses/:id/employees/:employee_id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses",
 												":id",
@@ -1375,11 +1407,12 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/v1/courses/foo/bar",
+											"raw": "{{host}}/api/v1/courses/foo/bar",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
+												"api",
 												"v1",
 												"courses",
 												"foo",
@@ -1424,11 +1457,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/v1/employees/:id",
+									"raw": "{{host}}/api/v1/employees/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										":id"
@@ -1479,11 +1513,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/v1/students/:id",
+									"raw": "{{host}}/api/v1/students/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"students",
 										":id"
@@ -1536,11 +1571,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/v1/courses/:id",
+									"raw": "{{host}}/api/v1/courses/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"courses",
 										":id"
@@ -1588,11 +1624,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/v1/employees/:id",
+									"raw": "{{host}}/api/v1/employees/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										":id"
@@ -1635,11 +1672,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/v1/students/:id",
+									"raw": "{{host}}/api/v1/students/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"students",
 										":id"
@@ -1682,11 +1720,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/v1/courses/:id",
+									"raw": "{{host}}/api/v1/courses/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"courses",
 										":id"
@@ -1725,11 +1764,12 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/v1/courses/:id/employees/:employee_id",
+									"raw": "{{host}}/api/v1/courses/:id/employees/:employee_id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"courses",
 										":id",
@@ -1769,11 +1809,12 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/v1/courses/:id",
+									"raw": "{{host}}/api/v1/courses/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"courses",
 										":id"
@@ -1807,11 +1848,12 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/v1/students/:id",
+									"raw": "{{host}}/api/v1/students/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"students",
 										":id"
@@ -1845,11 +1887,12 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/v1/employees/:id",
+									"raw": "{{host}}/api/v1/employees/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										":id"
@@ -1885,13 +1928,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/v1/api",
+							"raw": "{{host}}/api/v1/courses",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"v1",
-								"api"
+								"courses"
 							]
 						}
 					},
@@ -1902,42 +1946,56 @@
 		},
 		{
 			"name": "v2",
-			"item": [],
-			"description": "Version 2.0 of the **API**."
-		},
-		{
-			"name": "GET /api",
-			"event": [
+			"item": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
+					"name": "GET /api",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// This API version is not implemented yet -> 404",
+									"pm.test(\"Response status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
 						],
-						"type": "text/javascript"
-					}
+						"url": {
+							"raw": "{{host}}/api/v2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2"
+							]
+						}
+					},
+					"response": []
 				}
 			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{host}}/api",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api"
-					]
-				}
-			},
-			"response": []
+			"description": "Version 2.0 of the **API**."
 		}
 	],
 	"event": [
