@@ -9,13 +9,6 @@ const express = require('express');
 const router = express.Router();
 const { CONFIG } = require('./config');
 
-router.get('/', (_, res) => {
-    res.json(CONFIG);
-});
-
-// Catch other undefined paths (404 - not found)
-router.use('/*', (_, res) => {
-    res.status(404).json({ "message": "Not Found" });
-});
+router.get('/', (_, res) => res.json(CONFIG));
 
 module.exports = router;

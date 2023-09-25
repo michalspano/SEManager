@@ -177,9 +177,4 @@ router.get('/:id/courses/:course_id', (req, res, next) => {
         });
 });
 
-// Catch other undefined paths (404 - not found)
-router.use('/:id/*', (_, res) => {
-    res.status(404).json({ "message": "Not Found" });
-});
-
 module.exports = router;
