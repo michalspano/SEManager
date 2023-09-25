@@ -17,6 +17,6 @@ const EmployeeModel = new Schema({
     contactInfo: {
         type: String
     }
-})
+});
 
 module.exports = mongoose.model("Employee", EmployeeModel);

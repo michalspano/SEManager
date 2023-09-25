@@ -1,7 +1,7 @@
 // Mongoose model for a Student
 
-const mongoose  = require("mongoose");
-const Schema    = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const StudentModel = new Schema({
     // Add restriction for min/max length of SSN?

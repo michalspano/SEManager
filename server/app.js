@@ -1,20 +1,29 @@
-// app.js - back-end entry point (server)
+/**
+ * app.js
+ * 
+ * @description :: The main entry point of the API 
+ * @version     :: 1.0
+ */
 
-const express   = require('express');
-const mongoose  = require('mongoose');
-const morgan    = require('morgan');
-const path      = require('path');
-const cors      = require('cors');
-const history   = require('connect-history-api-fallback');
+// Import packages
+const express = require('express');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const path = require('path');
+const cors = require('cors');
+const history = require('connect-history-api-fallback');
 
-// set-up environment variables (.env)
-require('dotenv').config();
+// Import routes of the versioned API
+const v1Routes = require('./routes/v1')
+
+const API_VERSION = 1;      // Which API version to use (global constant)
+require('dotenv').config(); // set-up environment variables (.env)
 
 // Attempt to access .env variables, otherwise replace by the default values
-const port      = process.env.PORT || 3000;
-const mongoURI  = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/animalDevelopmentDB';
+const port = process.env.PORT || 3000;
+const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/animalDevelopmentDB';
 
-// Connect to MongoDB
+// Attempt to establish a connection with MongoDB
 mongoose.connect(mongoURI).catch((err) => {
     if (err) {
         console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
@@ -40,21 +49,18 @@ app.use(cors());
 
 /* ---Middleware----------------------------------------------------------------------------- */
 
-// Import version 1.0 of the API
-app.use('/v1/courses', require('./controllers/v1/courses'));
-app.use('/v1/employees', require('./controllers/v1/employees'));
-app.use('/v1/students', require('./controllers/v1/students'));
-
-// TODO: add remaining version 1.0 API middleware
-
-// A test `api` route
-// TODO: remove in production
+// TODO: Add HATEOAS here to indicate to the client that the API is versioned.
 app.get('/api', (req, res) => {
-    res.json({'message': 'Welcome to your DIT342 backend ExpressJS project!'});
+    res.json({ 'message': 'DIT342, Group 15 Backend.' });
 });
 
-// Catch all non-error handler for api (i.e., 404 Not Found)
-// TODO: remove in production
+/* ---VERSION 1.0 API--- */
+app.use('/api/v1', v1Routes);
+
+/* ---VERSION 1.x API--- */
+// TODO: increment the API version if required.
+
+// Handle all undefined routes
 app.use('/api/*', (req, res) => {
     res.status(404).json({ 'message': 'Not Found' });
 });
@@ -66,8 +72,8 @@ app.use('/api/*', (req, res) => {
 app.use(history());
 
 // Serve static assets
-const root      = path.normalize(__dirname + '/..');
-const client    = path.join(root, 'client', 'dist');
+const root = path.normalize(__dirname + '/..');
+const client = path.join(root, 'client', 'dist');
 
 app.use(express.static(client));
 
@@ -76,7 +82,7 @@ const env = app.get('env');
 
 // Note: if the product is in development mode, the returned JSON object
 // contains the full stack off the error.
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     console.error(err.stack);
     let err_res = {
         'message': err.message,
@@ -94,7 +100,7 @@ app.use((err, req, res, next) => {
 app.listen(port, (err) => {
     if (err) throw err;
     console.log(`Express server listening on port ${port}, in ${env} mode`);
-    console.log(`Backend: http://localhost:${port}/api/`); // TODO: point to actual back-end
+    console.log(`Backend: http://localhost:${port}/api/v${API_VERSION}`);
     console.log(`Frontend (production): http://localhost:${port}/`);
 });
 
