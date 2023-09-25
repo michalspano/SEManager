@@ -4,7 +4,4 @@
   // Vetur automatically prefers .prettierrc
   // https://github.com/vuejs/vetur/blob/master/docs/formatting.md
   "eslint.validate": ["vue", "html", "javascript"],
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  }
 }
