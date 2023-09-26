@@ -14,6 +14,10 @@ const CourseModel = new Schema({
         type: String,
         required: true
     },
+    credits: {
+        type: Number,
+        required: true
+    },
     courseStaff: [{
         type: String, // unique email
         trim: true,
