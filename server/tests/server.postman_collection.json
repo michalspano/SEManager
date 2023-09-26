@@ -582,7 +582,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"SSN\": \"0123456789\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -624,7 +624,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"SSN\": \"0123456789\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -666,7 +666,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"SSN\": \"9876543210\",\r\n    \"firstName\": \"Adam\",\r\n    \"lastName\": \"Namesson\",\r\n    \"courses\": [\"DIT111\"]\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusadnam@student.gu.se\",\r\n    \"firstName\": \"Adam\",\r\n    \"lastName\": \"Namesson\",\r\n    \"courses\": [\"DIT111\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -708,7 +708,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"SSN\": \"12341555551\",\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Fredriksson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusjoefred@student.gu.se\",\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Fredriksson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1109,7 +1109,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "0123456789"
+													"value": "gusadnam@student.gu.se"
 												}
 											]
 										}
@@ -1150,7 +1150,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "9876543210"
+													"value": "gusadnam@student.gu.se"
 												}
 											]
 										}
@@ -1192,7 +1192,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "9876543210"
+													"value": "gusadnam@student.gu.se"
 												},
 												{
 													"key": "course_id",
@@ -1609,7 +1609,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "9876543210"
+											"value": "gusadnam@student.gu.se"
 										}
 									]
 								}
@@ -1904,7 +1904,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "9876543210"
+											"value": "gusadnam@student.gu.se"
 										}
 									]
 								}
@@ -2080,7 +2080,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "0123456789"
+											"value": "gusadnam@student.gu.se"
 										}
 									]
 								}
@@ -2164,7 +2164,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "12341555551"
+											"value": "gusjoefred@student.gu.se"
 										}
 									]
 								}
@@ -2209,7 +2209,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "12341555551"
+											"value": "gusjoefred@student.gu.se"
 										}
 									]
 								}
