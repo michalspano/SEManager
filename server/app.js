@@ -12,9 +12,10 @@ const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
 const history = require('connect-history-api-fallback');
+const methodOverride = require('method-override');
 
 // Import routes of the versioned API
-const v1Routes = require('./routes/v1')
+const v1Routes = require('./routes/v1');
 
 const API_VERSION = 1;      // Which API version to use (global constant)
 require('dotenv').config(); // set-up environment variables (.env)
@@ -46,6 +47,11 @@ app.use(morgan('dev'));
 // Enable cross-origin resource sharing for frontend must be registered before api
 app.options('*', cors());
 app.use(cors());
+
+// Enable HTTP overriding (for multiple formats)
+app.use(methodOverride('X-HTTP-Method'));           // Microsoft
+app.use(methodOverride('X-HTTP-Method-Override'));  // Google/GData
+app.use(methodOverride('X-Method-Override'));       // IBM
 
 /* ---Middleware----------------------------------------------------------------------------- */
 
