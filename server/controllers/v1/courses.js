@@ -20,6 +20,12 @@ const RESOURCE = "courses";
 
 // Add a new course
 router.post('/', (req, res, next) => {
+    if (req.body.credits < 0) {
+        return res.status(400).json({
+            "message": "Invalid number of credits."
+        });
+    }
+
     const course = new Course(req.body);
     const courseID = req.body.courseCode;
 
@@ -94,6 +100,12 @@ router.get('/:id', (req, res, next) => {
 
 // Update a whole course given an ID (PUT)
 router.put('/:id', (req, res, next) => {
+    if (req.body.credits < 0) {
+        return res.status(400).json({
+            "message": "Invalid number of credits."
+        });
+    }
+
     const courseID = req.params.id;
     Course.findOne({ courseCode: courseID }).exec()
         .then((course) => {
@@ -105,6 +117,7 @@ router.put('/:id', (req, res, next) => {
             // Update all fields of the given course
             course.courseName = req.body.courseName;
             course.courseStaff = req.body.courseStaff;
+            course.credits = req.body.credits;
             course.dependencies = req.body.dependencies;
 
             const links = generateLinks([
@@ -122,6 +135,12 @@ router.put('/:id', (req, res, next) => {
 // Update a course partially (PATCH)
 // Apply HATEOAS to the response
 router.patch('/:id', (req, res, next) => {
+    if (req.body.credits < 0) {
+        return res.status(400).json({
+            "message": "Invalid number of credits."
+        });
+    }
+
     const courseID = req.params.id;
     Course.findOne({ courseCode: courseID }).exec()
         .then((course) => {
@@ -133,6 +152,7 @@ router.patch('/:id', (req, res, next) => {
             // Update only the provided fields
             course.courseName = req.body.courseName || course.courseName;
             course.courseStaff = req.body.courseStaff || course.courseStaff;
+            course.credits = req.body.credits || course.credits;
             course.dependencies = req.body.dependencies || course.dependencies;
 
             // Save and populate the response

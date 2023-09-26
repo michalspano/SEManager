@@ -294,6 +294,47 @@
 									"response": []
 								},
 								{
+									"name": "POST /courses (3) invalid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"courseCode\": \"DIT422\",\r\n    \"courseName\": \"Enjiner 2.0\",\r\n    \"credits\": -7.5,\r\n    \"courseStaff\": [\"another-generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "POST /courses (4)",
 									"event": [
 										{
@@ -1589,7 +1630,6 @@
 											"pm.test(\"All fields to be updated are non-empty\", function () {",
 											"    const courseResponseJSON = pm.response.json().course;",
 											"",
-											"    pm.expect(courseResponseJSON.courseName).to.not.be.empty;",
 											"    // there's at least one person responsible for a course",
 											"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
 											"    // a course can have 0 dependencies",
@@ -1605,7 +1645,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"courseName\": \"MAT Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"dependencies\": []\n}",
+									"raw": "{\n    \"courseName\": \"MAT Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"credits\": 8,\n    \"dependencies\": []\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1648,6 +1688,7 @@
 											"    const courseResponseJSON = pm.response.json().course;",
 											"",
 											"    pm.expect(courseResponseJSON.courseName).to.not.be.empty;",
+											"",
 											"    // there's at least one person responsible for a course",
 											"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
 											"    // a course can have 0 dependencies",
@@ -1687,7 +1728,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"courseName\": \"Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"dependencies\": []\n}",
+									"raw": "{\n    \"courseName\": \"Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"credits\": 7.5,\n    \"dependencies\": []\n}",
 									"options": {
 										"raw": {
 											"language": "json"
