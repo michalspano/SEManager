@@ -23,9 +23,11 @@ const CourseModel = new Schema({
         trim: true,
         required: true
     }],
-    // TODO: make this consistent with the `Student` entity.
-    // use the function from utils to map the courseCodes to the IDs
-    // to ensure consistency.
+    // Note: the dependencies are course codes, not the IDs and the reason
+    // is that the course codes are unique identifiers of a course; furthermore
+    // storing the course codes is more convenient for the client (that is, when
+    // a new course is created, the client can just send the course codes of the
+    // dependencies, instead of the IDs).
     dependencies: [{
         type: String, // unique courseCode
         trim: true
