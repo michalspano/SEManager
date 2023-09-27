@@ -5,14 +5,12 @@
 <template>
     <div>
         <div class="square">
-            <!-- Course Data -->
             <div class="rectangle">
                 <p class="rectangle-text">{{ courseCode }}<br></p>
             </div>
             <p>{{ courseName }}<br></p>
 
             <div class="rectangle">
-                <!-- <p>Content</p> -->
             </div>
         </div>
         
