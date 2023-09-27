@@ -1,5 +1,12 @@
-<script setup>
-    defineProps(['courseCode', 'courseName', 'courseStaff']);
+<script>
+export default {
+    props: {
+        courseCode: String,
+        courseName: String,
+        courseStaff: Array
+    }
+
+}
 </script>
 
 <template>
@@ -13,7 +20,6 @@
             <div class="rectangle">
             </div>
         </div>
-        
     </div>
 </template>
 
@@ -24,6 +30,7 @@ p {
     margin: 0;
     font-size: 130%;
 }
+
 .square {
     width: 200px;
     height: 200px;
@@ -34,6 +41,7 @@ p {
     justify-content: space-between;
     align-items: center;
 }
+
 .rectangle {
     width: 100%;
     height: 15%;
@@ -42,6 +50,7 @@ p {
     justify-content: center;
     align-items: center;
 }
+
 .rectangle-text {
     font-size: 100%;
     color: white;
