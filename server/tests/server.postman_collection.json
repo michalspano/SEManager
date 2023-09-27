@@ -143,7 +143,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"credits\": 7.5,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": []\n}",
+											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": []\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -187,7 +187,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"credits\": 15,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
+											"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"credits\": 15,\n    \"term\": 2,\n    \"studyPeriod\": 3,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -228,7 +228,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"credits\": 15,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
+											"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"credits\": 15,\n    \"term\": 2,\n    \"studyPeriod\": 3,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -272,7 +272,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"courseCode\": \"DIT420\",\r\n    \"courseName\": \"Enjiner :3\",\r\n    \"credits\": 7.5,\r\n    \"courseStaff\": [\"another-generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"raw": "{\r\n    \"courseCode\": \"DIT420\",\r\n    \"courseName\": \"Enjiner :3\",\r\n    \"credits\": 7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"another-generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -313,7 +313,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"courseCode\": \"DIT422\",\r\n    \"courseName\": \"Enjiner 2.0\",\r\n    \"credits\": -7.5,\r\n    \"courseStaff\": [\"another-generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"raw": "{\r\n    \"courseCode\": \"DIT422\",\r\n    \"courseName\": \"Enjiner 2.0\",\r\n    \"credits\": -7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"another-generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -357,7 +357,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"courseCode\": \"DIT031\",\r\n    \"courseName\": \"Test course\",\r\n    \"credits\": 2,\r\n    \"courseStaff\": [\"generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"raw": "{\r\n    \"courseCode\": \"DIT031\",\r\n    \"courseName\": \"Test course\",\r\n    \"credits\": 2,\r\n    \"term\": 4,\r\n    \"studyPeriod\": 4,\r\n    \"courseStaff\": [\"generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1645,7 +1645,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"courseName\": \"MAT Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"credits\": 8,\n    \"dependencies\": []\n}",
+									"raw": "{\n    \"courseName\": \"MAT Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"credits\": 8,\n    \"term\": 2,\n    \"studyPeriod\": 4,\n    \"dependencies\": []\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1728,7 +1728,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"courseName\": \"Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"credits\": 7.5,\n    \"dependencies\": []\n}",
+									"raw": "{\n    \"courseName\": \"Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"dependencies\": []\n}",
 									"options": {
 										"raw": {
 											"language": "json"

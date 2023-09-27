@@ -18,6 +18,16 @@ const CourseModel = new Schema({
         type: Number,
         required: true
     },
+    term: {
+        type: Number,
+        required: true
+    },
+    // Note: the study period is relative to the current year.
+    // That is, each year always contains 4 study periods.
+    studyPeriod: {
+        type: Number,
+        required: true
+    },
     courseStaff: [{
         type: String, // unique email
         trim: true,

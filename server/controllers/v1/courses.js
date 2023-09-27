@@ -107,18 +107,14 @@ router.put('/:id', (req, res, next) => {
     }
 
     const courseID = req.params.id;
-    Course.findOne({ courseCode: courseID }).exec()
+    const updatedCourse = req.body;
+    Course.findOneAndUpdate({ courseCode: courseID }, updatedCourse, { new: true }).exec()
         .then((course) => {
             if (course == null) {
                 return res.status(404).json({
                     "message": "Course not found."
                 });
             }
-            // Update all fields of the given course
-            course.courseName = req.body.courseName;
-            course.courseStaff = req.body.courseStaff;
-            course.credits = req.body.credits;
-            course.dependencies = req.body.dependencies;
 
             const links = generateLinks([
                 ["self", [RESOURCE, courseID], "GET"],
@@ -126,8 +122,6 @@ router.put('/:id', (req, res, next) => {
                 ["delete", [RESOURCE, courseID], "DELETE"]
             ]);
 
-            // Save and populate the response
-            course.save().catch(next);
             res.json({ course, links });
         }).catch(next);
 });
@@ -142,21 +136,14 @@ router.patch('/:id', (req, res, next) => {
     }
 
     const courseID = req.params.id;
-    Course.findOne({ courseCode: courseID }).exec()
+    const updateToApply = req.body; // the undefined values are ignored
+    Course.findOneAndUpdate({ courseCode: courseID }, updateToApply, { new: true }).exec()
         .then((course) => {
             if (course == null) {
                 return res.status(404).json({
                     "message": "Course not found."
                 });
             }
-            // Update only the provided fields
-            course.courseName = req.body.courseName || course.courseName;
-            course.courseStaff = req.body.courseStaff || course.courseStaff;
-            course.credits = req.body.credits || course.credits;
-            course.dependencies = req.body.dependencies || course.dependencies;
-
-            // Save and populate the response
-            course.save().catch(next);
 
             const links = generateLinks([
                 ["self", [RESOURCE, courseID], "GET"],
