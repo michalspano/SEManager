@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 
+// TODO: make the router handle unrecognized paths
+// and display an adequate error message
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -10,10 +12,9 @@ const router = createRouter({
       component: Home
     },
     {
-      path: '/test',
-      name: 'test',
-      // Loading the component lazily
-      component: () => import('@/views/TestView.vue')
+      path: '/courses',
+      name: 'courses',
+      component: () => import('@/views/CourseView.vue')
     }
   ]
 })
