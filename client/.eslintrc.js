@@ -25,5 +25,7 @@ module.exports = {
     'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'vue/multi-word-component-names': 'off'
-  }
+  },
+  // Ignore the dist build folder
+  ignorePatterns: ['dist/']
 }
