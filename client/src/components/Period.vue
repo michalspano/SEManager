@@ -16,12 +16,12 @@ export default {
     <div class="period">
         <span class="periodTitle">{{ periodTitle }}</span>
 
-        <Course class="courseItem" v-for="(course, index) in courses" :key="index" :courseCode="course.courseCode" :courseName="course.courseName" :courseStaff="course.courseStaff"/>
+        <Course class="courseItem" v-for="(course, index) in courses" :key="index" :courseCode="course.courseCode"
+            :courseName="course.courseName" :courseStaff="course.courseStaff" />
     </div>
 </template>
 
 <style>
-
 .period {
     display: flex;
     flex-direction: column;
@@ -43,5 +43,4 @@ export default {
 .courseItem {
     margin-top: 10px;
 }
-
 </style>
