@@ -18,19 +18,19 @@ router.post('/', (req, res, next) => {
     fetchCourseIds(req.body.courses)
         .then((courseIds) => {
 
-            const studentSSN = req.body.SSN;
+            const studentId = req.body.emailAddress;
             const student = new Student({
-                SSN: studentSSN,
+                emailAddress: studentId,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 courses: courseIds
             });
 
             const links = generateLinks([
-                ["self", [RESOURCE, studentSSN], "get"],
-                ["update", [RESOURCE, studentSSN], "PUT"],
-                ["edit", [RESOURCE, studentSSN], "PATCH"],
-                ["delete", [RESOURCE, studentSSN], "DELETE"]
+                ["self", [RESOURCE, studentId], "get"],
+                ["update", [RESOURCE, studentId], "PUT"],
+                ["edit", [RESOURCE, studentId], "PATCH"],
+                ["delete", [RESOURCE, studentId], "DELETE"]
             ]);
 
             student.save()
@@ -64,8 +64,8 @@ router.delete('/', (_, res, next) => {
 
 // Get student by ID
 router.get('/:id', (req, res, next) => {
-    const studentSSN = req.params.id;
-    Student.findOne({ SSN: studentSSN }).exec()
+    const studentId = req.params.id;
+    Student.findOne({ emailAddress: studentId }).exec()
         .then((student) => {
             if (student == null) {
                 return res.status(404).json({
@@ -74,9 +74,9 @@ router.get('/:id', (req, res, next) => {
             }
 
             const links = generateLinks([
-                ["update", [RESOURCE, studentSSN], "PUT"],
-                ["edit", [RESOURCE, studentSSN], "PATCH"],
-                ["delete", [RESOURCE, studentSSN], "DELETE"]
+                ["update", [RESOURCE, studentId], "PUT"],
+                ["edit", [RESOURCE, studentId], "PATCH"],
+                ["delete", [RESOURCE, studentId], "DELETE"]
             ]);
 
             res.json({ student, links });
@@ -85,8 +85,8 @@ router.get('/:id', (req, res, next) => {
 
 // Update all student fields given an ID
 router.put('/:id', (req, res, next) => {
-    const studentSSN = req.params.id;
-    Student.findOne({ SSN: studentSSN }).exec()
+    const studentId = req.params.id;
+    Student.findOne({ emailAddress: studentId }).exec()
         .then((student) => {
             if (student == null) {
                 return res.status(404).json({
@@ -106,9 +106,9 @@ router.put('/:id', (req, res, next) => {
                 });
 
             const links = generateLinks([
-                ["self", [RESOURCE, studentSSN], "GET"],
-                ["edit", [RESOURCE, studentSSN], "PATCH"],
-                ["delete", [RESOURCE, studentSSN], "DELETE"]
+                ["self", [RESOURCE, studentId], "GET"],
+                ["edit", [RESOURCE, studentId], "PATCH"],
+                ["delete", [RESOURCE, studentId], "DELETE"]
             ]);
 
             // Save updated student, resolve promise before sending response
@@ -120,8 +120,8 @@ router.put('/:id', (req, res, next) => {
 
 // Partially update a student given an ID
 router.patch('/:id', (req, res, next) => {
-    const studentSSN = req.params.id;
-    Student.findOne({ SSN: studentSSN }).exec()
+    const studentId = req.params.id;
+    Student.findOne({ emailAddress: studentId }).exec()
         .then((student) => {
             if (student == null) {
                 return res.status(404).json({
@@ -143,9 +143,9 @@ router.patch('/:id', (req, res, next) => {
             student.lastName = req.body.lastName || student.lastName;
 
             const links = generateLinks([
-                ["self", [RESOURCE, studentSSN], "GET"],
-                ["update", [RESOURCE, studentSSN], "PUT"],
-                ["delete", [RESOURCE, studentSSN], "DELETE"]
+                ["self", [RESOURCE, studentId], "GET"],
+                ["update", [RESOURCE, studentId], "PUT"],
+                ["delete", [RESOURCE, studentId], "DELETE"]
             ]);
 
             student.save().then((updatedStudent) => {
@@ -156,8 +156,8 @@ router.patch('/:id', (req, res, next) => {
 
 // Delete a specific student given an ID
 router.delete('/:id', (req, res, next) => {
-    const studentSSN = req.params.id;
-    Student.findOneAndDelete({ SSN: studentSSN })
+    const studentId = req.params.id;
+    Student.findOneAndDelete({ emailAddress: studentId })
         .then((student) => {
             if (student == null) {
                 return res.status(404).json({
@@ -170,8 +170,8 @@ router.delete('/:id', (req, res, next) => {
 
 // Get all courses of a given student
 router.get('/:id/courses', (req, res, next) => {
-    const studentSSN = req.params.id;
-    Student.findOne({ SSN: studentSSN }).exec()
+    const studentId = req.params.id;
+    Student.findOne({ emailAddress: studentId }).exec()
         .then((student) => {
             if (student == null) {
                 return res.status(404).json({
@@ -192,10 +192,10 @@ router.get('/:id/courses', (req, res, next) => {
 
 // Get a specific course of a given student
 router.get('/:id/courses/:course_id', (req, res, next) => {
-    const studentSSN = req.params.id;
+    const studentId = req.params.id;
     const courseCode = req.params.course_id;
 
-    Student.findOne({ SSN: studentSSN }).exec()
+    Student.findOne({ emailAddress: studentId }).exec()
         .then((student) => {
             if (student == null) {
                 return res.status(404).json({
@@ -206,7 +206,7 @@ router.get('/:id/courses/:course_id', (req, res, next) => {
                 .then((course) => {
                     if (!student.courses.includes(course)) {
                         return res.status(404).json({
-                            "message": `${studentSSN} is not enrolled in ${courseCode}.`
+                            "message": `${studentId} is not enrolled in ${courseCode}.`
                         });
                     }
                     Course.find({ _id: course }).exec()

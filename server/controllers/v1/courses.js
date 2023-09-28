@@ -20,6 +20,12 @@ const RESOURCE = "courses";
 
 // Add a new course
 router.post('/', (req, res, next) => {
+    if (req.body.credits < 0) {
+        return res.status(400).json({
+            "message": "Invalid number of credits."
+        });
+    }
+
     const course = new Course(req.body);
     const courseID = req.body.courseCode;
 
@@ -94,18 +100,21 @@ router.get('/:id', (req, res, next) => {
 
 // Update a whole course given an ID (PUT)
 router.put('/:id', (req, res, next) => {
+    if (req.body.credits < 0) {
+        return res.status(400).json({
+            "message": "Invalid number of credits."
+        });
+    }
+
     const courseID = req.params.id;
-    Course.findOne({ courseCode: courseID }).exec()
+    const updatedCourse = req.body;
+    Course.findOneAndUpdate({ courseCode: courseID }, updatedCourse, { new: true }).exec()
         .then((course) => {
             if (course == null) {
                 return res.status(404).json({
                     "message": "Course not found."
                 });
             }
-            // Update all fields of the given course
-            course.courseName = req.body.courseName;
-            course.courseStaff = req.body.courseStaff;
-            course.dependencies = req.body.dependencies;
 
             const links = generateLinks([
                 ["self", [RESOURCE, courseID], "GET"],
@@ -113,8 +122,6 @@ router.put('/:id', (req, res, next) => {
                 ["delete", [RESOURCE, courseID], "DELETE"]
             ]);
 
-            // Save and populate the response
-            course.save().catch(next);
             res.json({ course, links });
         }).catch(next);
 });
@@ -122,21 +129,21 @@ router.put('/:id', (req, res, next) => {
 // Update a course partially (PATCH)
 // Apply HATEOAS to the response
 router.patch('/:id', (req, res, next) => {
+    if (req.body.credits < 0) {
+        return res.status(400).json({
+            "message": "Invalid number of credits."
+        });
+    }
+
     const courseID = req.params.id;
-    Course.findOne({ courseCode: courseID }).exec()
+    const updateToApply = req.body; // the undefined values are ignored
+    Course.findOneAndUpdate({ courseCode: courseID }, updateToApply, { new: true }).exec()
         .then((course) => {
             if (course == null) {
                 return res.status(404).json({
                     "message": "Course not found."
                 });
             }
-            // Update only the provided fields
-            course.courseName = req.body.courseName || course.courseName;
-            course.courseStaff = req.body.courseStaff || course.courseStaff;
-            course.dependencies = req.body.dependencies || course.dependencies;
-
-            // Save and populate the response
-            course.save().catch(next);
 
             const links = generateLinks([
                 ["self", [RESOURCE, courseID], "GET"],
