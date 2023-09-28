@@ -28,3 +28,13 @@ export const getCourses = async () => {
         throw err
     }
 }
+
+export const getCourse = async (courseCode) => {
+    try {
+        const response = await CourseApi.get('/' + courseCode);
+        return response.data.course
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+}
