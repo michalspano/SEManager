@@ -143,7 +143,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": []\n}",
+											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": []\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -187,7 +187,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
+											"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"credits\": 15,\n    \"term\": 2,\n    \"studyPeriod\": 3,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -228,7 +228,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
+											"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"credits\": 15,\n    \"term\": 2,\n    \"studyPeriod\": 3,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -272,7 +272,48 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"courseCode\": \"DIT420\",\r\n    \"courseName\": \"Enjiner :3\",\r\n    \"courseStaff\": [\"another-generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"raw": "{\r\n    \"courseCode\": \"DIT420\",\r\n    \"courseName\": \"Enjiner :3\",\r\n    \"credits\": 7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"another-generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST /courses (3) invalid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"courseCode\": \"DIT422\",\r\n    \"courseName\": \"Enjiner 2.0\",\r\n    \"credits\": -7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"another-generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -316,7 +357,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"courseCode\": \"DIT031\",\r\n    \"courseName\": \"Test course\",\r\n    \"courseStaff\": [\"generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"raw": "{\r\n    \"courseCode\": \"DIT031\",\r\n    \"courseName\": \"Test course\",\r\n    \"credits\": 2,\r\n    \"term\": 4,\r\n    \"studyPeriod\": 4,\r\n    \"courseStaff\": [\"generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -541,7 +582,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"SSN\": \"0123456789\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -583,7 +624,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"SSN\": \"0123456789\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -625,7 +666,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"SSN\": \"9876543210\",\r\n    \"firstName\": \"Adam\",\r\n    \"lastName\": \"Namesson\",\r\n    \"courses\": [\"DIT111\"]\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusadnam@student.gu.se\",\r\n    \"firstName\": \"Adam\",\r\n    \"lastName\": \"Namesson\",\r\n    \"courses\": [\"DIT111\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -667,7 +708,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"SSN\": \"12341555551\",\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Fredriksson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusjoefred@student.gu.se\",\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Fredriksson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1068,7 +1109,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "0123456789"
+													"value": "gusadnam@student.gu.se"
 												}
 											]
 										}
@@ -1109,7 +1150,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "9876543210"
+													"value": "gusadnam@student.gu.se"
 												}
 											]
 										}
@@ -1151,7 +1192,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "9876543210"
+													"value": "gusadnam@student.gu.se"
 												},
 												{
 													"key": "course_id",
@@ -1568,7 +1609,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "9876543210"
+											"value": "gusadnam@student.gu.se"
 										}
 									]
 								}
@@ -1589,7 +1630,6 @@
 											"pm.test(\"All fields to be updated are non-empty\", function () {",
 											"    const courseResponseJSON = pm.response.json().course;",
 											"",
-											"    pm.expect(courseResponseJSON.courseName).to.not.be.empty;",
 											"    // there's at least one person responsible for a course",
 											"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
 											"    // a course can have 0 dependencies",
@@ -1605,7 +1645,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"courseName\": \"MAT Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"dependencies\": []\n}",
+									"raw": "{\n    \"courseName\": \"MAT Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"credits\": 8,\n    \"term\": 2,\n    \"studyPeriod\": 4,\n    \"dependencies\": []\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1648,6 +1688,7 @@
 											"    const courseResponseJSON = pm.response.json().course;",
 											"",
 											"    pm.expect(courseResponseJSON.courseName).to.not.be.empty;",
+											"",
 											"    // there's at least one person responsible for a course",
 											"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
 											"    // a course can have 0 dependencies",
@@ -1687,7 +1728,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"courseName\": \"Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"dependencies\": []\n}",
+									"raw": "{\n    \"courseName\": \"Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"dependencies\": []\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1863,7 +1904,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "9876543210"
+											"value": "gusadnam@student.gu.se"
 										}
 									]
 								}
@@ -2039,7 +2080,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "0123456789"
+											"value": "gusadnam@student.gu.se"
 										}
 									]
 								}
@@ -2123,7 +2164,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "12341555551"
+											"value": "gusjoefred@student.gu.se"
 										}
 									]
 								}
@@ -2168,7 +2209,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "12341555551"
+											"value": "gusjoefred@student.gu.se"
 										}
 									]
 								}

@@ -4,8 +4,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const StudentModel = new Schema({
-    // Add restriction for min/max length of SSN?
-    SSN: {
+    emailAddress: {
         type: String,
         unique: true,
         trim: true,
