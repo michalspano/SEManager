@@ -14,13 +14,13 @@ import { getCourses } from '@/api/v1/courseApi';
 export default {
     setup() {
         const period1CoursesTest = ref([
-            { courseCode: "DIT001", courseName: "Cringe 1", courseStaff: ["ABC"] },
-            { courseCode: "DIT002", courseName: "Cringe 2", courseStaff: ["DEF"] }
+            { courseCode: "DIT001", courseName: "Data Management", courseStaff: ["ABC"] },
+            { courseCode: "DIT002", courseName: "Data Structures", courseStaff: ["DEF"] }
         ]);
 
         const period2CoursesTest = ref([
-            { courseCode: "DIT420", courseName: "Cringe Advanced", courseStaff: ["ABC"] },
-            { courseCode: "DIT421", courseName: "Cringe Expert", courseStaff: ["DEF"] }
+            { courseCode: "DIT003", courseName: "Web Development", courseStaff: ["ABC"] },
+            { courseCode: "DIT004", courseName: "Systems Development", courseStaff: ["DEF"] }
         ]);
 
         const jsonResponse = ref(null);
