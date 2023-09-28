@@ -54,9 +54,6 @@ export default {
     <div class="mainContainer">
         <h1>Main course view test</h1>
         <!-- ============================== -->
-        <Course v-for="item in jsonResponse" :courseName="item.courseName" :courseCode="item.courseCode"
-            :courseStaff="item.courseStaff" />
-        <!-- ============================== -->
         <div class="programStructure">
             <Year yearTitle="Year 1" semester1Title="Semester 1" semester2Title="Semester 2"
                 :period1Courses="period1Courses" :period2Courses="period2Courses" />
