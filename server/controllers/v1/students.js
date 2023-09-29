@@ -13,6 +13,8 @@ const { fetchCourseIds, generateLinks } = require("../../utils/utils");
 
 const RESOURCE = "students";
 
+// TODO: Fix PUT and PATCH
+
 // Add a new student
 router.post('/', (req, res, next) => {
     fetchCourseIds(req.body.courses)
