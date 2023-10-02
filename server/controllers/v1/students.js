@@ -86,74 +86,77 @@ router.get('/:id', (req, res, next) => {
 });
 
 // Update all student fields given an ID
-router.put('/:id', (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
     const studentId = req.params.id;
-    Student.findOne({ emailAddress: studentId }).exec()
-        .then((student) => {
-            if (student == null) {
-                return res.status(404).json({
-                    "message": "Student not found."
-                });
-            }
+    let student = null;
 
-            // TODO: Refactr using await
-            fetchCourseIds(req.body.courses)
-                .then((courseIds) => {
-                    student.firstName = req.body.firstName;
-                    student.lastName = req.body.lastName;
-                    student.courses = courseIds;
-                    student.save().then((student) => {
-                        res.json({ student, links });
-                    }).catch(next); // perhaps too verbose - leaving it in for now (for consistency)
-                }).catch((error) => {
-                    return res.status(400).json({
-                        "message": error.message
-                    });
-                });
+    try {
+        student = await Student.findOne({ emailAddress: studentId }).exec();
+        if (student == null) {
+            return res.status(404).json({ "message": "Student not found." });
+        }
+    } catch (error) {
+        return res.status(400).json({ "message": error.message });
+    }
 
-            const links = generateLinks([
-                ["self", [RESOURCE, studentId], "GET"],
-                ["edit", [RESOURCE, studentId], "PATCH"],
-                ["delete", [RESOURCE, studentId], "DELETE"]
-            ]);
-        }).catch(next);
+    try {
+        const courseIds = await fetchCourseIds(req.body.courses);
+        student.firstName = req.body.firstName;
+        student.lastName = req.body.lastName;
+        student.courses = courseIds;
+    } catch (error) {
+        return res.status(400).json({ "message": error.message });
+    }
+
+    const links = generateLinks([
+        ["self", [RESOURCE, studentId], "GET"],
+        ["edit", [RESOURCE, studentId], "PATCH"],
+        ["delete", [RESOURCE, studentId], "DELETE"]
+    ]);
+
+    student.save().then((student) => {
+        res.json({ student, links });
+    }).catch(next); // perhaps too verbose - leaving it in for now (for consistency)
 });
 
 // Partially update a student given an ID
-router.patch('/:id', (req, res, next) => {
+router.patch('/:id', async (req, res, next) => {
     const studentId = req.params.id;
-    Student.findOne({ emailAddress: studentId }).exec()
-        .then((student) => {
-            if (student == null) {
-                return res.status(404).json({
-                    "message": "Student not found."
-                });
-            }
+    let student = null;
 
-            // TODO: Refactor using await
-            if ("courses" in req.body) {
-                fetchCourseIds(req.body.courses)
-                    .then((courseIds) => {
-                        student.courses = courseIds;
-                    }).catch((error) => {
-                        return res.status(400).json({
-                            "message": error.message
-                        });
-                    });
-            }
-            student.firstName = req.body.firstName || student.firstName;
-            student.lastName = req.body.lastName || student.lastName;
+    try {
+        student = await Student.findOne({ emailAddress: studentId }).exec();
+        if (student == null) {
+            return res.status(404).json({
+                "message": "Student not found."
+            });
+        }
+    } catch (error) {
+        return res.status(400).json({ "message": error.message });
+    }
 
-            const links = generateLinks([
-                ["self", [RESOURCE, studentId], "GET"],
-                ["update", [RESOURCE, studentId], "PUT"],
-                ["delete", [RESOURCE, studentId], "DELETE"]
-            ]);
+    // Check if the courses are to be updated
+    if ("courses" in req.body) {
+        try {
+            const courseIds = await fetchCourseIds(req.body.courses);
+            student.courses = courseIds || student.courses;
+        } catch (error) {
+            return res.status(400).json({ "message": error.message });
+        }
+    }
 
-            student.save().then((updatedStudent) => {
-                res.json({ updatedStudent, links });
-            }).catch(next);
-        }).catch(next);
+    student.firstName = req.body.firstName || student.firstName;
+    student.lastName = req.body.lastName || student.lastName;
+
+    const links = generateLinks([
+        ["self", [RESOURCE, studentId], "GET"],
+        ["update", [RESOURCE, studentId], "PUT"],
+        ["delete", [RESOURCE, studentId], "DELETE"]
+    ]);
+
+    student.save().then((updatedStudent) => {
+        res.json({ updatedStudent, links });
+    }).catch(next);
 });
 
 // Delete a specific student given an ID
