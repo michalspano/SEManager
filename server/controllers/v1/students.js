@@ -96,11 +96,15 @@ router.put('/:id', (req, res, next) => {
                 });
             }
 
+            // TODO: Refactr using await
             fetchCourseIds(req.body.courses)
                 .then((courseIds) => {
                     student.firstName = req.body.firstName;
                     student.lastName = req.body.lastName;
                     student.courses = courseIds;
+                    student.save().then((student) => {
+                        res.json({ student, links });
+                    }).catch(next); // perhaps too verbose - leaving it in for now (for consistency)
                 }).catch((error) => {
                     return res.status(400).json({
                         "message": error.message
@@ -112,11 +116,6 @@ router.put('/:id', (req, res, next) => {
                 ["edit", [RESOURCE, studentId], "PATCH"],
                 ["delete", [RESOURCE, studentId], "DELETE"]
             ]);
-
-            // Save updated student, resolve promise before sending response
-            student.save().then((student) => {
-                res.json({ student, links });
-            }).catch(next); // perhaps too verbose - leaving it in for now (for consistency)
         }).catch(next);
 });
 
@@ -131,6 +130,7 @@ router.patch('/:id', (req, res, next) => {
                 });
             }
 
+            // TODO: Refactor using await
             if ("courses" in req.body) {
                 fetchCourseIds(req.body.courses)
                     .then((courseIds) => {
