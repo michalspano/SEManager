@@ -7,6 +7,7 @@
 
 const { formatHref } = require("../controllers/v1/config");
 const Course = require("../models/course");
+const crypto = require('crypto');
 
 /**
  * Returns the list (or a single value) of course._id values corresponding to the
@@ -49,4 +50,13 @@ const generateLinks = (data) => {
     });
 };
 
-module.exports = { fetchCourseIds, generateLinks };
+/**
+ * A function that computes a random 256-bit (32-byte)
+ * key used as the input to generate the JWT token.
+ * @returns {String} A 32-byte random hex string.
+ */
+const generateSecretKey = () => {
+    return crypto.randomBytes(32).toString('hex');
+};
+
+module.exports = { fetchCourseIds, generateLinks, generateSecretKey };
