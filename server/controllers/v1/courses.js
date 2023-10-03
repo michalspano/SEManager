@@ -52,12 +52,21 @@ router.get('/', (req, res, next) => {
 
     const sortBy = req.query.sortBy || 'courseName';
     const order = req.query.order || 'ascending';
+    const filterBy = req.query.filterBy || {};
     const limit = req.query.limit || 100;
 
-    let querySelector = {};
-    querySelector[sortBy] = order;
+    let sortOptions = {};
+    let filterOptions = {};
 
-    Course.find({}).sort(querySelector).limit(limit)
+    for (item of sortBy) {
+        sortOptions[item] = order;
+    }
+
+    for (const key in filterBy) {
+        filterOptions[key] = filterBy[key];
+    }
+
+    Course.find({}).where(filterOptions).sort(sortOptions).limit(limit)
         .then((courses) => {
             res.json({ "courses": courses });
         })

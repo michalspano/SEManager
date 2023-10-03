@@ -22,7 +22,7 @@ require('dotenv').config(); // set-up environment variables (.env)
 
 // Attempt to access .env variables, otherwise replace by the default values
 const port = process.env.PORT || 3000;
-const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/animalDevelopmentDB';
+const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/testDatabaseNew';
 
 // Attempt to establish a connection with MongoDB
 mongoose.connect(mongoURI).catch((err) => {
