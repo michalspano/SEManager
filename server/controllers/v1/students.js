@@ -8,19 +8,32 @@
 const express = require("express");
 const Student = require("../../models/student");
 const Course = require("../../models/course");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
-const { fetchCourseIds, generateLinks } = require("../../utils/utils");
+const { fetchCourseIds, generateLinks, generateSecretKey } = require("../../utils/utils");
 
 const RESOURCE = "students";
 
 // Add a new student
 router.post('/', (req, res, next) => {
     fetchCourseIds(req.body.courses)
-        .then((courseIds) => {
+        .then(async (courseIds) => {
 
+            let hashed;
             const studentId = req.body.emailAddress;
+
+            try {
+                hashed = await bcrypt.hash(req.body.password, 10);
+            } catch (error) {
+                return res.status(400).json({ message: "The password count not be created." })
+            }
+            
+            // Create a student instance with the attributes
             const student = new Student({
                 emailAddress: studentId,
+                password: hashed,
+                type: req.body.type,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 courses: courseIds
@@ -80,6 +93,40 @@ router.get('/:id', (req, res, next) => {
             ]);
 
             res.json({ student, links });
+        }).catch(next);
+});
+
+router.post('/:id/verify', (req, res, next) => {
+    const studentId = req.params.id;
+    const password = req.body.password;
+    Student.findOne({ emailAddress: studentId }).exec()
+        .then(async (student) => {
+            if (student == null) {
+                return res.status(404).json({ "message": "Student not found." });
+            }
+
+            const match = await bcrypt.compare(password, student.password);
+
+            if (match) {
+                const tokenPayload = {
+                    studentId: studentId,
+                    type: student.type
+                };
+
+                // Generate a token based on the payload, use the secret key
+                const token = jwt.sign(tokenPayload, generateSecretKey(), { expiresIn: '1h' }); 
+                return res.json({
+                    "verified": true,
+                    "token": token,
+                    "verificationDate": new Date(),
+                    "message": "Verification successful"
+                });
+            }
+
+            return res.status(401).json({
+                "verified": false,
+                "message": "Verification failed"
+            });
         }).catch(next);
 });
 

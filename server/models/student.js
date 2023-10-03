@@ -10,6 +10,17 @@ const StudentModel = new Schema({
         trim: true,
         required: true
     },
+    password: {
+        type: String,
+        required: true
+    },
+    // TODO: refactor the Student entity to User
+    // a User has two type: student, admin
+    type: {
+        type: String,
+        enum: ["student", "admin"],
+        required: true
+    },
     firstName: {
         type: String,
         trim: true,
