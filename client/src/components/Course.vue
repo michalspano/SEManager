@@ -23,7 +23,7 @@ export default {
     </div>
 </template>
 
-<style>
+<style scoped>
 p {
     color: white;
     font-family: 'Courier New', Courier, monospace;

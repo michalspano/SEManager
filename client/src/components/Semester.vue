@@ -3,9 +3,9 @@ import Period from '@/components/Period.vue'
 
 export default {
     props: {
-        semesterTitle: String,
-        period1Courses: Array,
-        period2Courses: Array
+        semesterNumber: Number,
+        firstPeriod: Number,
+        secondPeriod: Number
     },
     components: {
         Period
@@ -15,16 +15,16 @@ export default {
 
 <template>
     <div class="semesterContainer">
-        <span class="semesterTitle">{{ semesterTitle }}</span>
+        <span class="semesterTitle">{{ 'Semester ' + semesterNumber }}</span>
         <div class="semester">
-            <Period class="periodItem" periodTitle="Period 1" :courses="period1Courses"/>
+            <Period class="periodItem" :semesterNumber="semesterNumber" :periodNumber="firstPeriod"/>
             <div class="periodSpace"></div>
-            <Period class="periodItem" periodTitle="Period 2" :courses="period2Courses"/>
+            <Period class="periodItem" :semesterNumber="semesterNumber" :periodNumber="secondPeriod"/>
         </div>
     </div>
 </template>
 
-<style>
+<style scoped>
 
 .semesterContainer {
     display: flex;

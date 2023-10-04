@@ -1,10 +1,24 @@
 <script>
-import Course from '@/components/Course.vue'
+import Course from '@/components/Course.vue';
+import { onMounted, ref } from 'vue';
+import { getTermCourses } from '@/api/v1/courseApi';
 
 export default {
+    setup(props) {
+        const periodCourses = ref([]);
+
+        onMounted(async () => {
+            // TODO: Pass the period and the term here
+            periodCourses.value = await getTermCourses(props.semesterNumber, props.periodNumber);
+        });
+
+        return {
+            periodCourses
+        }
+    },
     props: {
-        periodTitle: String,
-        courses: Array
+        semesterNumber: Number,
+        periodNumber: Number
     },
     components: {
         Course,
@@ -14,14 +28,15 @@ export default {
 
 <template>
     <div class="period">
-        <span class="periodTitle">{{ periodTitle }}</span>
+        <span class="periodTitle">{{ 'Period ' + periodNumber }}</span>
 
-        <Course class="courseItem" v-for="(course, index) in courses" :key="index" :courseCode="course.courseCode"
+        <Course class="courseItem" v-for="(course, index) in periodCourses" :key="index" :courseCode="course.courseCode"
             :courseName="course.courseName" :courseStaff="course.courseStaff" />
+
     </div>
 </template>
 
-<style>
+<style scoped>
 .period {
     display: flex;
     flex-direction: column;

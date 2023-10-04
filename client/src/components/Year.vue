@@ -2,12 +2,18 @@
 import Semester from '@/components/Semester.vue'
 
 export default {
+    setup(props) {
+
+        const firstTerm = props.year + props.year - 1; 
+        const secondTerm = props.year * 2;
+
+        return {
+            firstTerm,
+            secondTerm
+        }
+    },
     props: {
-        yearTitle: String,
-        semester1Title: String,
-        semester2Title: String,
-        period1Courses: Array,
-        period2Courses: Array
+        year: Number
     },
     components: {
         Semester
@@ -17,16 +23,16 @@ export default {
 
 <template>
     <div class="yearContainer">
-            <span class="yearTitle">{{ yearTitle }}</span>
+            <span class="yearTitle">{{ 'Year ' + year }}</span>
             <div class="year">
-                <Semester :semesterTitle="semester1Title" :period1Courses="period1Courses" :period2Courses="period2Courses"/>
+                <Semester :semesterNumber="firstTerm" :firstPeriod="1" :secondPeriod="2"/>
                 <div class="semesterSpace"></div>
-                <Semester :semesterTitle="semester2Title" :period1Courses="period1Courses" :period2Courses="period2Courses"/>
+                <Semester :semesterNumber="secondTerm" :firstPeriod="3" :secondPeriod="4"/>
             </div>
         </div>
 </template>
 
-<style>
+<style scoped>
 .yearContainer {
     display: flex;
     flex-direction: column;
