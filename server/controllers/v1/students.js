@@ -102,6 +102,7 @@ router.get('/:id', (req, res, next) => {
         }).catch(next);
 });
 
+// TODO: change route to /auth/:id or something similar
 router.post('/:id/verify', (req, res, next) => {
     const studentId = req.params.id;
     const password = req.body.password;
