@@ -2,15 +2,20 @@
 
 import CourseInformation from '@/components/CourseInformation.vue';
 import { getCourse } from '../api/v1/courseApi';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const courseID = route.params.id;
+let courseID = route.params.id;
 const course = ref(null);
 
 onMounted(async () => {
     //TODO: Should we catch potential errors here?
+    course.value = await getCourse(courseID);
+});
+
+watch(route, async (newRoute) => {
+    courseID = newRoute.params.id;
     course.value = await getCourse(courseID);
 });
 
@@ -28,7 +33,7 @@ onMounted(async () => {
         </div>
 
         <div class="page-title">
-            <h1>Course</h1>
+            <h1>Course Details:</h1>
         </div>
         
         <div class="course-info-component">
