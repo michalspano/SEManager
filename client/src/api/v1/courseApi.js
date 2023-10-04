@@ -38,3 +38,13 @@ export const getCourse = async (courseCode) => {
         throw err
     }
 }
+
+export const getTermCourses = async (term, period) => {
+    try {
+        const response = await CourseApi.get('/' + `?filterBy[term]=${term}&filterBy[studyPeriod]=${period}`);
+        return response.data.courses
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+}
