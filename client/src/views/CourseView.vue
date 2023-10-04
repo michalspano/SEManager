@@ -12,6 +12,10 @@ import { getCourses } from '@/api/v1/courseApi';
 // Why is it called javascript? It doesn't have anything to do with java... I miss java :(
 
 export default {
+    // Note: props are readonly
+    props: {
+        userType: String
+    },
     setup() {
         const period1CoursesTest = ref([
             { courseCode: "DIT001", courseName: "Data Management", courseStaff: ["ABC"] },
@@ -53,6 +57,7 @@ export default {
 <template>
     <div class="mainContainer">
         <h1>Main course view test</h1>
+        <h2>You are logged in as a <strong>{{ userType }}</strong></h2>
         <!-- ============================== -->
         <div class="programStructure">
             <Year yearTitle="Year 1" semester1Title="Semester 1" semester2Title="Semester 2"

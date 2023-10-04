@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue' // (merely for testing)
+import CourseView from '@/views/CourseView.vue'
 import jwt_decode from "jwt-decode";
 
 // TODO: Redirect unrecognized routes to something like
@@ -21,9 +22,24 @@ const router = createRouter({
     {
       path: '/courses',
       name: 'courses',
-      // TODO: pass the prop based on the type of the user to CourseView
-      component: () => import('@/views/CourseView.vue'),
-      meta: { requiresAuth: true }
+      component: CourseView,
+      props: true, // This flag needs to be enabled to be able to pass props to a component
+      meta: { requiresAuth: true },
+      beforeEnter: (to, from, next) => {
+        const token = localStorage.getItem('token');
+        let type = 'student'; // Default value or fallback
+
+        if (token) {
+          const decoded = jwt_decode(token);
+          if (decoded && decoded.userType) {
+            type = decoded.userType;
+          }
+        }
+        // Add the user type as a prop to the component
+        // Note: params denotes props in VueRouter
+        to.params.userType = type;
+        next();
+      },
     },
     {
       path: '/courses/:id',
@@ -34,18 +50,11 @@ const router = createRouter({
   ]
 })
 
-// TODO: update this logic to recognize the user type too
+// Ensure that protected routes are only accessible with a valid token
+// that is, the user is logged in.
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token');
-  let decoded;
-  if (token) {
-    decoded = jwt_decode(token);
-  }
 
-  // TODO: inject this as a prop to CourseView
-  const userType = decoded?.type;
-
-  // If verification is required and no token is present, go to /login
   if (to.meta.requiresAuth && !token) {
     next('/login');
   } else if (to.name === 'login' && token) {
