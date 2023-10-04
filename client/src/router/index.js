@@ -31,8 +31,8 @@ const router = createRouter({
 
         if (token) {
           const decoded = jwt_decode(token);
-          if (decoded && decoded.userType) {
-            type = decoded.userType;
+          if (decoded && decoded.type) {
+            type = decoded.type;
           }
         }
         // Add the user type as a prop to the component
