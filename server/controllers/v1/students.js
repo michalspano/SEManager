@@ -12,6 +12,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const { fetchCourseIds, generateLinks, generateSecretKey } = require("../../utils/utils");
+const { verifyTokenAndRole } = require('../../utils/utils')
 
 const RESOURCE = "students";
 
@@ -66,6 +67,11 @@ router.get('/', (_, res, next) => {
         .catch(next);
 });
 
+// TODO: remove this, only for testing and will be removed later.
+router.get('/protected', verifyTokenAndRole('admin'), (_,res) => {
+    res.json({ message: 'Protected route: only admins allowed!' });
+});
+
 // Delete all students
 router.delete('/', (_, res, next) => {
     Student.deleteMany({})
@@ -107,26 +113,31 @@ router.post('/:id/verify', (req, res, next) => {
 
             const match = await bcrypt.compare(password, student.password);
 
-            if (match) {
-                const tokenPayload = {
-                    studentId: studentId,
-                    type: student.type
-                };
-
-                // Generate a token based on the payload, use the secret key
-                const token = jwt.sign(tokenPayload, generateSecretKey(), { expiresIn: '1h' }); 
-                return res.json({
-                    "verified": true,
-                    "token": token,
-                    "verificationDate": new Date(),
-                    "message": "Verification successful"
+            if (!match) {
+                return res.status(401).json({
+                    "verified": false,
+                    "message": "Verification failed"
                 });
             }
 
-            return res.status(401).json({
-                "verified": false,
-                "message": "Verification failed"
+            const tokenPayload = {
+                studentId: studentId,
+                type: student.type
+            };
+
+            const secretKey = generateSecretKey();
+
+            // Generate a token based on the payload, use the secret key
+            const token = jwt.sign(tokenPayload, secretKey, { expiresIn: '1h' });
+            res.cookie(token, secretKey);
+
+            return res.json({
+                "verified": true,
+                "token": token,
+                "verificationDate": new Date(),
+                "message": "Verification successful"
             });
+
         }).catch(next);
 });
 
