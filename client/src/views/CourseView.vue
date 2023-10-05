@@ -49,6 +49,15 @@ export default {
     components: {
         Year,
         Course
+    },
+    methods: {
+        discardToken() {
+            localStorage.removeItem('token');
+            location.reload();
+        },
+        userTypeText() {
+            return this.userType === 'admin' ? 'an' : 'a';
+        }
     }
 }
 
@@ -57,7 +66,7 @@ export default {
 <template>
     <div class="mainContainer">
         <h1>Main course view test</h1>
-        <h2>You are logged in as a <strong>{{ userType }}</strong></h2>
+        <h2>You are logged in as {{ userTypeText() }} <strong>{{ userType }}</strong></h2>
         <!-- ============================== -->
         <div class="programStructure">
             <Year yearTitle="Year 1" semester1Title="Semester 1" semester2Title="Semester 2"
@@ -65,6 +74,9 @@ export default {
             <Year yearTitle="Year 2" semester1Title="Semester 3" semester2Title="Semester 4"
                 :period1Courses="period1CoursesTest" :period2Courses="period2CoursesTest" />
         </div>
+        <br>
+        <!-- TODO: fix styling -->
+        <button type="button" class="btn btn-primary" @click="discardToken">Logout</button>
     </div>
 </template>
 

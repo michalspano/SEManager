@@ -1,3 +1,4 @@
+<!-- TODO: refactor to Composition API -->
 <template>
     <div class="container">
         <div class="row justify-content-center">
@@ -30,7 +31,7 @@
 
 <script>
 import { ref } from 'vue'
-import { verifyStudent } from '@/api/v1/studentApi'
+import { authenticateUser } from '@/api/v1/userApi'
 
 export default {
     name: 'Login',
@@ -44,7 +45,7 @@ export default {
     },
     methods: {
         async login() {
-            verifyStudent(this.username, this.password).then((response) => {
+            authenticateUser(this.username, this.password).then((response) => {
                 localStorage.setItem('token', response.token);
 
                 // TODO: redirect to some page after successful login,
