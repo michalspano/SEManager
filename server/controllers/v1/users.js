@@ -1,12 +1,12 @@
 /**
- * controllers/v1/students.js
+ * controllers/v1/users.js
  * 
- * @description :: CRUD operations for the Student entity.
+ * @description :: CRUD operations for the User entity.
  * @version     :: 1.0
  */
 
 const express = require("express");
-const Student = require("../../models/student");
+const User = require("../../models/user");
 const Course = require("../../models/course");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -14,15 +14,18 @@ const router = express.Router();
 const { fetchCourseIds, generateLinks, generateSecretKey } = require("../../utils/utils");
 const { verifyTokenAndRole } = require('../../utils/utils')
 
-const RESOURCE = "students";
+const RESOURCE = "users";
 
-// Add a new student
-router.post('/', (req, res, next) => {
+// Note: because the User entity contains sensitive information, like password or
+// e-mail address, only the admin can get the instances of this entity.
+
+// Add a new User
+router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
     fetchCourseIds(req.body.courses)
         .then(async (courseIds) => {
 
             let hashed;
-            const studentId = req.body.emailAddress;
+            const userId = req.body.emailAddress;
 
             try {
                 hashed = await bcrypt.hash(req.body.password, 10);
@@ -30,9 +33,9 @@ router.post('/', (req, res, next) => {
                 return res.status(400).json({ message: "The password count not be created." })
             }
             
-            // Create a student instance with the attributes
-            const student = new Student({
-                emailAddress: studentId,
+            // Create a user instance with the attributes
+            const user = new User({
+                emailAddress: userId,
                 password: hashed,
                 type: req.body.type,
                 firstName: req.body.firstName,
@@ -41,78 +44,72 @@ router.post('/', (req, res, next) => {
             });
 
             const links = generateLinks([
-                ["self", [RESOURCE, studentId], "get"],
-                ["update", [RESOURCE, studentId], "PUT"],
-                ["edit", [RESOURCE, studentId], "PATCH"],
-                ["delete", [RESOURCE, studentId], "DELETE"]
+                ["self", [RESOURCE, userId], "get"],
+                ["update", [RESOURCE, userId], "PUT"],
+                ["edit", [RESOURCE, userId], "PATCH"],
+                ["delete", [RESOURCE, userId], "DELETE"]
             ]);
 
-            student.save()
+            user.save()
                 .then(() => {
-                    res.status(201).json({ student, links });
+                    res.status(201).json({ user, links });
                 }).catch((error) => {
                     if (error.code === 11_000) {
-                        res.status(409).json({ error: "Student with this unique key already exists" });
+                        res.status(409).json({ error: "User with this unique key already exists" });
                     } else next(error);
                 });
         });
 });
 
-// Get list of all students
-router.get('/', (_, res, next) => {
-    Student.find({})
-        .then((students) => {
-            res.json({ "students": students });
+// Get list of all users
+router.get('/', verifyTokenAndRole('admin'), (_, res, next) => {
+    User.find({})
+        .then((users) => {
+            res.json({ "users": users });
         })
         .catch(next);
 });
 
-// TODO: remove this, only for testing and will be removed later.
-router.get('/protected', verifyTokenAndRole('admin'), (_,res) => {
-    res.json({ message: 'Protected route: only admins allowed!' });
-});
-
-// Delete all students
-router.delete('/', (_, res, next) => {
-    Student.deleteMany({})
+// Delete all users
+router.delete('/', verifyTokenAndRole('admin'), (_, res, next) => {
+    User.deleteMany({})
         .then(() => {
             res.status(204).send();
         })
         .catch(next);
 });
 
-// Get student by ID
-router.get('/:id', (req, res, next) => {
-    const studentId = req.params.id;
-    Student.findOne({ emailAddress: studentId }).exec()
-        .then((student) => {
-            if (student == null) {
+// Get user by ID
+router.get('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
+    const userId = req.params.id;
+    User.findOne({ emailAddress: userId }).exec()
+        .then((user) => {
+            if (user == null) {
                 return res.status(404).json({
-                    "message": "Student not found."
+                    "message": "User not found."
                 });
             }
 
             const links = generateLinks([
-                ["update", [RESOURCE, studentId], "PUT"],
-                ["edit", [RESOURCE, studentId], "PATCH"],
-                ["delete", [RESOURCE, studentId], "DELETE"]
+                ["update", [RESOURCE, userId], "PUT"],
+                ["edit", [RESOURCE, userId], "PATCH"],
+                ["delete", [RESOURCE, userId], "DELETE"]
             ]);
 
-            res.json({ student, links });
+            res.json({ user, links });
         }).catch(next);
 });
 
-// TODO: change route to /auth/:id or something similar
-router.post('/:id/verify', (req, res, next) => {
-    const studentId = req.params.id;
+router.post('/auth/:id', (req, res, next) => {
+    const userId = req.params.id;
     const password = req.body.password;
-    Student.findOne({ emailAddress: studentId }).exec()
-        .then(async (student) => {
-            if (student == null) {
-                return res.status(404).json({ "message": "Student not found." });
+    User.findOne({ emailAddress: userId }).exec()
+        .then(async (user) => {
+            if (user == null) {
+                return res.status(404).json({ "message": "User not found." });
             }
 
-            const match = await bcrypt.compare(password, student.password);
+            const match = await bcrypt.compare(password, user.password);
 
             if (!match) {
                 return res.status(401).json({
@@ -122,8 +119,8 @@ router.post('/:id/verify', (req, res, next) => {
             }
 
             const tokenPayload = {
-                studentId: studentId,
-                type: student.type
+                userId: userId,
+                type: user.type
             };
 
             const secretKey = generateSecretKey();
@@ -142,22 +139,22 @@ router.post('/:id/verify', (req, res, next) => {
         }).catch(next);
 });
 
-// Update all student fields given an ID
-router.put('/:id', (req, res, next) => {
-    const studentId = req.params.id;
-    Student.findOne({ emailAddress: studentId }).exec()
-        .then((student) => {
-            if (student == null) {
+// Update all users fields given an ID
+router.put('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
+    const userId = req.params.id;
+    User.findOne({ emailAddress: userId }).exec()
+        .then((user) => {
+            if (user == null) {
                 return res.status(404).json({
-                    "message": "Student not found."
+                    "message": "User not found."
                 });
             }
 
             fetchCourseIds(req.body.courses)
                 .then((courseIds) => {
-                    student.firstName = req.body.firstName;
-                    student.lastName = req.body.lastName;
-                    student.courses = courseIds;
+                    user.firstName = req.body.firstName;
+                    user.lastName = req.body.lastName;
+                    user.courses = courseIds;
                 }).catch((error) => {
                     return res.status(400).json({
                         "message": error.message
@@ -165,79 +162,79 @@ router.put('/:id', (req, res, next) => {
                 });
 
             const links = generateLinks([
-                ["self", [RESOURCE, studentId], "GET"],
-                ["edit", [RESOURCE, studentId], "PATCH"],
-                ["delete", [RESOURCE, studentId], "DELETE"]
+                ["self", [RESOURCE, userId], "GET"],
+                ["edit", [RESOURCE, userId], "PATCH"],
+                ["delete", [RESOURCE, userId], "DELETE"]
             ]);
 
-            // Save updated student, resolve promise before sending response
-            student.save().then((student) => {
-                res.json({ student, links });
+            // Save updated user, resolve promise before sending response
+            user.save().then((user) => {
+                res.json({ user, links });
             }).catch(next); // perhaps too verbose - leaving it in for now (for consistency)
         }).catch(next);
 });
 
-// Partially update a student given an ID
-router.patch('/:id', (req, res, next) => {
-    const studentId = req.params.id;
-    Student.findOne({ emailAddress: studentId }).exec()
-        .then((student) => {
-            if (student == null) {
+// Partially update a user given an ID
+router.patch('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
+    const userId = req.params.id;
+    User.findOne({ emailAddress: userId }).exec()
+        .then((user) => {
+            if (user == null) {
                 return res.status(404).json({
-                    "message": "Student not found."
+                    "message": "User not found."
                 });
             }
 
             if ("courses" in req.body) {
                 fetchCourseIds(req.body.courses)
                     .then((courseIds) => {
-                        student.courses = courseIds;
+                        user.courses = courseIds;
                     }).catch((error) => {
                         return res.status(400).json({
                             "message": error.message
                         });
                     });
             }
-            student.firstName = req.body.firstName || student.firstName;
-            student.lastName = req.body.lastName || student.lastName;
+            user.firstName = req.body.firstName || user.firstName;
+            user.lastName = req.body.lastName || user.lastName;
 
             const links = generateLinks([
-                ["self", [RESOURCE, studentId], "GET"],
-                ["update", [RESOURCE, studentId], "PUT"],
-                ["delete", [RESOURCE, studentId], "DELETE"]
+                ["self", [RESOURCE, userId], "GET"],
+                ["update", [RESOURCE, userId], "PUT"],
+                ["delete", [RESOURCE, userId], "DELETE"]
             ]);
 
-            student.save().then((updatedStudent) => {
-                res.json({ updatedStudent, links });
+            user.save().then((updatedUser) => {
+                res.json({ updatedUser, links });
             }).catch(next);
         }).catch(next);
 });
 
-// Delete a specific student given an ID
-router.delete('/:id', (req, res, next) => {
-    const studentId = req.params.id;
-    Student.findOneAndDelete({ emailAddress: studentId })
-        .then((student) => {
-            if (student == null) {
+// Delete a specific user given an ID
+router.delete('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
+    const userId = req.params.id;
+    User.findOneAndDelete({ emailAddress: userId })
+        .then((user) => {
+            if (user == null) {
                 return res.status(404).json({
-                    "message": "Student not found."
+                    "message": "User not found."
                 });
             }
-            res.json({ "student": student });
+            res.json({ "user": user });
         }).catch(next);
 });
 
-// Get all courses of a given student
-router.get('/:id/courses', (req, res, next) => {
-    const studentId = req.params.id;
-    Student.findOne({ emailAddress: studentId }).exec()
-        .then((student) => {
-            if (student == null) {
+// Get all courses of a given user
+router.get('/:id/courses', verifyTokenAndRole('student'), (req, res, next) => {
+    const userId = req.params.id;
+    User.findOne({ emailAddress: userId }).exec()
+        .then((user) => {
+            if (user == null) {
                 return res.status(404).json({
-                    "message": "Student not found."
+                    "message": "User not found."
                 });
             }
-            Course.find({ _id: { $in: student.courses } }).exec()
+            Course.find({ _id: { $in: user.courses } }).exec()
                 .then((courses) => {
                     if (courses == null) {
                         return res.status(404).json({
@@ -249,23 +246,23 @@ router.get('/:id/courses', (req, res, next) => {
         }).catch(next);
 });
 
-// Get a specific course of a given student
-router.get('/:id/courses/:course_id', (req, res, next) => {
-    const studentId = req.params.id;
+// Get a specific course of a given user
+router.get('/:id/courses/:course_id', verifyTokenAndRole('student'), (req, res, next) => {
+    const userId = req.params.id;
     const courseCode = req.params.course_id;
 
-    Student.findOne({ emailAddress: studentId }).exec()
-        .then((student) => {
-            if (student == null) {
+    User.findOne({ emailAddress: userId }).exec()
+        .then((user) => {
+            if (user == null) {
                 return res.status(404).json({
-                    "message": "Student not found."
+                    "message": "User not found."
                 });
             }
             fetchCourseIds([courseCode])
                 .then((course) => {
-                    if (!student.courses.includes(course)) {
+                    if (!user.courses.includes(course)) {
                         return res.status(404).json({
-                            "message": `${studentId} is not enrolled in ${courseCode}.`
+                            "message": `${userId} is not enrolled in ${courseCode}.`
                         });
                     }
                     Course.find({ _id: course }).exec()
@@ -284,7 +281,5 @@ router.get('/:id/courses/:course_id', (req, res, next) => {
                 });
         }).catch(next);
 });
-
-// TODO: Delete a relationship between a student and a course
 
 module.exports = router;
