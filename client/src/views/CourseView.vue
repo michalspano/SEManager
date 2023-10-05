@@ -19,8 +19,8 @@ export default {
         <h1>Main course view test</h1>
         <!-- ============================== -->
         <div class="programStructure">
-            <Year :year="1"/>
-            <Year :year="2"/>
+            <Year :yearNumber="1"/>
+            <Year :yearNumber="2"/>
         </div>
     </div>
 </template>

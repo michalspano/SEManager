@@ -2,14 +2,26 @@
 import Period from '@/components/Period.vue'
 
 export default {
+    setup(props) {
+        /*
+        * If the semester is odd, the periods will always be 1 and 2
+        * If the semester is even, the periods will always be 3 and 4
+        */
+        const semester = props.semesterNumber;
+        const first = semester % 2 != 0 ? 1 : 3; 
+        const second = semester % 2 != 0 ? 2 : 4;
+
+        return {
+            first,
+            second
+        }
+    },
     props: {
-        semesterNumber: Number,
-        firstPeriod: Number,
-        secondPeriod: Number
+        semesterNumber: Number
     },
     components: {
         Period
-    },
+    }
 }
 </script>
 
@@ -17,9 +29,9 @@ export default {
     <div class="semesterContainer">
         <span class="semesterTitle">{{ 'Semester ' + semesterNumber }}</span>
         <div class="semester">
-            <Period class="periodItem" :semesterNumber="semesterNumber" :periodNumber="firstPeriod"/>
+            <Period class="periodItem" :semesterNumber="semesterNumber" :periodNumber="first"/>
             <div class="periodSpace"></div>
-            <Period class="periodItem" :semesterNumber="semesterNumber" :periodNumber="secondPeriod"/>
+            <Period class="periodItem" :semesterNumber="semesterNumber" :periodNumber="second"/>
         </div>
     </div>
 </template>

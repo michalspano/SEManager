@@ -4,16 +4,16 @@ import Semester from '@/components/Semester.vue'
 export default {
     setup(props) {
 
-        const firstTerm = props.year + props.year - 1; 
-        const secondTerm = props.year * 2;
+        const firstSemesterNumber = props.yearNumber + props.yearNumber - 1; 
+        const secondSemesterNumber = props.yearNumber * 2;
 
         return {
-            firstTerm,
-            secondTerm
+            firstSemesterNumber,
+            secondSemesterNumber
         }
     },
     props: {
-        year: Number
+        yearNumber: Number
     },
     components: {
         Semester
@@ -23,11 +23,11 @@ export default {
 
 <template>
     <div class="yearContainer">
-            <span class="yearTitle">{{ 'Year ' + year }}</span>
+            <span class="yearTitle">{{ 'Year ' + yearNumber }}</span>
             <div class="year">
-                <Semester :semesterNumber="firstTerm" :firstPeriod="1" :secondPeriod="2"/>
+                <Semester :semesterNumber="firstSemesterNumber"/>
                 <div class="semesterSpace"></div>
-                <Semester :semesterNumber="secondTerm" :firstPeriod="3" :secondPeriod="4"/>
+                <Semester :semesterNumber="secondSemesterNumber"/>
             </div>
         </div>
 </template>
