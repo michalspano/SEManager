@@ -1,9 +1,9 @@
-// Mongoose model for a Student
+// Mongoose model for a User
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const StudentModel = new Schema({
+const UserModel = new Schema({
     emailAddress: {
         type: String,
         unique: true,
@@ -14,8 +14,6 @@ const StudentModel = new Schema({
         type: String,
         required: true
     },
-    // TODO: refactor the Student entity to User
-    // a User has two type: student, admin
     type: {
         type: String,
         enum: ["student", "admin"],
@@ -36,4 +34,4 @@ const StudentModel = new Schema({
     }]
 });
 
-module.exports = mongoose.model("Student", StudentModel);
+module.exports = mongoose.model("User", UserModel);

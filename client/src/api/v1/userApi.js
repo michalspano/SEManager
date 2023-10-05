@@ -1,7 +1,7 @@
 /**
- * api/v1/studentApi.js
+ * api/v1/userApi.js
  * 
- * @description :: Axios configuration for the Students.
+ * @description :: Axios configuration for the Users.
  * @version     :: 1.0
  */
 
@@ -11,8 +11,8 @@ import * as config from '@/api/v1/apiConfig'
 /**
  * CourseApi is an Axios instance which provides the baseURL for all the HTTP requests.
  */
-const StudentApi = axios.create({
-    baseURL: `${config.BASE_URL}:${config.PORT}/api/v${config.VERSION}/students`,
+export const UserApi = axios.create({
+    baseURL: `${config.BASE_URL}:${config.PORT}/api/v${config.VERSION}/users`,
     // Always use the token in the Authorization header of HTTP requests
     headers: {
         'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
@@ -26,9 +26,9 @@ const StudentApi = axios.create({
  * @param {String} pass - as password provided by the user in the session
  * @returns {Promise} - a promise that resolves to the response data
  */
-export const verifyStudent = async (id, pass) => {
+export const authenticateUser = async (id, pass) => {
     try {
-        const response = await StudentApi.post(`/${id}/verify`, { password: pass });
+        const response = await UserApi.post(`/auth/${id}`, { password: pass }, { withCredentials: true });
         return response.data;
     } catch (error) {
         throw error;
