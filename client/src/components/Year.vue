@@ -22,6 +22,22 @@ export default {
 </script>
 
 <template>
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="col">
+                <span class="yearTitle">{{ 'Year ' + yearNumber }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <Semester :semesterNumber="firstSemesterNumber"/>
+            </div>
+            <div class="col">
+                <Semester :semesterNumber="secondSemesterNumber"/>
+            </div>
+        </div>
+    </div>
+    <!-- <br>
     <div class="yearContainer">
             <span class="yearTitle">{{ 'Year ' + yearNumber }}</span>
             <div class="year">
@@ -29,7 +45,7 @@ export default {
                 <div class="semesterSpace"></div>
                 <Semester :semesterNumber="secondSemesterNumber"/>
             </div>
-        </div>
+        </div> -->
 </template>
 
 <style scoped>

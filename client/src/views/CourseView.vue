@@ -15,17 +15,32 @@ export default {
 </script>
 
 <template>
-    <div class="mainContainer">
-        <h1>Main course view test</h1>
-        <!-- ============================== -->
-        <div class="programStructure">
-            <Year :yearNumber="1"/>
-            <Year :yearNumber="2"/>
+    
+    <div class="container-fluid text-center">
+        <h1>Hi there, you better work you fucking piece of shit</h1>
+        <div class="row">
+            <div class="col">
+                <Year :yearNumber="1"/>
+            </div>
+            <div class="col">
+                <Year :yearNumber="2"/>
+            </div>
         </div>
     </div>
+    
+    <!-- <div class="mainContainer"> -->
+        <!-- <h1>Main course view test</h1> -->
+        <!-- ============================== -->
+        <!-- <div class="programStructure"> -->
+            <!-- <Year :yearNumber="1"/> -->
+            <!-- <Year :yearNumber="2"/> -->
+        <!-- </div> -->
+    <!-- </div> -->
 </template>
 
 <style scoped>
+
+/* TODO: Get rid of these things here */
 .mainContainer {
     display: flex;
     flex-direction: column;

@@ -27,13 +27,27 @@ export default {
 </script>
 
 <template>
-    <div class="period">
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="col">
+                <span class="periodTitle">{{ 'Period ' + periodNumber }}</span>
+            </div>
+        </div>
+        <div class="row gy-2">
+            <div class="col" v-for="(course, index) in periodCourses" :key="index">
+                <Course :courseCode="course.courseCode" :courseName="course.courseName" :courseStaff="course.courseStaff"/>
+                
+                <!-- <h3>{{ course.courseName }}</h3> -->
+            </div>
+        </div>
+    </div>
+    <!-- <div class="period">
         <span class="periodTitle">{{ 'Period ' + periodNumber }}</span>
 
         <Course class="courseItem" v-for="(course, index) in periodCourses" :key="index" :courseCode="course.courseCode"
             :courseName="course.courseName" :courseStaff="course.courseStaff" />
 
-    </div>
+    </div> -->
 </template>
 
 <style scoped>

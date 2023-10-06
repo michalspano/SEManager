@@ -1,16 +1,34 @@
 <script>
 export default {
+    data() {
+        return {
+            active: false,
+        }
+    },
     props: {
         courseCode: String,
         courseName: String,
         courseStaff: Array
+    },
+    methods: {
+        handleCardClick() {
+            this.active = !this.active;
+            console.log(this.active);
+        }
     }
 
 }
 </script>
 
 <template>
-    <div>
+    <div class="card" :class="active ? 'enabled' : 'disabled'" @click="handleCardClick">
+        <div class="card-header">{{ courseCode }}</div>
+        <div class="card-body">
+            {{ courseName }}
+        </div>
+        <div class="card-footer"></div>
+    </div>
+    <!-- <div>
         <div class="square">
             <div class="rectangle">
                 <p class="rectangle-text">{{ courseCode }}<br></p>
@@ -20,7 +38,7 @@ export default {
             <div class="rectangle">
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <style scoped>
@@ -29,6 +47,24 @@ p {
     font-family: 'Courier New', Courier, monospace;
     margin: 0;
     font-size: 130%;
+}
+
+.card {
+    transition: transform .2s;
+}
+.card:hover {
+    /* color: aqua; */
+    transform: scale(1.05);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 10px;
+    cursor: pointer;
+}
+
+.enabled {
+    color: black;
+}
+
+.disabled {
+    color: white;
 }
 
 .square {

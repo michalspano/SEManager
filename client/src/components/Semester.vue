@@ -26,6 +26,22 @@ export default {
 </script>
 
 <template>
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="column">
+                <span class="semesterTitle">{{ 'Semester ' + semesterNumber }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <Period class="periodItem" :semesterNumber="semesterNumber" :periodNumber="first"/>
+            </div>
+            <div class="col">
+                <Period class="periodItem" :semesterNumber="semesterNumber" :periodNumber="second"/>
+            </div>
+        </div>
+    </div>
+    <!-- <br>
     <div class="semesterContainer">
         <span class="semesterTitle">{{ 'Semester ' + semesterNumber }}</span>
         <div class="semester">
@@ -33,7 +49,7 @@ export default {
             <div class="periodSpace"></div>
             <Period class="periodItem" :semesterNumber="semesterNumber" :periodNumber="second"/>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <style scoped>
