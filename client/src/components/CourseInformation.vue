@@ -16,12 +16,12 @@ const props = defineProps({
     <div class="container">
 
         <div class="course-title">
-            <p>{{ props.courseCode }}: {{ props.courseName }}</p>
+            <h2 class="fw-bold">{{ props.courseCode }}: {{ props.courseName }}</h2>
         </div>
 
         <div class="course-staff">
-            <p>
-                Course staff:
+            <p class="staff">
+                <b>Course staff: </b>
                 <!-- TODO: add functionality for pop-up component -->
                 <span
                     v-for="(name, index) in courseStaff"
@@ -35,9 +35,10 @@ const props = defineProps({
 
         <div class="course-dependencies">
             <p>
-                Dependencies:
+                <b>Dependencies: </b>
                 <!-- TODO: if-else to show "-" if there are no dependencies -->
-                <span
+                <span v-if="dependencies.length <= 0">-</span>
+                <span v-else
                     v-for="(course, index) in dependencies"
                     :key="index"
                     class="prerequisite-courses"
@@ -54,8 +55,8 @@ const props = defineProps({
 <style scoped>
 p {
     color: black;
-    font-family: 'Courier New', Courier, monospace;
-    margin: 0;
-    font-size: 130%;
+    font-family: 'Courier New', Courier;
+    font-size: 150%;
 }
+
 </style>
