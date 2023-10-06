@@ -10,11 +10,12 @@ const router = express.Router();
 const Employee = require('../../models/employee');
 const Course = require('../../models/course');
 const { generateLinks } = require('../../utils/utils');
+const { verifyTokenAndRole } = require('../../utils/utils')
 
 const RESOURCE = "employees";
 
 // Add a new employee
-router.post('/', (req, res, next) => {
+router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
     const employee = new Employee(req.body);
     const emailAddress = req.body.emailAddress;
 
@@ -53,7 +54,7 @@ router.get('/', (req, res, next) => {
 });
 
 // Delete all employees
-router.delete('/', (_, res, next) => {
+router.delete('/', verifyTokenAndRole('admin'), (_, res, next) => {
     Employee.deleteMany({}).then(() => {
         res.status(204).send();
     })
@@ -74,7 +75,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 // Delete an employee given an ID
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
     Employee.findOneAndDelete({ emailAddress: req.params.id }).exec()
         .then((employee) => {
             if (employee == null) {
@@ -87,7 +88,7 @@ router.delete('/:id', (req, res, next) => {
 });
 
 // Update a whole employee given an ID
-router.put('/:id', (req, res, next) => {
+router.put('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
     Employee.findOne({ emailAddress: req.params.id }).exec()
         .then((employee) => {
             if (employee == null) {
@@ -106,7 +107,7 @@ router.put('/:id', (req, res, next) => {
 });
 
 // Update partially an employee
-router.patch('/:id', (req, res, next) => {
+router.patch('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
     Employee.findOne({ emailAddress: req.params.id }).exec()
         .then((employee) => {
             if (employee == null) {
@@ -152,9 +153,6 @@ router.get('/:id/courses', (req, res, next) => {
         });
 });
 
-// TODO: check for exceptions
-// Get a given course of a given employee
-// TODO: review this as it is pretty much useless
 router.get('/:id/courses/:course_id', (req, res, next) => {
     const course_id = req.params.course_id;
     Employee.findOne({ emailAddress: req.params.id }).exec()

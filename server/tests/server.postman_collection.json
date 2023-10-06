@@ -1,11 +1,11 @@
 {
 	"info": {
-		"_postman_id": "08e4b53e-e811-4982-9b49-67a0ad326f98",
-		"name": "server",
+		"_postman_id": "9b0a3de6-533e-470e-acde-dd859b2e83e0",
+		"name": "Server",
 		"description": "The collection of versioned API CRUD operations for the server.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18528997",
-		"_collection_link": "https://lively-robot-331309.postman.co/workspace/A~699a9a39-88a2-4eba-9d19-abe52fd169f2/collection/18528997-08e4b53e-e811-4982-9b49-67a0ad326f98?action=share&source=collection_link&creator=18528997"
+		"_exporter_id": "29461036",
+		"_collection_link": "https://lively-robot-331309.postman.co/workspace/SEMProgramProject~7a29e83c-9fda-4a9d-9373-b8ef48c7414e/collection/18528997-9b0a3de6-533e-470e-acde-dd859b2e83e0?action=share&source=collection_link&creator=29461036"
 	},
 	"item": [
 		{
@@ -79,7 +79,7 @@
 							"response": []
 						},
 						{
-							"name": "DELETE /students",
+							"name": "DELETE /users",
 							"event": [
 								{
 									"listen": "test",
@@ -97,14 +97,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/students",
+									"raw": "{{host}}/api/v1/users",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"students"
+										"users"
 									]
 								}
 							},
@@ -490,7 +490,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/v1/courses/?filterBy[term]=1&filterBy[studyPeriod]=1",
+											"raw": "{{host}}/api/v1/courses/?filterBy[term]=1&filterBy[studyPeriod]=2",
 											"host": [
 												"{{host}}"
 											],
@@ -507,7 +507,7 @@
 												},
 												{
 													"key": "filterBy[studyPeriod]",
-													"value": "1"
+													"value": "2"
 												}
 											]
 										}
@@ -1346,13 +1346,13 @@
 					]
 				},
 				{
-					"name": "Students",
+					"name": "Users",
 					"item": [
 						{
-							"name": "Add Students",
+							"name": "Add Users",
 							"item": [
 								{
-									"name": "POST /students",
+									"name": "POST student",
 									"event": [
 										{
 											"listen": "test",
@@ -1372,7 +1372,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": [\"DIT043\", \"DIT023\"]\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"password\": \"da!@sda%*sda\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": [\"DIT043\", \"DIT023\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1380,21 +1380,21 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/api/v1/students",
+											"raw": "{{host}}/api/v1/users",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students"
+												"users"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "POST /students invalid",
+									"name": "POST student (invalid)",
 									"event": [
 										{
 											"listen": "test",
@@ -1414,7 +1414,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"password\": \"da!@sda%*sda\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1422,21 +1422,21 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/api/v1/students",
+											"raw": "{{host}}/api/v1/users",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students"
+												"users"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "POST /students (2)",
+									"name": "POST student (2)",
 									"event": [
 										{
 											"listen": "test",
@@ -1456,7 +1456,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"gusadnam@student.gu.se\",\r\n    \"firstName\": \"Adam\",\r\n    \"lastName\": \"Namesson\",\r\n    \"courses\": [\"DIT043\"]\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusadnam@student.gu.se\",\r\n    \"password\": \"dpijq)*&!\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Adam\",\r\n    \"lastName\": \"Namesson\",\r\n    \"courses\": [\"DIT043\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1464,21 +1464,21 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/api/v1/students",
+											"raw": "{{host}}/api/v1/users",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students"
+												"users"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "POST /students (3)",
+									"name": "POST student (3)",
 									"event": [
 										{
 											"listen": "test",
@@ -1498,7 +1498,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"gusjoefred@student.gu.se\",\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Fredriksson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusjoefred@student.gu.se\",\r\n    \"password\": \"_(*@!mbgalsd\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Fredriksson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1506,14 +1506,56 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/api/v1/students",
+											"raw": "{{host}}/api/v1/users",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students"
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST admin",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"francisco@gu.se\",\r\n    \"password\": \"&^@!ndgapq\",\r\n    \"type\": \"admin\",\r\n    \"firstName\": \"Francisco\",\r\n    \"lastName\": \"Gomes\",\r\n    \"courses\": []\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/users",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
 											]
 										}
 									},
@@ -1522,10 +1564,10 @@
 							]
 						},
 						{
-							"name": "Request Students",
+							"name": "Request Users",
 							"item": [
 								{
-									"name": "GET /students",
+									"name": "GET /users",
 									"event": [
 										{
 											"listen": "prerequest",
@@ -1552,21 +1594,21 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/v1/students",
+											"raw": "{{host}}/api/v1/users",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students"
+												"users"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "GET /students/*/invalid",
+									"name": "GET /users/*/invalid",
 									"event": [
 										{
 											"listen": "prerequest",
@@ -1593,14 +1635,14 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/v1/students/foo/bar",
+											"raw": "{{host}}/api/v1/users/foo/bar",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students",
+												"users",
 												"foo",
 												"bar"
 											]
@@ -1609,7 +1651,7 @@
 									"response": []
 								},
 								{
-									"name": "GET /students/:id",
+									"name": "GET /users/:id",
 									"event": [
 										{
 											"listen": "prerequest",
@@ -1637,14 +1679,14 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/v1/students/:id",
+											"raw": "{{host}}/api/v1/users/:id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students",
+												"users",
 												":id"
 											],
 											"variable": [
@@ -1658,7 +1700,7 @@
 									"response": []
 								},
 								{
-									"name": "GET /students/:id/courses",
+									"name": "GET /users/:id/courses",
 									"event": [
 										{
 											"listen": "test",
@@ -1677,14 +1719,14 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/v1/students/:id/courses",
+											"raw": "{{host}}/api/v1/users/:id/courses",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students",
+												"users",
 												":id",
 												"courses"
 											],
@@ -1699,7 +1741,7 @@
 									"response": []
 								},
 								{
-									"name": "GET /students/:id/courses/:course_id",
+									"name": "GET /users/:id/courses/:course_id",
 									"event": [
 										{
 											"listen": "test",
@@ -1718,14 +1760,14 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/v1/students/:id/courses/:course_id",
+											"raw": "{{host}}/api/v1/users/:id/courses/:course_id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students",
+												"users",
 												":id",
 												"courses",
 												":course_id"
@@ -1747,10 +1789,10 @@
 							]
 						},
 						{
-							"name": "Update Students",
+							"name": "Update Users",
 							"item": [
 								{
-									"name": "PUT /students/:id",
+									"name": "PUT /users/:id",
 									"event": [
 										{
 											"listen": "test",
@@ -1761,8 +1803,10 @@
 													"});\r",
 													"\r",
 													"pm.test(\"All fields to be updated are non-empty\", function () {\r",
-													"    const studentResponseJSON = pm.response.json().student;\r",
+													"    const studentResponseJSON = pm.response.json().user;\r",
 													"\r",
+													"    pm.expect(studentResponseJSON.password).to.not.be.empty;\r",
+													"    pm.expect(studentResponseJSON.type).to.not.be.empty;\r",
 													"    pm.expect(studentResponseJSON.firstName).to.not.be.empty;\r",
 													"    pm.expect(studentResponseJSON.lastName).to.not.be.empty;\r",
 													"    pm.expect(studentResponseJSON.courses).to.be.an('array').and.to.not.be.empty;\r",
@@ -1777,7 +1821,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"firstName\": \"Sven\",\r\n    \"lastName\": \"Svensson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
+											"raw": "{ \r\n    \"password\": \"dpijq)*&!\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Sven\",\r\n    \"lastName\": \"Svensson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1785,14 +1829,14 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/api/v1/students/:id",
+											"raw": "{{host}}/api/v1/users/:id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students",
+												"users",
 												":id"
 											],
 											"variable": [
@@ -1806,7 +1850,7 @@
 									"response": []
 								},
 								{
-									"name": "PATCH /students/:id",
+									"name": "PATCH /users/:id",
 									"event": [
 										{
 											"listen": "test",
@@ -1833,14 +1877,14 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/api/v1/students/:id",
+											"raw": "{{host}}/api/v1/users/:id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students",
+												"users",
 												":id"
 											],
 											"variable": [
@@ -2114,7 +2158,7 @@
 							"response": []
 						},
 						{
-							"name": "DEL /students/:id",
+							"name": "DEL /users/:id",
 							"event": [
 								{
 									"listen": "test",
@@ -2132,14 +2176,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/students/:id",
+									"raw": "{{host}}/api/v1/users/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"students",
+										"users",
 										":id"
 									],
 									"variable": [
@@ -2192,7 +2236,7 @@
 							"response": []
 						},
 						{
-							"name": "DEL /students/:id",
+							"name": "DEL /users/:id",
 							"event": [
 								{
 									"listen": "test",
@@ -2216,14 +2260,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{host}}/api/v1/students/:id",
+									"raw": "{{host}}/api/v1/users/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"students",
+										"users",
 										":id"
 									],
 									"variable": [
@@ -2237,7 +2281,7 @@
 							"response": []
 						},
 						{
-							"name": "DEL /students/:id (invalid)",
+							"name": "DEL /users/:id (invalid)",
 							"event": [
 								{
 									"listen": "test",
@@ -2261,14 +2305,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{host}}/api/v1/students/:id",
+									"raw": "{{host}}/api/v1/users/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"students",
+										"users",
 										":id"
 									],
 									"variable": [

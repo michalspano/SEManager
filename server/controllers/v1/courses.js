@@ -10,6 +10,7 @@ const router = express.Router();
 const Course = require('../../models/course');
 const Employee = require('../../models/employee');
 const { generateLinks } = require('../../utils/utils');
+const { verifyTokenAndRole } = require('../../utils/utils')
 
 /* Note: the convention is, when returning the Entity object
  * to wrap it in an Object which carries the name of the entity.
@@ -19,7 +20,7 @@ const { generateLinks } = require('../../utils/utils');
 const RESOURCE = "courses";
 
 // Add a new course
-router.post('/', (req, res, next) => {
+router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
     if (req.body.credits < 0) {
         return res.status(400).json({
             "message": "Invalid number of credits."
@@ -74,7 +75,7 @@ router.get('/', (req, res, next) => {
 });
 
 // Delete all courses
-router.delete('/', (_, res, next) => {
+router.delete('/', verifyTokenAndRole('admin'), (_, res, next) => {
     Course.deleteMany({})
         .then(() => {
             // Note: code 204 indicates that no context is provided
@@ -108,7 +109,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 // Update a whole course given an ID (PUT)
-router.put('/:id', (req, res, next) => {
+router.put('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
     if (req.body.credits < 0) {
         return res.status(400).json({
             "message": "Invalid number of credits."
@@ -137,7 +138,7 @@ router.put('/:id', (req, res, next) => {
 
 // Update a course partially (PATCH)
 // Apply HATEOAS to the response
-router.patch('/:id', (req, res, next) => {
+router.patch('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
     if (req.body.credits < 0) {
         return res.status(400).json({
             "message": "Invalid number of credits."
@@ -167,7 +168,7 @@ router.patch('/:id', (req, res, next) => {
 });
 
 // Delete a course given an ID
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
     Course.findOneAndDelete({ courseCode: req.params.id })
         .then((course) => {
             if (course == null) {
@@ -181,7 +182,7 @@ router.delete('/:id', (req, res, next) => {
 
 // Post a new employee to a given course
 // TODO: optimize this and check for exceptions
-router.post('/:id/employees', (req, res, next) => {
+router.post('/:id/employees', verifyTokenAndRole('admin'), (req, res, next) => {
     Course.findOne({ courseCode: req.params.id }).exec()
         .then((course) => {
             if (course == null) {
@@ -258,7 +259,7 @@ router.get('/:id/employees/:employee_id', (req, res, next) => {
 });
 
 // Delete a relationship between a course and an employee
-router.delete('/:id/employees/:employee_id', (req, res, next) => {
+router.delete('/:id/employees/:employee_id', verifyTokenAndRole('admin'), (req, res, next) => {
     const courseCode = req.params.id;
     const employeeID = req.params.employee_id;
     Course.findOne({ courseCode: courseCode }).exec()
