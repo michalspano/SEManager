@@ -12,7 +12,10 @@ import * as config from '@/api/v1/apiConfig'
  * CourseApi is an Axios instance which provides the baseURL for all the HTTP requests.
  */
 const CourseApi = axios.create({
-    baseURL: `${config.BASE_URL}:${config.PORT}/api/v${config.VERSION}/courses`
+    baseURL: `${config.BASE_URL}:${config.PORT}/api/v${config.VERSION}/courses`,
+    headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+    }
 })
 
 /**

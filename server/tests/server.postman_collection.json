@@ -1,11 +1,11 @@
 {
 	"info": {
-		"_postman_id": "a746828e-6b20-476c-8416-f4d1a3145bf8",
-		"name": "server",
+		"_postman_id": "9b0a3de6-533e-470e-acde-dd859b2e83e0",
+		"name": "Server",
 		"description": "The collection of versioned API CRUD operations for the server.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29461036",
-		"_collection_link": "https://lively-robot-331309.postman.co/workspace/SEMProgramProject~7a29e83c-9fda-4a9d-9373-b8ef48c7414e/collection/29461036-a746828e-6b20-476c-8416-f4d1a3145bf8?action=share&source=collection_link&creator=29461036"
+		"_collection_link": "https://lively-robot-331309.postman.co/workspace/SEMProgramProject~7a29e83c-9fda-4a9d-9373-b8ef48c7414e/collection/18528997-9b0a3de6-533e-470e-acde-dd859b2e83e0?action=share&source=collection_link&creator=29461036"
 	},
 	"item": [
 		{
@@ -79,7 +79,7 @@
 							"response": []
 						},
 						{
-							"name": "DELETE /students",
+							"name": "DELETE /users",
 							"event": [
 								{
 									"listen": "test",
@@ -97,14 +97,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/students",
+									"raw": "{{host}}/api/v1/users",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"students"
+										"users"
 									]
 								}
 							},
@@ -114,13 +114,13 @@
 					"description": "Always **drop the database** when running a new test."
 				},
 				{
-					"name": "POPULATE_DB",
+					"name": "Courses",
 					"item": [
 						{
-							"name": "courses",
+							"name": "Add Courses",
 							"item": [
 								{
-									"name": "POST /courses",
+									"name": "POST /courses (1)",
 									"event": [
 										{
 											"listen": "test",
@@ -143,7 +143,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": []\n}",
+											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"math-teacher-email@gu.se\"],\n    \"dependencies\": []\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -187,7 +187,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"credits\": 15,\n    \"term\": 2,\n    \"studyPeriod\": 3,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
+											"raw": "{\n    \"courseCode\": \"DIT043\",\n    \"courseName\": \"Object Oriented Programming\",\n    \"credits\": 7,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"oop-teacher-email@gu.se\"],\n    \"dependencies\": []\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -228,7 +228,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT111\",\n    \"courseName\": \"This is just a test name\",\n    \"credits\": 15,\n    \"term\": 2,\n    \"studyPeriod\": 3,\n    \"courseStaff\": [\"generic-email@gu.se\"],\n    \"dependencies\": [\"baz\"]\n}",
+											"raw": "{\n    \"courseCode\": \"DIT043\",\n    \"courseName\": \"Object Oriented Programming\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"oop-teacher-email@gu.se\"],\n    \"dependencies\": []\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -272,7 +272,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"courseCode\": \"DIT420\",\r\n    \"courseName\": \"Enjiner :3\",\r\n    \"credits\": 7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"another-generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"raw": "{\r\n    \"courseCode\": \"DIT046\",\r\n    \"courseName\": \"Requirements and User Experience\",\r\n    \"credits\": 7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"ux-teacher-email@gu.se\"],\r\n    \"dependencies\": [\"DIT043\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -313,7 +313,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"courseCode\": \"DIT422\",\r\n    \"courseName\": \"Enjiner 2.0\",\r\n    \"credits\": -7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"another-generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"raw": "{\r\n    \"courseCode\": \"DIT094\",\r\n    \"courseName\": \"Mini Project: Team Programming\",\r\n    \"credits\": -7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"mp-teacher-email@gu.se\"],\r\n    \"dependencies\": [\"DIT043\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -357,7 +357,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"courseCode\": \"DIT031\",\r\n    \"courseName\": \"Test course\",\r\n    \"credits\": 2,\r\n    \"term\": 4,\r\n    \"studyPeriod\": 4,\r\n    \"courseStaff\": [\"generic-email@gu.se\", \"trash-email@gu.se\"],\r\n    \"dependencies\": [\"baz\"]\r\n}",
+											"raw": "{\r\n    \"courseCode\": \"DIT094\",\r\n    \"courseName\": \"Mini Project: Team Programming\",\r\n    \"credits\": 7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"mp-teacher-email@gu.se\"],\r\n    \"dependencies\": [\"DIT043\"]\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -382,7 +382,394 @@
 							]
 						},
 						{
-							"name": "employees",
+							"name": "Request Courses",
+							"item": [
+								{
+									"name": "GET /courses",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /courses (sort)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/?sortBy=term&sortBy=studyPeriod&sortBy=name&limit=4&order=ascending",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												""
+											],
+											"query": [
+												{
+													"key": "sortBy",
+													"value": "term"
+												},
+												{
+													"key": "sortBy",
+													"value": "studyPeriod"
+												},
+												{
+													"key": "sortBy",
+													"value": "name"
+												},
+												{
+													"key": "limit",
+													"value": "4"
+												},
+												{
+													"key": "order",
+													"value": "ascending"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /courses (filter)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/?filterBy[term]=1&filterBy[studyPeriod]=2",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												""
+											],
+											"query": [
+												{
+													"key": "filterBy[term]",
+													"value": "1"
+												},
+												{
+													"key": "filterBy[studyPeriod]",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET /courses/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"// Parse the response JSON",
+													"var responseBody = pm.response.json();",
+													"",
+													"// Check if the \"links\" key exists in the response",
+													"pm.test(\"Response contains HATEOAS links\", function () {",
+													"    pm.expect(responseBody).to.have.property(\"links\");",
+													"",
+													"    // Check if the \"links\" property is an array (more links can be defined)",
+													"    pm.expect(responseBody.links).to.be.an(\"array\");",
+													"",
+													"    // Check if the \"links\" object is not empty",
+													"    pm.expect(Object.keys(responseBody.links).length).to.be.above(0);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT043"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Update Courses",
+							"item": [
+								{
+									"name": "PUT /courses/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"All fields to be updated are non-empty\", function () {",
+													"    const courseResponseJSON = pm.response.json().course;",
+													"",
+													"    // there's at least one person responsible for a course",
+													"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
+													"    // a course can have 0 dependencies",
+													"    pm.expect(courseResponseJSON.dependencies).to.be.an('array');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"math-teacher-email@gu.se\", \"phd-teacher-email@gu.se\"],\n    \"dependencies\": []\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT023"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PUT /courses/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"All fields to be updated are non-empty\", function () {",
+													"    const courseResponseJSON = pm.response.json().course;",
+													"",
+													"    pm.expect(courseResponseJSON.courseName).to.not.be.empty;",
+													"",
+													"    // there's at least one person responsible for a course",
+													"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
+													"    // a course can have 0 dependencies",
+													"    pm.expect(courseResponseJSON.dependencies).to.be.an('array');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"followAuthorizationHeader": false,
+										"followRedirects": true,
+										"removeRefererHeaderOnRedirect": false,
+										"insecureHTTPParser": false,
+										"disableUrlEncoding": true,
+										"strictSSL": false
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-HTTP-Method-Override",
+												"value": "PUT",
+												"description": "POST -> PUT (sample request; works only for POST remapping).",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"math-teacher-email@gu.se\", \"phd-teacher-email@gu.se\", \"another-math-teacher-email@gu.se\"],\n    \"dependencies\": []\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT023"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PATCH /courses/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"credits\": 7.5\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT043"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Employees",
+					"item": [
+						{
+							"name": "Add Employees",
 							"item": [
 								{
 									"name": "POST /employees",
@@ -404,7 +791,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"generic-email@gu.se\",\r\n    \"name\": \"RBS\",\r\n    \"contactInfo\": \"+46 555 444\"\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"oop-teacher-email@gu.se\",\r\n    \"name\": \"Francisco Gomes\",\r\n    \"contactInfo\": \"+46 555 444\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -445,7 +832,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"another-generic-email@gu.se\",\r\n    \"name\": \"Francisco Fernando Riquelme Gomes Oliveira de Neto\",\r\n    \"contactInfo\": \"JUPITER 400-something\"\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"math-teacher-email@gu.se\",\r\n    \"name\": \"Christian Berger\",\r\n    \"contactInfo\": \"+46 111 222\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -486,7 +873,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"another-generic-email@gu.se\",\r\n    \"name\": \"Francisco Fernando Riquelme Gomes Oliveira de Neto\",\r\n    \"contactInfo\": \"JUPITER 400-something\"\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"math-teacher-email@gu.se\",\r\n    \"name\": \"Christian Berger\",\r\n    \"contactInfo\": \"+46 111 222\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -527,7 +914,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"posted-email@gu.se\",\r\n    \"name\": \"Based Bro\",\r\n    \"contactInfo\": \"+46 420 69\"\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"oop-phd-email@gu.se\",\r\n    \"name\": \"Generic Name\",\r\n    \"contactInfo\": \"+46 420 69\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -549,7 +936,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "DIT023"
+													"value": "DIT043"
 												}
 											]
 										}
@@ -559,186 +946,7 @@
 							]
 						},
 						{
-							"name": "students",
-							"item": [
-								{
-									"name": "POST /students",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 201\", function () {\r",
-													"    pm.response.to.have.status(201);\r",
-													"});\r",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/students",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"students"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "POST /students invalid",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 409\", function () {\r",
-													"    pm.response.to.have.status(409);\r",
-													"});\r",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/students",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"students"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "POST /students (2)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 201\", function () {\r",
-													"    pm.response.to.have.status(201);\r",
-													"});\r",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"gusadnam@student.gu.se\",\r\n    \"firstName\": \"Adam\",\r\n    \"lastName\": \"Namesson\",\r\n    \"courses\": [\"DIT111\"]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/students",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"students"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "POST /students (3)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 201\", function () {\r",
-													"    pm.response.to.have.status(201);\r",
-													"});\r",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"gusjoefred@student.gu.se\",\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Fredriksson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/students",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"students"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						}
-					],
-					"description": "Populate the DB with some _dummy_ data."
-				},
-				{
-					"name": "GET",
-					"item": [
-						{
-							"name": "Employees",
+							"name": "Request Employees",
 							"item": [
 								{
 									"name": "GET /employees",
@@ -852,7 +1060,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "generic-email@gu.se"
+													"value": "oop-teacher-email@gu.se"
 												}
 											]
 										}
@@ -926,7 +1134,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "generic-email@gu.se"
+													"value": "oop-teacher-email@gu.se"
 												}
 											]
 										}
@@ -967,11 +1175,11 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "generic-email@gu.se"
+													"value": "oop-teacher-email@gu.se"
 												},
 												{
 													"key": "course_id",
-													"value": "DIT111"
+													"value": "DIT043"
 												}
 											]
 										}
@@ -981,10 +1189,385 @@
 							]
 						},
 						{
-							"name": "Students",
+							"name": "Update Employees",
 							"item": [
 								{
-									"name": "GET /students",
+									"name": "PUT /employees/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"oop-teacher-email@gu.se\",\r\n    \"name\": \"Francisco Gomes Oliveira de Neto\",\r\n    \"contactInfo\": \"+46 555 444\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "oop-teacher-email@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PATCH /employees/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"contactInfo\": \"JUPITER 402\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "oop-teacher-email@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PATCH /employees/:id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-HTTP-Method-Override",
+												"value": "PATCH",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"contactInfo\": \"JUPITER 472\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "oop-teacher-email@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Add Users",
+							"item": [
+								{
+									"name": "POST student",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"password\": \"da!@sda%*sda\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": [\"DIT043\", \"DIT023\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/users",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST student (invalid)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 409\", function () {\r",
+													"    pm.response.to.have.status(409);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"password\": \"da!@sda%*sda\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/users",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST student (2)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"gusadnam@student.gu.se\",\r\n    \"password\": \"dpijq)*&!\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Adam\",\r\n    \"lastName\": \"Namesson\",\r\n    \"courses\": [\"DIT043\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/users",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST student (3)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"gusjoefred@student.gu.se\",\r\n    \"password\": \"_(*@!mbgalsd\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Fredriksson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/users",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST admin",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"francisco@gu.se\",\r\n    \"password\": \"&^@!ndgapq\",\r\n    \"type\": \"admin\",\r\n    \"firstName\": \"Francisco\",\r\n    \"lastName\": \"Gomes\",\r\n    \"courses\": []\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/users",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Request Users",
+							"item": [
+								{
+									"name": "GET /users",
 									"event": [
 										{
 											"listen": "prerequest",
@@ -1011,21 +1594,21 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/v1/students",
+											"raw": "{{host}}/api/v1/users",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students"
+												"users"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "GET /students/*/invalid",
+									"name": "GET /users/*/invalid",
 									"event": [
 										{
 											"listen": "prerequest",
@@ -1052,14 +1635,14 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/v1/students/foo/bar",
+											"raw": "{{host}}/api/v1/users/foo/bar",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students",
+												"users",
 												"foo",
 												"bar"
 											]
@@ -1068,7 +1651,7 @@
 									"response": []
 								},
 								{
-									"name": "GET /students/:id",
+									"name": "GET /users/:id",
 									"event": [
 										{
 											"listen": "prerequest",
@@ -1096,14 +1679,14 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/v1/students/:id",
+											"raw": "{{host}}/api/v1/users/:id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students",
+												"users",
 												":id"
 											],
 											"variable": [
@@ -1117,7 +1700,7 @@
 									"response": []
 								},
 								{
-									"name": "GET /students/:id/courses",
+									"name": "GET /users/:id/courses",
 									"event": [
 										{
 											"listen": "test",
@@ -1136,14 +1719,14 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/v1/students/:id/courses",
+											"raw": "{{host}}/api/v1/users/:id/courses",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students",
+												"users",
 												":id",
 												"courses"
 											],
@@ -1158,7 +1741,7 @@
 									"response": []
 								},
 								{
-									"name": "GET /students/:id/courses/:course_id",
+									"name": "GET /users/:id/courses/:course_id",
 									"event": [
 										{
 											"listen": "test",
@@ -1177,14 +1760,14 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{host}}/api/v1/students/:id/courses/:course_id",
+											"raw": "{{host}}/api/v1/users/:id/courses/:course_id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"students",
+												"users",
 												":id",
 												"courses",
 												":course_id"
@@ -1196,7 +1779,7 @@
 												},
 												{
 													"key": "course_id",
-													"value": "DIT111"
+													"value": "DIT043"
 												}
 											]
 										}
@@ -1206,17 +1789,27 @@
 							]
 						},
 						{
-							"name": "Courses",
+							"name": "Update Users",
 							"item": [
 								{
-									"name": "GET /courses",
+									"name": "PUT /users/:id",
 									"event": [
 										{
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"All fields to be updated are non-empty\", function () {\r",
+													"    const studentResponseJSON = pm.response.json().user;\r",
+													"\r",
+													"    pm.expect(studentResponseJSON.password).to.not.be.empty;\r",
+													"    pm.expect(studentResponseJSON.type).to.not.be.empty;\r",
+													"    pm.expect(studentResponseJSON.firstName).to.not.be.empty;\r",
+													"    pm.expect(studentResponseJSON.lastName).to.not.be.empty;\r",
+													"    pm.expect(studentResponseJSON.courses).to.be.an('array').and.to.not.be.empty;\r",
 													"});"
 												],
 												"type": "text/javascript"
@@ -1224,24 +1817,40 @@
 										}
 									],
 									"request": {
-										"method": "GET",
+										"method": "PUT",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \r\n    \"password\": \"dpijq)*&!\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Sven\",\r\n    \"lastName\": \"Svensson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": {
-											"raw": "{{host}}/api/v1/courses",
+											"raw": "{{host}}/api/v1/users/:id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"courses"
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "gusadnam@student.gu.se"
+												}
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "GET /courses (sort)",
+									"name": "PATCH /users/:id",
 									"event": [
 										{
 											"listen": "test",
@@ -1256,250 +1865,33 @@
 										}
 									],
 									"request": {
-										"method": "GET",
+										"method": "PATCH",
 										"header": [],
-										"url": {
-											"raw": "{{host}}/api/v1/courses/?sortBy=courseName&limit=4&order=descending",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses",
-												""
-											],
-											"query": [
-												{
-													"key": "sortBy",
-													"value": "courseName"
-												},
-												{
-													"key": "limit",
-													"value": "4"
-												},
-												{
-													"key": "order",
-													"value": "descending"
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"lastName\": \"Adamsson\",\r\n    \"courses\": [\"DIT023\", \"DIT046\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
 												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET /courses/:id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});",
-													"",
-													"// Parse the response JSON",
-													"var responseBody = pm.response.json();",
-													"",
-													"// Check if the \"links\" key exists in the response",
-													"pm.test(\"Response contains HATEOAS links\", function () {",
-													"    pm.expect(responseBody).to.have.property(\"links\");",
-													"",
-													"    // Check if the \"links\" property is an array (more links can be defined)",
-													"    pm.expect(responseBody.links).to.be.an(\"array\");",
-													"",
-													"    // Check if the \"links\" object is not empty",
-													"    pm.expect(Object.keys(responseBody.links).length).to.be.above(0);",
-													"});",
-													""
-												],
-												"type": "text/javascript"
 											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
+										},
 										"url": {
-											"raw": "{{host}}/api/v1/courses/:id",
+											"raw": "{{host}}/api/v1/users/:id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"courses",
+												"users",
 												":id"
 											],
 											"variable": [
 												{
 													"key": "id",
-													"value": "DIT023"
+													"value": "gusadnam@student.gu.se"
 												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET /courses/:id/employees",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/v1/courses/:id/employees",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses",
-												":id",
-												"employees"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "DIT111"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET /courses/:id/employees/:employee_id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/v1/courses/:id/employees/:employee_id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses",
-												":id",
-												"employees",
-												":employee_id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "DIT111"
-												},
-												{
-													"key": "employee_id",
-													"value": "generic-email@gu.se"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET /courses/:id/employees/:employee_id (invalid)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 404\", function () {",
-													"    pm.response.to.have.status(404);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/v1/courses/:id/employees/:employee_id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses",
-												":id",
-												"employees",
-												":employee_id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "DIT023"
-												},
-												{
-													"key": "employee_id",
-													"value": "another-generic-email@gu.se"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET /courses/*/invalid",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 404\", function () {",
-													"    pm.response.to.have.status(404);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/v1/courses/foo/bar",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses",
-												"foo",
-												"bar"
 											]
 										}
 									},
@@ -1510,10 +1902,10 @@
 					]
 				},
 				{
-					"name": "PUT",
+					"name": "RELATIONSHIPS",
 					"item": [
 						{
-							"name": "PUT /employees/:id",
+							"name": "GET /courses/:id/employees",
 							"event": [
 								{
 									"listen": "test",
@@ -1528,132 +1920,10 @@
 								}
 							],
 							"request": {
-								"method": "PUT",
+								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"emailAddress\": \"generic-email-new@gu.se\",\r\n    \"name\": \"RBS 2.0\",\r\n    \"contactInfo\": \"+46 555 444 V2\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "{{host}}/api/v1/employees/:id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"employees",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "generic-email@gu.se"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "PUT /students/:id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Response status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"All fields to be updated are non-empty\", function () {\r",
-											"    const studentResponseJSON = pm.response.json().student;\r",
-											"\r",
-											"    pm.expect(studentResponseJSON.firstName).to.not.be.empty;\r",
-											"    pm.expect(studentResponseJSON.lastName).to.not.be.empty;\r",
-											"    pm.expect(studentResponseJSON.courses).to.be.an('array').and.to.not.be.empty;\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"firstName\": \"Sven\",\r\n    \"lastName\": \"Svensson\",\r\n    \"courses\": [\"DIT111\", \"DIT023\"]\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/v1/students/:id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"students",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "gusadnam@student.gu.se"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "PUT /courses/:id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Response status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});",
-											"",
-											"pm.test(\"All fields to be updated are non-empty\", function () {",
-											"    const courseResponseJSON = pm.response.json().course;",
-											"",
-											"    // there's at least one person responsible for a course",
-											"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
-											"    // a course can have 0 dependencies",
-											"    pm.expect(courseResponseJSON.dependencies).to.be.an('array');",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"courseName\": \"MAT Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"credits\": 8,\n    \"term\": 2,\n    \"studyPeriod\": 4,\n    \"dependencies\": []\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/v1/courses/:id",
+									"raw": "{{host}}/api/v1/courses/:id/employees",
 									"host": [
 										"{{host}}"
 									],
@@ -1661,12 +1931,13 @@
 										"api",
 										"v1",
 										"courses",
-										":id"
+										":id",
+										"employees"
 									],
 									"variable": [
 										{
 											"key": "id",
-											"value": "DIT023"
+											"value": "DIT043"
 										}
 									]
 								}
@@ -1674,7 +1945,7 @@
 							"response": []
 						},
 						{
-							"name": "PUT /courses/:id",
+							"name": "GET /courses/:id/employees/:employee_id",
 							"event": [
 								{
 									"listen": "test",
@@ -1682,61 +1953,17 @@
 										"exec": [
 											"pm.test(\"Response status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
-											"});",
-											"",
-											"pm.test(\"All fields to be updated are non-empty\", function () {",
-											"    const courseResponseJSON = pm.response.json().course;",
-											"",
-											"    pm.expect(courseResponseJSON.courseName).to.not.be.empty;",
-											"",
-											"    // there's at least one person responsible for a course",
-											"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
-											"    // a course can have 0 dependencies",
-											"    pm.expect(courseResponseJSON.dependencies).to.be.an('array');",
 											"});"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											""
 										],
 										"type": "text/javascript"
 									}
 								}
 							],
-							"protocolProfileBehavior": {
-								"followAuthorizationHeader": false,
-								"followRedirects": true,
-								"removeRefererHeaderOnRedirect": false,
-								"insecureHTTPParser": false,
-								"disableUrlEncoding": true,
-								"strictSSL": false
-							},
 							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-HTTP-Method-Override",
-										"value": "PUT",
-										"description": "POST -> PUT (sample request; works only for POST remapping).",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"courseName\": \"Foundations for Software Engineering\",\n    \"courseStaff\": [\"Christian\", \"Bea\"],\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"dependencies\": []\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
+								"method": "GET",
+								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/courses/:id",
+									"raw": "{{host}}/api/v1/courses/:id/employees/:employee_id",
 									"host": [
 										"{{host}}"
 									],
@@ -1744,32 +1971,33 @@
 										"api",
 										"v1",
 										"courses",
-										":id"
+										":id",
+										"employees",
+										":employee_id"
 									],
 									"variable": [
 										{
 											"key": "id",
 											"value": "DIT023"
+										},
+										{
+											"key": "employee_id",
+											"value": "math-teacher-email@gu.se"
 										}
 									]
 								}
 							},
 							"response": []
-						}
-					]
-				},
-				{
-					"name": "PATCH",
-					"item": [
+						},
 						{
-							"name": "PATCH /employees/:id",
+							"name": "GET /courses/:id/employees/:employee_id (invalid)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Response status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1777,31 +2005,28 @@
 								}
 							],
 							"request": {
-								"method": "PATCH",
+								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"contactInfo\": \"JUPITER 402\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "{{host}}/api/v1/employees/:id",
+									"raw": "{{host}}/api/v1/courses/:id/employees/:employee_id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
+										"courses",
+										":id",
 										"employees",
-										":id"
+										":employee_id"
 									],
 									"variable": [
 										{
 											"key": "id",
+											"value": "DIT023"
+										},
+										{
+											"key": "employee_id",
 											"value": "another-generic-email@gu.se"
 										}
 									]
@@ -1810,14 +2035,14 @@
 							"response": []
 						},
 						{
-							"name": "PATCH /employees/:id",
+							"name": "GET /courses/*/invalid",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Response status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1825,121 +2050,10 @@
 								}
 							],
 							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-HTTP-Method-Override",
-										"value": "PATCH",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"contactInfo\": \"JUPITER 472\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/v1/employees/:id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"employees",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "another-generic-email@gu.se"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "PATCH /students/:id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Response status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "PATCH",
+								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"lastName\": \"Adamsson\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "{{host}}/api/v1/students/:id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"students",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "gusadnam@student.gu.se"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "PATCH /courses/:id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Response status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"courseName\": \"Mathematical Foundations for Software Engineering\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/v1/courses/:id",
+									"raw": "{{host}}/api/v1/courses/foo/bar",
 									"host": [
 										"{{host}}"
 									],
@@ -1947,13 +2061,8 @@
 										"api",
 										"v1",
 										"courses",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "DIT023"
-										}
+										"foo",
+										"bar"
 									]
 								}
 							},
@@ -1998,11 +2107,11 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "DIT111"
+											"value": "DIT023"
 										},
 										{
 											"key": "employee_id",
-											"value": "another-generic-email@gu.se"
+											"value": "another-math-teacher-email@gu.se"
 										}
 									]
 								}
@@ -2041,7 +2150,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "DIT111"
+											"value": "DIT046"
 										}
 									]
 								}
@@ -2049,7 +2158,7 @@
 							"response": []
 						},
 						{
-							"name": "DEL /students/:id",
+							"name": "DEL /users/:id",
 							"event": [
 								{
 									"listen": "test",
@@ -2067,14 +2176,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/students/:id",
+									"raw": "{{host}}/api/v1/users/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"students",
+										"users",
 										":id"
 									],
 									"variable": [
@@ -2119,7 +2228,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "generic-email-new@gu.se"
+											"value": "oop-phd-email@gu.se"
 										}
 									]
 								}
@@ -2127,7 +2236,7 @@
 							"response": []
 						},
 						{
-							"name": "DEL /students/:id",
+							"name": "DEL /users/:id",
 							"event": [
 								{
 									"listen": "test",
@@ -2151,14 +2260,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{host}}/api/v1/students/:id",
+									"raw": "{{host}}/api/v1/users/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"students",
+										"users",
 										":id"
 									],
 									"variable": [
@@ -2172,7 +2281,7 @@
 							"response": []
 						},
 						{
-							"name": "DEL /students/:id (invalid)",
+							"name": "DEL /users/:id (invalid)",
 							"event": [
 								{
 									"listen": "test",
@@ -2196,14 +2305,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{host}}/api/v1/students/:id",
+									"raw": "{{host}}/api/v1/users/:id",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"students",
+										"users",
 										":id"
 									],
 									"variable": [

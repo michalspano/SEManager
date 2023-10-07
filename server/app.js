@@ -13,6 +13,9 @@ const path = require('path');
 const cors = require('cors');
 const history = require('connect-history-api-fallback');
 const methodOverride = require('method-override');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const { generateSecretKey } = require('./utils/utils')
 
 // Import routes of the versioned API
 const v1Routes = require('./routes/v1');
@@ -22,7 +25,8 @@ require('dotenv').config(); // set-up environment variables (.env)
 
 // Attempt to access .env variables, otherwise replace by the default values
 const port = process.env.PORT || 3000;
-const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/animalDevelopmentDB';
+const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/testDatabaseNew';
+const SESSION_SECRET = process.env.SESSION_SECRET || generateSecretKey();
 
 // Attempt to establish a connection with MongoDB
 mongoose.connect(mongoURI).catch((err) => {
@@ -41,12 +45,29 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Cookies and sessions
+app.use(cookieParser());
+app.use(
+    session({
+        secret: SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            secure: true,
+            httpOnly: true,
+            sameSite: false,        // client and server are on different domains
+            maxAge: 60 * 60 * 1000, // 1 hour
+            path: '/'
+        },
+    })
+);
+
 // HTTP request logger
 app.use(morgan('dev'));
 
 // Enable cross-origin resource sharing for frontend must be registered before api
-app.options('*', cors());
-app.use(cors());
+// Enable cookies modification
+app.use(cors({ withCredentials: true, credentials: true, origin: true }));
 
 // Enable HTTP overriding (for multiple formats)
 app.use(methodOverride('X-HTTP-Method'));           // Microsoft

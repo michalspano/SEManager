@@ -1,23 +1,25 @@
-<!-- Playground environment -->
-
 <script>
 import Year from '@/components/Year.vue'
 
-// I don't know how to get the data so for now I'm just doing dummy data lmao :((( I wanna die I don't understand javascript fr fr
-// Why is it called javascript? It doesn't have anything to do with java... I miss java :(
-
 export default {
+    props: {
+        userType: String
+    },
     components: {
         Year
+    },
+    methods: {
+        userTypeText() {
+            return this.userType === 'admin' ? 'an' : 'a';
+        }
     }
 }
 
 </script>
 
 <template>
-    
     <div class="container-fluid text-center">
-        <h1>Hi there, you better work you fucking piece of shit</h1>
+        <h2>You are logged in as {{ userTypeText() }} <strong>{{ userType }}</strong></h2>
         <div class="row">
             <div class="col">
                 <Year :yearNumber="1"/>

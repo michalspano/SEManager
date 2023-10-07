@@ -1,13 +1,22 @@
-// Mongoose model for a Student
+// Mongoose model for a User
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const StudentModel = new Schema({
+const UserModel = new Schema({
     emailAddress: {
         type: String,
         unique: true,
         trim: true,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        enum: ["student", "admin"],
         required: true
     },
     firstName: {
@@ -25,4 +34,4 @@ const StudentModel = new Schema({
     }]
 });
 
-module.exports = mongoose.model("Student", StudentModel);
+module.exports = mongoose.model("User", UserModel);

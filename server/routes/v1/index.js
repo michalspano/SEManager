@@ -12,12 +12,12 @@ const router = express.Router();
 const apiRouters = require('../../controllers/v1/api');
 const coursesRoutes = require('../../controllers/v1/courses');
 const employeesRoutes = require('../../controllers/v1/employees');
-const studentsRoutes = require('../../controllers/v1/students');
+const usersRoutes = require('../../controllers/v1/users');
 
 // Use the endpoints
 router.use('/', apiRouters);
 router.use('/courses', coursesRoutes);
 router.use('/employees', employeesRoutes);
-router.use('/students', studentsRoutes);
+router.use('/users', usersRoutes);
 
 module.exports = router;

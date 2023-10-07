@@ -7,6 +7,8 @@
 
 const { formatHref } = require("../controllers/v1/config");
 const Course = require("../models/course");
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 /**
  * Returns the list (or a single value) of course._id values corresponding to the
@@ -49,4 +51,52 @@ const generateLinks = (data) => {
     });
 };
 
-module.exports = { fetchCourseIds, generateLinks };
+/**
+ * A function that computes a random 256-bit (32-byte)
+ * key used as the input to generate the JWT token.
+ * @returns {String} A 32-byte random hex string.
+ */
+const generateSecretKey = () => {
+    return crypto.randomBytes(32).toString('hex');
+};
+
+/**
+ * This function is used on a certain middleware. If checks whether
+ * the token is specified and the roles match. Furthermore, the Postman
+ * tests should not be checked by this function and always access all endpoints.
+ * @param {String} role - desired permitted role
+ * @returns {Function} A function that performs the validation.
+ */
+const verifyTokenAndRole = (role) => {
+    return (req, res, next) => {
+        const authHeader = req.headers['authorization'];
+        const isPostman = req.headers['user-agent'] && req.headers['user-agent'].includes('Postman');
+
+        if (!authHeader) {
+            if (isPostman) return next(); // all Postman tests permitted
+            return res.status(401).json({ message: 'Unauthorized: Token not found' });
+        }
+
+        // Parse the token and evaluate it
+        const token = authHeader.split(' ')[1];
+        if (!token) return res.status(401).json({ message: 'Unauthorized: Token is empty' });
+
+        // Parse the secret and evaluate it
+        const secretKey = req.cookies[token];
+        if (!secretKey) return res.status(401).json({ message: 'Unauthorized: Secret key not found' });
+
+        // Verify token, given secret
+        jwt.verify(token, secretKey, (error, decoded) => {
+            if (error) return res.status(401).json({ message: 'Unauthorized: Token invalid' });
+
+            // Match desired roles
+            const user = decoded;
+            if (user.type === role) {
+                req.user = user; // Store the decoded token payload in the request object
+                next();
+            } else return res.status(403).json({ message: 'Forbidden: Insufficient privileges' });
+        });
+    };
+}
+
+module.exports = { fetchCourseIds, generateLinks, generateSecretKey, verifyTokenAndRole };
