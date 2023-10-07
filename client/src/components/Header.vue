@@ -3,7 +3,8 @@ import { ref, onMounted } from 'vue'
 import router from '@/router';
 import eventBus from '@/EventBus';
 
-const buttonMsg = ref('Login')
+// TODO: avoid magic strings
+const buttonMsg = ref(localStorage.getItem('token') ? 'Logout' : 'Login')
 
 // Receive a signal from the EventBus
 onMounted(() => {
@@ -34,7 +35,9 @@ const toggleLogin = () => {
 <template>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid d-flex justify-content-between">
-            <img src="@/assets/logo.gif" alt="Logo" width="50" height="50" class="d-inline-block">
+            <a href="/">
+                <img src="@/assets/logo.gif" alt="Logo" width="50" height="50" class="d-inline-block">
+            </a>
             <span class="fs-3 fw-bold">N1SOF</span>
             <button class="btn btn-primary" @click="toggleLogin">{{ buttonMsg }}</button>
         </div>
@@ -42,13 +45,4 @@ const toggleLogin = () => {
 </template>
 
 <style scoped>
-.admin {
-    color: red;
-    font-weight: 800;
-}
-
-.student {
-    color: green;
-    font-weight: 600;
-}
 </style>
