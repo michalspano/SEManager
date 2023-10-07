@@ -1,28 +1,42 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { ref, onMounted } from 'vue'
+import router from '@/router';
+import eventBus from '@/EventBus';
 
 const buttonMsg = ref('Login')
-const userType = ref('') // TODO: add logic from the API and token
 
-watchEffect(() => {
-    const token = localStorage.getItem('token');
-    buttonMsg.value = token ? 'Logout' : 'Login'
+// Receive a signal from the EventBus
+onMounted(() => {
+    eventBus.on('login-success', () => buttonMsg.value = 'Logout');
 });
+
+/**
+ * A function that is called when the user clicks the login/logout button.
+ */
+const toggleLogin = () => {
+    const token = localStorage.getItem('token')
+    if (token) {
+        localStorage.removeItem('token');
+
+        /* An alternative approach is to emit a signal to the event bus, using the following:
+         * eventBus.emit('logout-success'). However that is not required, because the change
+         * of the text (indicated by such a signal) is within the component. If this event is
+         * to be recognized outside, then it should be emitted accordingly.*/
+        buttonMsg.value = 'Login'
+        router.push('/')
+    } else {
+        router.push('/login')
+    }
+}
 
 </script>
 
 <template>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid d-flex justify-content-between">
-            <a class="navbar-brand" href="/">
-                <img src="@/assets/logo.gif" alt="Logo" width="50" height="50" class="d-inline-block">
-                <span class="fs-4" style="font-weight: 700px;">Software Engineering &amp; Management</span>
-            </a>
-            <!-- TODO: align this properly -->
-            <p class="fs-5" :class="userType.toLowerCase()">{{ userType }}</p>
-            <a href="/login">
-                <button class="btn btn-primary">{{ buttonMsg }}</button>
-            </a>
+            <img src="@/assets/logo.gif" alt="Logo" width="50" height="50" class="d-inline-block">
+            <span class="fs-3 fw-bold">N1SOF</span>
+            <button class="btn btn-primary" @click="toggleLogin">{{ buttonMsg }}</button>
         </div>
     </nav>
 </template>

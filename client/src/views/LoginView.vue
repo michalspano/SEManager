@@ -32,6 +32,7 @@
 <script>
 import { ref } from 'vue'
 import { authenticateUser } from '@/api/v1/userApi'
+import eventBus from '@/EventBus'
 
 export default {
     name: 'Login',
@@ -48,8 +49,7 @@ export default {
             authenticateUser(this.username, this.password).then((response) => {
                 localStorage.setItem('token', response.token);
 
-                // TODO: redirect to some page after successful login,
-                // currently, it is the dashboard with the courses.
+                eventBus.emit('login-success');
                 this.$router.push({ name: 'courses' });
             }).catch(() => {
                 this.errorMessage = "Error: invalid password."
