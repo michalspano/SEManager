@@ -25,6 +25,23 @@ class Graph {
         }
     }
 
+    addVertexArrayObjects(coursesArray) {
+
+        for (var course of coursesArray) {
+            const courseObject = {courseCode: course.courseCode, courseName: course.courseName, courseStatus: 0};
+
+            // Add the current course as a key
+            this.addVertex(courseObject);
+
+            // Add dependencies
+            let dependencies = course.dependencies;
+            for (var dependency of dependencies)
+            {
+                this.addEdge(courseObject, dependency);
+            }
+        }
+    }
+
     addVertex(v)
     {
         this.AdjList.set(v, []);
@@ -53,6 +70,27 @@ class Graph {
             }
 
             console.log(i + " -> " + conc);
+        }
+    }
+
+    printObjectGraph()
+    {
+        var get_keys = this.AdjList.keys();
+
+        // iterate over the vertices
+        for (var i of get_keys)
+        {
+            // console.log(i.courseCode);
+            // get the adjacency list
+            var get_values = this.AdjList.get(i);
+            var conc = "";
+
+            for (var j of get_values)
+            {
+                conc += j + " ";
+            }
+
+            console.log(i.courseCode + " -> " + conc);
         }
     }
 

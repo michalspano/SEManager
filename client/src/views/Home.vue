@@ -8,7 +8,12 @@
         </div>
     </div>
 
-    <div>
+    <div class="container py-4">
+        <h1>Update Test</h1>
+        <button type="button" class="btn btn-danger" @click="updateInfo">Danger</button>
+    </div>
+
+    <!-- <div>
         <h1>Graph test</h1>
         <p>{{ graphData }}</p>
         <p v-for="(nodeData, _) of graphData">
@@ -18,13 +23,28 @@
             </div>
         </p>
 
+    </div> -->
+
+    <div>
+        <h1>Graph test</h1>
+        <!-- <p>{{ graphData }}</p> -->
+        <p v-for="(nodeData, key) of graphData" :key="key">
+            <p>{{ 'Course ' + nodeData[0]['courseCode'] + ', '
+            + nodeData[0]['courseName'] + ' has status '
+            + nodeData[0]['courseStatus'] + ' and it depends on ' }}</p>
+            <div v-for="(dependency, _) in nodeData[1]">
+                <p>{{ dependency + ' with status ' + getCourseStatus(dependency) }}</p>
+                <!-- <p>{{ getCourseStatus(dependency) }}</p> -->
+            </div>
+            <br>
+        </p>
     </div>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue';
 import { getApi } from '@/api/v1/Api';
-import { getCoursesGraph } from '@/api/v1/courseApi';
+import { getCoursesGraph2 } from '@/api/v1/courseApi';
 import Node from '@/components/Node.vue';
 import Edge from '@/components/Edge.vue';
 
@@ -36,15 +56,25 @@ export default {
         
         onMounted(async () => {
             console.log("Test Graph :)");
-            graphData.value = await getCoursesGraph();
-            // console.log(graphData.value.get('DIT182')[1]);
-
+            graphData.value = await getCoursesGraph2();
+            console.log(graphData.value);
+            
             for (var i of graphData.value.keys()) {
-                console.log('Course: ' +  i + ' has:');
-                for(var j of graphData.value.get(i)) {
-                    console.log(j)
+                console.log(i.courseCode + ' has: ');
+                for (var j of graphData.value.get(i))
+                {
+                    console.log(j);
                 }
             }
+
+            // console.log(graphData.value.get('DIT182')[1]);
+
+            // for (var i of graphData.value.keys()) {
+            //     console.log('Course: ' +  i + ' has:');
+            //     for(var j of graphData.value.get(i)) {
+            //         console.log(j)
+            //     }
+            // }
         });
 
         return { message, graphData };
@@ -58,6 +88,35 @@ export default {
             const index = Object.keys(this.graphData).indexOf(node);
             const spacing = 100;
             return {x: index * spacing, y:1000};
+        },
+        async updateInfo() {
+            console.log('Update info');
+            var targetCourse = null;
+            for(var i of this.graphData.keys())
+            {
+                if(i['courseCode'] === 'DIT023')
+                {
+                    targetCourse = i;
+                    i['courseStatus'] = 1;
+                }
+            }
+
+            console.log(targetCourse);
+
+            console.log(this.graphData.get(targetCourse));
+        },
+        getCourseStatus(courseCode) {
+            var targetCourse = null;
+            for(var i of this.graphData.keys())
+            {
+                if(i['courseCode'] === courseCode)
+                {
+                    targetCourse = i;
+                    break;
+                }
+            }
+
+            return targetCourse['courseStatus'];
         }
     },
     components: {
