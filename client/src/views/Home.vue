@@ -6,12 +6,15 @@
             <button type="button" class="btn btn-outline-primary btn-lg" @click="updateMessage">Get response</button>
             <p>The server says:<br/>{{ message }}</p>
         </div>
+        <!-- FIXME: this is just an example placement and will be updated -->
+        <ApiInfo style="width: 30em;"/>
     </div>
 </template>
 
 <script>
 import { ref } from 'vue';
 import { getApi } from '@/api/v1/Api';
+import ApiInfo from '../components/ApiInfo.vue';
 
 export default {
     name: 'Home',
@@ -21,10 +24,11 @@ export default {
     },
     methods: {
         async updateMessage() {
-            const response = await getApi()
-            this.message = response.api_info.description
+            const response = await getApi();
+            this.message = response.api_info.description;
         }
-    }
+    },
+    components: { ApiInfo }
 };
 </script>
 
