@@ -5,6 +5,9 @@ export default {
             active: false,
         }
     },
+    emits: {
+        'sending-status': null
+    },
     props: {
         courseCode: String,
         courseName: String,
@@ -13,10 +16,10 @@ export default {
     methods: {
         handleCardClick() {
             this.active = !this.active;
-            console.log(this.active);
+
+            this.$emit('sending-status', this.courseCode, this.active);
         }
     }
-
 }
 </script>
 

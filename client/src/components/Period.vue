@@ -1,19 +1,29 @@
 <script>
 import Course from '@/components/Course.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch, watchEffect } from 'vue';
 import { getTermCourses } from '@/api/v1/courseApi';
 
 export default {
+    emits: {
+        'send-test': null
+    },
     setup(props) {
         const periodCourses = ref([]);
+        const periodCoursesStatus = ref({});
 
         onMounted(async () => {
-            // TODO: Pass the period and the term here
             periodCourses.value = await getTermCourses(props.semesterNumber, props.periodNumber);
         });
 
+        const testStatus = (courseCode, status) => {
+            console.log(`${courseCode} is active: ${status}`);
+            periodCoursesStatus.value[courseCode] = status;
+        }
+
         return {
-            periodCourses
+            periodCourses,
+            periodCoursesStatus,
+            testStatus
         }
     },
     props: {
@@ -22,32 +32,24 @@ export default {
     },
     components: {
         Course,
-    },
+    }
 }
 </script>
 
 <template>
     <div class="container-fluid text-center">
         <div class="row">
+            <p>{{ periodCoursesStatus }}</p>
             <div class="col">
                 <span class="periodTitle">{{ 'Period ' + periodNumber }}</span>
             </div>
         </div>
         <div class="row gy-2">
             <div class="col" v-for="(course, index) in periodCourses" :key="index">
-                <Course :courseCode="course.courseCode" :courseName="course.courseName" :courseStaff="course.courseStaff"/>
-                
-                <!-- <h3>{{ course.courseName }}</h3> -->
+                <Course :courseCode="course.courseCode" :courseName="course.courseName" :courseStaff="course.courseStaff" @sending-status="testStatus"/>
             </div>
         </div>
     </div>
-    <!-- <div class="period">
-        <span class="periodTitle">{{ 'Period ' + periodNumber }}</span>
-
-        <Course class="courseItem" v-for="(course, index) in periodCourses" :key="index" :courseCode="course.courseCode"
-            :courseName="course.courseName" :courseStaff="course.courseStaff" />
-
-    </div> -->
 </template>
 
 <style scoped>
