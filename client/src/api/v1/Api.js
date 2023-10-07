@@ -24,7 +24,6 @@ export const getApi = async () => {
         const response = await Api.get('/')
         return response.data
     } catch (err) {
-        console.log(err)
         throw err
     }
 }
