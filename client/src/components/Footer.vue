@@ -11,6 +11,7 @@ onMounted(async () => {
         apiInfo.value = response.version;
     } catch {
         console.error('Problem getting API information')
+        apiInfo.value = 'error'
     }
 })
 
