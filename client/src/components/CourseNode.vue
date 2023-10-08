@@ -44,7 +44,7 @@ export default {
 </script>
 
 <template>
-    <div class="card w-100" :class="passed ? 'passed' : 'not-passed'" @click="handleCardClick">
+    <div class="card w-100" :class="courseCardClass" @click="handleCardClick">
         <div class="card-header">{{ courseCode }}</div>
         <div class="card-body">
             {{ courseName + ' status: ' + status }}
@@ -77,5 +77,9 @@ p {
 
 .not-passed {
     color: black;
+}
+
+.locked {
+    color: white;
 }
 </style>
