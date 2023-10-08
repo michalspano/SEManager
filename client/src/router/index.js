@@ -47,6 +47,11 @@ const router = createRouter({
       component: () => import('@/views/CourseInformationView.vue'),
       meta: { requiresAuth: true }
     },
+    {
+      path: '/testgraph',
+      name: 'testgraph',
+      component: () => import('@/views/TestGraph.vue')
+    }
   ]
 })
 
