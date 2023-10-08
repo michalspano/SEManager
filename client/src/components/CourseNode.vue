@@ -2,7 +2,7 @@
 export default {
     data() {
         return {
-            active: false,
+            passed: false,
         }
     },
     emits: {
@@ -11,18 +11,30 @@ export default {
     props: {
         courseCode: String,
         courseName: String,
+        status: Number
+    },
+    computed: {
+        courseCardClass() {
+            return {
+                'card': true,
+                'w-100': true,
+                'passed': this.status === 2,
+                'not-paassed': this.status === 1,
+                'locked': this.status === 0,
+            }
+        }
     },
     methods: {
         handleCardClick() {
-            this.active = !this.active;
+            this.passed = !this.passed;
 
-            let status = 0;
+            let status = null;
 
-            if (this.active === false) {
-                status = 0;
-            }
-            else if (this.active === true) {
+            if (this.passed === false) {
                 status = 1;
+            }
+            else if (this.passed === true) {
+                status = 2;
             }
 
             this.$emit('sending-status', this.courseCode, status);
@@ -32,10 +44,10 @@ export default {
 </script>
 
 <template>
-    <div class="card w-100" :class="active ? 'enabled' : 'disabled'" @click="handleCardClick">
+    <div class="card w-100" :class="passed ? 'passed' : 'not-passed'" @click="handleCardClick">
         <div class="card-header">{{ courseCode }}</div>
         <div class="card-body">
-            {{ courseName }}
+            {{ courseName + ' status: ' + status }}
         </div>
         <div class="card-footer"></div>
     </div>
@@ -59,11 +71,11 @@ p {
     cursor: pointer;
 }
 
-.enabled {
-    color: black;
+.passed {
+    color: green;
 }
 
-.disabled {
-    color: white;
+.not-passed {
+    color: black;
 }
 </style>

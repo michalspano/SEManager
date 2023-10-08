@@ -18,7 +18,7 @@
         </div>
         <div class="row gy-2">
             <div v-for="(nodeData, _) of graphData" class="col">
-                <CourseNode :courseCode="nodeData[0]['courseCode']" :courseName="nodeData[0]['courseName']" @sending-status="testStatus"/>
+                <CourseNode :courseCode="nodeData[0]['courseCode']" :courseName="nodeData[0]['courseName']" :status="nodeData[0]['courseStatus']" @sending-status="testStatus"/>
             </div>
         </div>
     </div>
@@ -51,15 +51,15 @@ export default {
         
         onMounted(async () => {
             graphData.value = await getCoursesGraph();
-            console.log(graphData.value);
         });
 
         const testStatus = (courseCode, status) => {
             updateCourseStatus(courseCode, status);
+            updateCoursesCompletionStatus();
         }
 
         const updateCourseStatus = (courseCode, status) => {
-            for(var i of graphData.value.keys())
+            for (var i of graphData.value.keys())
             {
                 if(i['courseCode'] === courseCode)
                 {
@@ -68,12 +68,9 @@ export default {
             }
         }
 
-        return { graphData, testStatus };
-    },
-    methods: {
-        getCourseStatus(courseCode) {
+        const getCourseStatus = (courseCode) => {
             var targetCourse = null;
-            for(var i of this.graphData.keys())
+            for(var i of graphData.value.keys())
             {
                 if(i['courseCode'] === courseCode)
                 {
@@ -84,6 +81,48 @@ export default {
 
             return targetCourse['courseStatus'];
         }
+
+        const updateCoursesCompletionStatus = () => {
+            // Go through all the courses and see if the dependencies are fulfilled
+            // If the dependencies have both status 2, then unlock the course (set status 1)
+            // If not, set status 0 (locked)
+            console.log("Update courses");
+            for (var i of graphData.value.keys())
+            {
+                if (getCourseStatus(i['courseCode']) === 2) {
+                    console.log(i['courseCode'] + ' is completed :)!');
+                    continue;
+                }
+                let dependencies = graphData.value.get(i);
+                let numberOfDependencies = dependencies.length;
+                console.log(i['courseCode'] + ' has ' + numberOfDependencies + ' dependencies: ');
+
+                const totalPoints = numberOfDependencies * 2;
+
+                let sumOfDependenciesStatus = 0;
+                for (var j of dependencies)
+                {
+                    sumOfDependenciesStatus += getCourseStatus(j);
+                    console.log(j + ' with status ' + getCourseStatus(j));
+                }
+
+                console.log('Sum of dependencies: ' + sumOfDependenciesStatus);
+
+                if(sumOfDependenciesStatus === totalPoints)
+                {
+                    console.log("Unlocked!");
+                    i['courseStatus'] = 1;
+                }
+                else {
+                    console.log("Locked :(");
+                    i['courseStatus'] = 0;
+                }
+
+                console.log('\n');
+            }
+        }
+
+        return { graphData, testStatus, getCourseStatus };
     },
     components: {
         CourseNode
