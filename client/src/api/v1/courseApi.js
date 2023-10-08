@@ -55,6 +55,7 @@ export const getTermCourses = async (term, period) => {
 
 export const getCoursesGraph = async () => {
     let response = null;
+    
     try {
         response = await CourseApi.get('/');
     } catch (err) {
@@ -64,44 +65,12 @@ export const getCoursesGraph = async () => {
 
     let courses = response.data.courses;
     let numberOfCourses = courses.length;
+
 
     var graph = new Graph(numberOfCourses);
 
-    graph.addVertexArray(courses);
-
-    var graph2 = new Graph(numberOfCourses);
-
-    graph2.addVertexArrayObjects(courses);
-
-    console.log('Course objects graph: ')
-    graph2.printObjectGraph();
-    console.log(graph2.getAdjList());
-
-    // graph.printGraph();
+    graph.addVertexArrayObjects(courses);
     
     console.log('End of API call \n\n\n')
     return graph.getAdjList();
-}
-
-export const getCoursesGraph2 = async () => {
-    let response = null;
-    try {
-        response = await CourseApi.get('/');
-    } catch (err) {
-        console.log(err)
-        throw err
-    }
-
-    let courses = response.data.courses;
-    let numberOfCourses = courses.length;
-
-
-    var graph2 = new Graph(numberOfCourses);
-
-    graph2.addVertexArrayObjects(courses);
-
-    // graph.printGraph();
-    
-    console.log('End of API call \n\n\n')
-    return graph2.getAdjList();
 }

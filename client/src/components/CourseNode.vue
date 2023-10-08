@@ -32,7 +32,7 @@ export default {
 </script>
 
 <template>
-    <div class="card w-50" :class="active ? 'enabled' : 'disabled'" @click="handleCardClick">
+    <div class="card w-100" :class="active ? 'enabled' : 'disabled'" @click="handleCardClick">
         <div class="card-header">{{ courseCode }}</div>
         <div class="card-body">
             {{ courseName }}
