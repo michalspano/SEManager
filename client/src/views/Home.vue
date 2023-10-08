@@ -39,6 +39,32 @@
             <br>
         </p>
     </div>
+
+    <div class="container-fluid align-items-center justify-content-center">
+        <h2>Node Test</h2>
+        <CourseNode courseCode="DIT420" courseName="FUck this shit"></CourseNode>
+    </div>
+
+    <div class="container-fluid text-center">
+        <div class="row">
+            <h1>Node Test</h1>
+            <div class="col">
+                <span>Test</span>
+            </div>
+        </div>
+        <div class="row gy-2">
+            <div v-for="(nodeData, _) of graphData">
+                <CourseNode :courseCode="nodeData[0]['courseCode']" :courseName="nodeData[0]['courseName']" @sending-status="testStatus"/>
+            </div>
+            <!-- <div class="col" v-for="(course, index) in periodCourses" :key="index"> -->
+                <!-- <Course :courseCode="course.courseCode" :courseName="course.courseName" :courseStaff="course.courseStaff" @sending-status="testStatus"/> -->
+            </div>
+        </div>
+
+    <div>
+        <h1>THIS IS JUTS A FHIGE PARAFJKSJKFASF JKFASFJK FKJDSK JFKJDSF KJ</h1>
+    </div>
+
 </template>
 
 <script>
@@ -47,6 +73,7 @@ import { getApi } from '@/api/v1/Api';
 import { getCoursesGraph2 } from '@/api/v1/courseApi';
 import Node from '@/components/Node.vue';
 import Edge from '@/components/Edge.vue';
+import CourseNode from '@/components/CourseNode.vue';
 
 export default {
     name: 'Home',
@@ -59,13 +86,13 @@ export default {
             graphData.value = await getCoursesGraph2();
             console.log(graphData.value);
             
-            for (var i of graphData.value.keys()) {
-                console.log(i.courseCode + ' has: ');
-                for (var j of graphData.value.get(i))
-                {
-                    console.log(j);
-                }
-            }
+            // for (var i of graphData.value.keys()) {
+            //     console.log(i.courseCode + ' has: ');
+            //     for (var j of graphData.value.get(i))
+            //     {
+            //         console.log(j);
+            //     }
+            // }
 
             // console.log(graphData.value.get('DIT182')[1]);
 
@@ -77,7 +104,27 @@ export default {
             // }
         });
 
-        return { message, graphData };
+        const testStatus = (courseCode, status) => {
+            console.log(`${courseCode} status: ${status}`);
+            updateCourseStatus(courseCode, status);
+
+            // periodCoursesStatus.value[courseCode] = status;
+        }
+
+        const updateCourseStatus = (courseCode, status) => {
+            // TODO: FInish this updateing the course status
+            console.log(`Updating course status for ${courseCode} | ${status}`);
+            
+            for(var i of graphData.value.keys())
+            {
+                if(i['courseCode'] === courseCode)
+                {
+                    i['courseStatus'] = status;
+                }
+            }
+        }
+
+        return { message, graphData, testStatus };
     },
     methods: {
         async updateMessage() {
@@ -121,7 +168,8 @@ export default {
     },
     components: {
         Node,
-        Edge
+        Edge,
+        CourseNode
     }
 };
 </script>
