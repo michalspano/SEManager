@@ -26,6 +26,14 @@ export default {
     },
     methods: {
         handleCardClick() {
+
+            if (this.status === 0)
+            {
+                // Not clickable
+                return;
+            }
+
+            // Toggle between passed and not-passed
             this.passed = !this.passed;
 
             let status = null;
@@ -81,5 +89,6 @@ p {
 
 .locked {
     color: white;
+    pointer-events: none;
 }
 </style>
