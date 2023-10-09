@@ -18,6 +18,7 @@
         </div>
         <div class="row gy-2">
             <div v-for="(nodeData, _) of graphData" class="col">
+                <span>{{ 'Term: ' + nodeData[0]['courseTerm'] + ' Period: ' + nodeData[0]['coursePeriod'] }}</span>
                 <CourseNode :courseCode="nodeData[0]['courseCode']" :courseName="nodeData[0]['courseName']" :status="nodeData[0]['courseStatus']" @sending-status="testStatus"/>
             </div>
         </div>
@@ -89,16 +90,16 @@ export default {
             // Go through all the courses and see if the dependencies are fulfilled
             // If the dependencies have both status 2, then unlock the course (set status 1)
             // If not, set status 0 (locked)
-            console.log("Update courses");
+            // console.log("Update courses");
             for (var i of graphData.value.keys())
             {
                 if (getCourseStatus(i['courseCode']) === 2) {
-                    console.log(i['courseCode'] + ' is completed :)!');
+                    // console.log(i['courseCode'] + ' is completed :)!');
                     continue;
                 }
                 let dependencies = graphData.value.get(i);
                 let numberOfDependencies = dependencies.length;
-                console.log(i['courseCode'] + ' has ' + numberOfDependencies + ' dependencies: ');
+                // console.log(i['courseCode'] + ' has ' + numberOfDependencies + ' dependencies: ');
 
                 const totalPoints = numberOfDependencies * 2;
 
@@ -106,18 +107,18 @@ export default {
                 for (var j of dependencies)
                 {
                     sumOfDependenciesStatus += getCourseStatus(j);
-                    console.log(j + ' with status ' + getCourseStatus(j));
+                    // console.log(j + ' with status ' + getCourseStatus(j));
                 }
 
-                console.log('Sum of dependencies: ' + sumOfDependenciesStatus);
+                // console.log('Sum of dependencies: ' + sumOfDependenciesStatus);
 
                 if(sumOfDependenciesStatus === totalPoints)
                 {
-                    console.log("Unlocked!");
+                    // console.log("Unlocked!");
                     i['courseStatus'] = 1;
                 }
                 else {
-                    console.log("Locked :(");
+                    // console.log("Locked :(");
                     i['courseStatus'] = 0;
                 }
 
@@ -129,6 +130,20 @@ export default {
     },
     components: {
         CourseNode
-    }
+    },
+    // computed: {
+    //     filteredGraphData() {
+    //         if (!this.graphData) {
+    //             return [];
+    //         }
+
+    //         const desiredPeriod = 'desiredPeriod';
+    //         const desiredTerm = 'desiredTerm';
+
+    //         return this.graphData.filter(nodeData => {
+    //             return nodeData[0].coursePe
+    //         })
+    //     }
+    // }
 };
 </script>

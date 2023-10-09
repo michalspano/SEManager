@@ -8,7 +8,12 @@ class Graph {
     addVertexArrayObjects(coursesArray) {
 
         for (var course of coursesArray) {
-            const courseObject = {courseCode: course.courseCode, courseName: course.courseName, courseStatus: 0};
+            const courseObject = {
+                courseCode: course.courseCode,
+                courseName: course.courseName,
+                coursePeriod: course.studyPeriod,
+                courseTerm: course.term,
+                courseStatus: 0};
 
             // TODO: Initialize the first courses with status: 1
             // I should change this to the courses of the first period instead of hard coding it
