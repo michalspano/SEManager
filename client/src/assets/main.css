@@ -8,13 +8,13 @@
   color: var(--secondary-color);
 }
 
-#app button {
+#app button, .router-link-class.btn {
   border: var(--accent-color);
   color: var(--primary-color);
   background-color: var(--accent-color);
 }
 
-#app button:hover {
+#app button:hover, .router-link-class.btn:hover {
   border: var(--highlight-color);
   color: var(--primary-color);
   background-color: var(--highlight-color);
