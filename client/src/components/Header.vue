@@ -35,9 +35,9 @@ const toggleLogin = () => {
 <template>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid d-flex justify-content-between">
-            <a href="/">
+            <router-link to="/">
                 <img src="@/assets/logo.gif" alt="Logo" width="50" height="50" class="d-inline-block">
-            </a>
+            </router-link>
             <span class="fs-3 fw-bold">N1SOF</span>
             <button class="btn btn-primary" @click="toggleLogin">{{ buttonMsg }}</button>
         </div>
