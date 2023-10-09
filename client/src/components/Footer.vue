@@ -33,6 +33,7 @@ onMounted(async () => {
     padding: 5px;
 }
 
+/* FIXME: fix the overflow on desktop devices */
 footer {
     position: fixed;
     width: 100%;
@@ -40,7 +41,7 @@ footer {
     left: 0;
 }
 
-/* Wrap the footer differently on smaller devices */
+/* Wrap the footer below on smaller devices */
 @media (max-width: 756px) {
     footer {
         position: relative;
