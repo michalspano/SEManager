@@ -39,4 +39,12 @@ footer {
     bottom: 0;
     left: 0;
 }
+
+/* Wrap the footer differently on smaller devices */
+@media (max-width: 756px) {
+    footer {
+        position: relative;
+    }
+}
+
 </style>

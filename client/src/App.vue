@@ -7,7 +7,7 @@ import Footer from '@/components/Footer.vue'
 <!-- the body of the component -->
 <template>
   <Header/>
-  <nav>
+  <nav id="router-view">
     <!-- Render the content of the current page view -->
     <RouterView/>
   </nav>
@@ -15,5 +15,9 @@ import Footer from '@/components/Footer.vue'
 </template>
 
 <style scoped>
-/* the scoped style */
+#router-view {
+  min-height: 100vh;
+  background-color: var(--primary-color); /* Make bg color consistent with the global
+                                            value from main.css */
+}
 </style>

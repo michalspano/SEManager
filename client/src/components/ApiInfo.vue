@@ -1,7 +1,7 @@
 <script setup>
 
 import { ref, onMounted } from 'vue';
-import { getApi } from '../api/v1/Api';
+import { getApi } from '@/api/v1/Api';
 
 const apiInfo = ref({})
 const apiErrorMsg = ref('')
