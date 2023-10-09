@@ -2,6 +2,7 @@
 <template>
     <div class="container py-4">
         <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+            <p class="fs-1">Welcome to <strong>SEManager</strong> (TODO: make formatting proper)</p>
             <p class="fs-4"><i>&#8208; for the "real" SEM experience</i></p>
             <div class="row">
                 <div class="col-md-6">
