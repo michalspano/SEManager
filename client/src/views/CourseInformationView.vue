@@ -2,21 +2,33 @@
 
 import CourseInformation from '@/components/CourseInformation.vue';
 import { getCourse } from '../api/v1/courseApi';
+import { getCourseEmployees } from '../api/v1/courseApi';
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 let courseID = route.params.id;
 const course = ref(null);
+const employeesList = ref(null);
+
+const fetchData = async (courseID) => {
+    //TODO: Should we catch potential errors here?
+    const [courseData, employeesData] = await Promise.all([
+        getCourse(courseID),
+        getCourseEmployees(courseID)
+    ]);
+    course.value = courseData;
+    employeesList.value = employeesData;
+};
 
 onMounted(async () => {
-    //TODO: Should we catch potential errors here?
-    course.value = await getCourse(courseID);
+    await fetchData(courseID);
 });
 
+//TODO: We could also use beforeRouteUpdate: https://router.vuejs.org/guide/advanced/navigation-guards.html ? 
 watch(route, async (newRoute) => {
     courseID = newRoute.params.id;
-    course.value = await getCourse(courseID);
+    await fetchData(courseID);
 });
 
 </script>
@@ -50,16 +62,17 @@ watch(route, async (newRoute) => {
             <div class="container">
                 <div class="component">
                     <CourseInformation
-                    v-if="course"
+                    v-if="course && employeesList"
                     :courseCode="course.courseCode"
                     :courseName="course.courseName"
                     :courseStaff="course.courseStaff"
                     :dependencies="course.dependencies"
+                    :employees="employeesList"
                     ></CourseInformation>
                 </div>
             </div>
         </div>
-        
+                
     </div>
 </template>
 
