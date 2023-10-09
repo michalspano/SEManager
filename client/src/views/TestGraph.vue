@@ -39,9 +39,6 @@ import { getCoursesGraph } from '@/api/v1/courseApi';
 import CourseNode from '@/components/CourseNode.vue';
 import YearContainer from '@/components/YearContainer.vue'
 
-//TODO: I know how to fix the rest, I just need to pass the term and period to the objects in the graph
-// With that I should be able to organize them in the grid without any problem
-
 export default {
     name: 'Home',
     setup() {
