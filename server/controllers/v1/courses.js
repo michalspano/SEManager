@@ -209,7 +209,7 @@ router.post('/:id/employees', verifyTokenAndRole('admin'), (req, res, next) => {
 });
 
 // Get all employees of a given course
-router.get('/:id/employees/', (req, res, next) => {
+router.get('/:id/employees', (req, res, next) => {
     Course.findOne({ courseCode: req.params.id }).exec()
         .then((course) => {
             if (course == null) {
