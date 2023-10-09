@@ -7,3 +7,20 @@
   -moz-osx-font-smoothing: grayscale;
   color: var(--secondary-color);
 }
+
+#app button {
+  border: var(--accent-color);
+  color: var(--primary-color);
+  background-color: var(--accent-color);
+}
+
+#app button:hover {
+  border: var(--highlight-color);
+  color: var(--primary-color);
+  background-color: var(--highlight-color);
+  box-shadow: 0 0 0 0.2rem rgba(106, 109, 166, 0.5);
+}
+
+html {
+  background-color: var(--primary-color);
+}
