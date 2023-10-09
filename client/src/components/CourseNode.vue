@@ -55,7 +55,7 @@ export default {
     <div class="card w-100" :class="courseCardClass" @click="handleCardClick">
         <div class="card-header">{{ courseCode }}</div>
         <div class="card-body">
-            {{ courseName + ' status: ' + status }}
+            {{ courseName }}
         </div>
         <div class="card-footer"></div>
     </div>

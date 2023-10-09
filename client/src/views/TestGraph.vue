@@ -1,25 +1,18 @@
 <template>
-    <div>
-        <h1>Graph test</h1>
-        <div v-for="(nodeData, _) of graphData">
-            <br>
-            <span>{{ 'Course ' + nodeData[0]['courseCode'] + ', ' + nodeData[0]['courseName'] + ' has status ' + nodeData[0]['courseStatus'] + ' and it depends on ' }}</span>
-            
-            <div v-for="(dependency, _) in nodeData[1]">
-                <span>{{ dependency + ' with status ' + getCourseStatus(dependency) }}</span>
-            </div>
-            <br>
-        </div>
-    </div>
 
     <div class="container-fluid text-center">
         <div class="row">
             <h1>Node Test</h1>
         </div>
         <div class="row gy-2">
-            <div v-for="(nodeData, _) of graphData" class="col">
-                <span>{{ 'Term: ' + nodeData[0]['courseTerm'] + ' Period: ' + nodeData[0]['coursePeriod'] }}</span>
-                <CourseNode :courseCode="nodeData[0]['courseCode']" :courseName="nodeData[0]['courseName']" :status="nodeData[0]['courseStatus']" @sending-status="testStatus"/>
+            <div class="col">
+                <YearContainer :yearNumber="1" :yearCourses="firstYearCourses" @sending-status="testStatus"></YearContainer>
+            </div>
+            <div class="col">
+                <YearContainer :yearNumber="2" :yearCourses="secondYearCourses" @sending-status="testStatus"></YearContainer>
+            </div>
+            <div class="col">
+                <YearContainer :yearNumber="3" :yearCourses="thirdYearCourses" @sending-status="testStatus"></YearContainer>
             </div>
         </div>
     </div>
@@ -44,6 +37,7 @@
 import { ref, onMounted } from 'vue';
 import { getCoursesGraph } from '@/api/v1/courseApi';
 import CourseNode from '@/components/CourseNode.vue';
+import YearContainer from '@/components/YearContainer.vue'
 
 //TODO: I know how to fix the rest, I just need to pass the term and period to the objects in the graph
 // With that I should be able to organize them in the grid without any problem
@@ -129,21 +123,68 @@ export default {
         return { graphData, testStatus, getCourseStatus };
     },
     components: {
-        CourseNode
+        CourseNode,
+        YearContainer
     },
-    // computed: {
-    //     filteredGraphData() {
-    //         if (!this.graphData) {
-    //             return [];
-    //         }
+    computed: {
+        firstYearCourses() {
+            
+            if (!this.graphData) {
+                return null;
+            }
+            
+            // Convert the Map to an array of key-value pairs
+            const graphArray = Array.from(this.graphData);
 
-    //         const desiredPeriod = 'desiredPeriod';
-    //         const desiredTerm = 'desiredTerm';
+            // I would like to make this a parameter but vue doesn't allow it
+            // TODO: There is some repetition going on here but there's no much to do
+            // Otherwise it looks too bloated
+            let year = 1;
 
-    //         return this.graphData.filter(nodeData => {
-    //             return nodeData[0].coursePe
-    //         })
-    //     }
-    // }
+            let firstTerm = (year * 2) - 1;
+            let secondTerm = year * 2;
+
+
+            return graphArray.filter(([key, _]) => 
+                key.courseTerm === firstTerm || key.courseTerm === secondTerm
+            );
+        },
+        secondYearCourses() {
+            
+            if (!this.graphData) {
+                return null;
+            }
+
+            let year = 2;
+
+            let firstTerm = year * 2 - 1;
+            let secondTerm = year * 2;
+            
+            // Convert the Map to an array of key-value pairs
+            const graphArray = Array.from(this.graphData);
+
+            return graphArray.filter(([key, _]) => 
+                key.courseTerm === firstTerm || key.courseTerm === secondTerm
+            );
+        },
+        thirdYearCourses() {
+            
+            if (!this.graphData) {
+                return null;
+            }
+
+            let year = 3;
+
+            let firstTerm = year * 2 - 1;
+            let secondTerm = year * 2;
+            
+            // Convert the Map to an array of key-value pairs
+            const graphArray = Array.from(this.graphData);
+
+            return graphArray.filter(([key, _]) => 
+                key.courseTerm === firstTerm || key.courseTerm === secondTerm
+            );
+        }
+    },
 };
 </script>
