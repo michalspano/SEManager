@@ -7,7 +7,7 @@
 
 import axios from 'axios'
 import * as config from '@/api/v1/apiConfig'
-import Graph from '../../utils/Graph'
+import Graph from '@/modules/Graph'
 
 /**
  * CourseApi is an Axios instance which provides the baseURL for all the HTTP requests.
