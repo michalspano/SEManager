@@ -32,10 +32,28 @@ export const getCourses = async () => {
     }
 }
 
+/**
+ * Function to return a specific course.
+ * @returns {Promise} Promise object represents the course.
+ */
 export const getCourse = async (courseCode) => {
     try {
         const response = await CourseApi.get('/' + courseCode);
         return response.data.course
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+}
+
+/**
+ * Function to return all employees of a specific course.
+ * @returns {Promise} Promise object representing the list of employees.
+ */
+export const getCourseEmployees = async (courseCode) => {
+    try {
+        const response = await CourseApi.get('/' + courseCode + '/employees');
+        return response.data.employees
     } catch (err) {
         console.log(err)
         throw err
