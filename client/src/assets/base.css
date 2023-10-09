@@ -1,4 +1,7 @@
 :root {
-  /* TODO: add base configuration */
+  --primary-color: #f0f1f2;
+  --secondary-color: #151426;
+  --tertiary-color: #010440;
+  --highlight-color: #323673;
+  --accent-color: #6A6DA6;
 }
-
