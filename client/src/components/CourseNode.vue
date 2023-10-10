@@ -1,53 +1,41 @@
-<script>
-export default {
-    data() {
-        return {
-            passed: false,
-        }
-    },
-    emits: {
-        'sending-status': null
-    },
-    props: {
-        courseCode: String,
-        courseName: String,
-        status: Number
-    },
-    computed: {
-        courseCardClass() {
-            return {
-                'card': true,
-                'w-100': true,
-                'passed': this.status === 2,
-                'not-paassed': this.status === 1,
-                'locked': this.status === 0,
-            }
-        }
-    },
-    methods: {
-        handleCardClick() {
+<script setup>
 
-            if (this.status === 0)
-            {
-                // Not clickable
-                return;
-            }
+import { ref, computed } from 'vue';
 
-            // Toggle between passed and not-passed
-            this.passed = !this.passed;
+const passed = ref(false);
 
-            let status = null;
+const emit = defineEmits(['sending-status']);
 
-            if (this.passed === false) {
-                status = 1;
-            }
-            else if (this.passed === true) {
-                status = 2;
-            }
+const props = defineProps({
+    courseCode: String,
+    courseName: String,
+    status: Number
+})
 
-            this.$emit('sending-status', this.courseCode, status);
-        }
+const courseCardClass = computed(() => {
+    return {
+        'card': true,
+        'w-100': true,
+        'passed': props.status === 2,
+        'not-passed': props.status === 1,
+        'locked': props.status === 0
     }
+})
+
+const handleCardClick = () => {
+
+    passed.value = !passed.value;
+
+    let status = null;
+
+    if (passed.value === false) {
+        status = 1;
+    }
+    else if (passed.value === true) {
+        status = 2;
+    }
+
+    emit('sending-status', props.courseCode, status);
 }
 </script>
 
