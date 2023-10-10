@@ -89,6 +89,5 @@ export const getCoursesGraph = async () => {
 
     graph.addVertexArrayObjects(courses);
     
-    console.log('End of API call \n\n\n')
     return graph.getAdjList();
 }
