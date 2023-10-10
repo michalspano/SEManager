@@ -78,6 +78,7 @@ const verifyTokenAndRole = (role) => {
         }
 
         // Parse the token and evaluate it
+        // Expected format: Bearer <token>
         const token = authHeader.split(' ')[1];
         if (!token) return res.status(401).json({ message: 'Unauthorized: Token is empty' });
 
@@ -85,9 +86,14 @@ const verifyTokenAndRole = (role) => {
         const secretKey = req.cookies[token];
         if (!secretKey) return res.status(401).json({ message: 'Unauthorized: Secret key not found' });
 
-        // Verify token, given secret
+        // Verify token given the secret
         jwt.verify(token, secretKey, (error, decoded) => {
-            if (error) return res.status(401).json({ message: 'Unauthorized: Token invalid' });
+            if (error) {
+                if (error.name === 'TokenExpiredError')
+                    return res.status(401).json({ message: error.name });
+
+                return res.status(401).json({ message: 'Unauthorized: Token invalid' });
+            }
 
             // Match desired roles
             const user = decoded;

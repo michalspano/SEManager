@@ -7,6 +7,7 @@
 
 import axios from 'axios'
 import * as config from '@/api/v1/apiConfig'
+import Graph from '@/modules/Graph'
 
 /**
  * CourseApi is an Axios instance which provides the baseURL for all the HTTP requests.
@@ -68,4 +69,26 @@ export const getTermCourses = async (term, period) => {
         console.log(err)
         throw err
     }
+}
+
+export const getCoursesGraph = async () => {
+    let response = null;
+    
+    try {
+        response = await CourseApi.get('/');
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+
+    let courses = response.data.courses;
+    let numberOfCourses = courses.length;
+
+
+    var graph = new Graph(numberOfCourses);
+
+    graph.addVertexArrayObjects(courses);
+    
+    console.log('End of API call \n\n\n')
+    return graph.getAdjList();
 }

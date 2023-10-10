@@ -42,6 +42,7 @@
             </div>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -53,6 +54,7 @@ export default {
     name: 'Home',
     setup() {
         const message = ref('none');
+
         return { message };
     },
     methods: {

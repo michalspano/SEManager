@@ -51,14 +51,7 @@ app.use(
     session({
         secret: SESSION_SECRET,
         resave: false,
-        saveUninitialized: true,
-        cookie: {
-            secure: true,
-            httpOnly: true,
-            sameSite: false,        // client and server are on different domains
-            maxAge: 60 * 60 * 1000, // 1 hour
-            path: '/'
-        },
+        saveUninitialized: true
     })
 );
 

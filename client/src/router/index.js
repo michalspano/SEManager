@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue' // (merely for testing)
-import CourseView from '@/views/CourseView.vue'
+import ProgramStructureView from '@/views/ProgramStructureView.vue'
 import jwt_decode from "jwt-decode";
 
 // TODO: Redirect unrecognized routes to something like
@@ -22,7 +22,7 @@ const router = createRouter({
     {
       path: '/courses',
       name: 'courses',
-      component: CourseView,
+      component: ProgramStructureView,
       props: true, // This flag needs to be enabled to be able to pass props to a component
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
@@ -46,7 +46,7 @@ const router = createRouter({
       name: 'course',
       component: () => import('@/views/CourseInformationView.vue'),
       meta: { requiresAuth: true }
-    },
+    }
   ]
 })
 
