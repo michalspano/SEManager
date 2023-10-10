@@ -172,4 +172,22 @@ const thirdYearCourses = computed(() => {
         key.courseTerm === firstTerm || key.courseTerm === secondTerm
     );
 });
+
+// TODO: I would like to use this function to make it automatic, but it messes up with the array
+const generateCourses = (year) => {
+    return computed(() => {
+        if (!graphData.value) {
+            return null;
+        }
+
+        const graphArray = Array.from(graphData.value);
+
+        let firstTerm = year * 2 - 1;
+        let secondTerm = year * 2;
+
+        return graphArray.filter(([key, _]) =>
+            key.courseTerm === firstTerm || key.courseTerm === secondTerm
+        );
+    });
+}
 </script>
