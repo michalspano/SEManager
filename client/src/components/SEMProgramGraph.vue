@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid text-center">
         <div class="row">
-            <h1>Software Engineering and Management Program Structure</h1>
+            <h1 class="program-title">Software Engineering and Management</h1>
         </div>
         <div class="row gy-2">
             <div class="col">
@@ -15,7 +15,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script setup>
@@ -175,3 +174,11 @@ const generateCourses = (year) => {
     });
 }
 </script>
+
+<style scoped>
+
+.program-title {
+    font-weight: bold;
+}
+
+</style>

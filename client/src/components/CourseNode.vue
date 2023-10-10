@@ -1,3 +1,13 @@
+<template>
+    <div class="card" :class="courseCardClass" @click="handleCardClick">
+        <div class="card-header card-accent" :class="cardAccentClass">{{ courseCode }}</div>
+        <div class="card-body">
+            {{ courseName }}
+        </div>
+        <div class="card-footer card-accent" :class="cardAccentClass"></div>
+    </div>
+</template>
+
 <script setup>
 
 import { ref, computed } from 'vue';
@@ -22,6 +32,14 @@ const courseCardClass = computed(() => {
     }
 })
 
+const cardAccentClass = computed(() => {
+    return {
+        'card-accent-locked': props.status === 0,
+        'card-accent-not-passed': props.status === 1,
+        'card-accent-passed': props.status === 2
+    }
+})
+
 const handleCardClick = () => {
 
     passed.value = !passed.value;
@@ -39,16 +57,6 @@ const handleCardClick = () => {
 }
 </script>
 
-<template>
-    <div class="card w-100" :class="courseCardClass" @click="handleCardClick">
-        <div class="card-header">{{ courseCode }}</div>
-        <div class="card-body">
-            {{ courseName }}
-        </div>
-        <div class="card-footer"></div>
-    </div>
-</template>
-
 <style scoped>
 p {
     color: white;
@@ -59,10 +67,11 @@ p {
 
 .card {
     transition: transform .2s;
+    border: 0px;
 }
+
 .card:hover {
-    /* color: aqua; */
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 10px;
     cursor: pointer;
 }
@@ -76,7 +85,25 @@ p {
 }
 
 .locked {
-    color: white;
+    color: rgb(183, 183, 183);;
     pointer-events: none;
+}
+
+.card-accent {
+    color: var(--primary-color);
+    font-weight: bolder;
+}
+
+.card-accent-locked {
+    background-color: rgb(183, 183, 183);
+}
+
+.card-accent-not-passed {
+    background-color: var(--accent-color);
+}
+
+.card-accent-passed {
+    background-color: #0e742c;
+    
 }
 </style>

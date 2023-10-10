@@ -1,3 +1,21 @@
+<template>
+    <div class="container-fluid text-center semester-container">
+        <div class="row">
+            <div class="col">
+                <h3 class="semester-title p-1">{{ 'Semester ' + semesterNumber }}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-1">
+                <PeriodContainer :periodNumber="firstPeriodNumber" :periodCourses="firstPeriodCourses" @sending-status="emitStatus"></PeriodContainer>
+            </div>
+            <div class="col">
+                <PeriodContainer :periodNumber="secondPeriodNumber" :periodCourses="secondPeriodCourses" @sending-status="emitStatus"></PeriodContainer>
+            </div>
+        </div>
+    </div>
+</template>
+
 <script setup>
 
 import { ref, computed } from 'vue';
@@ -64,26 +82,12 @@ const secondPeriodCourses = computed(() => {
 
 </script>
 
-<template>
-    <div class="container-fluid text-center">
-        <div class="row">
-            <div class="col">
-                <h1>{{ 'Semester ' + semesterNumber }}</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <PeriodContainer :periodNumber="firstPeriodNumber" :periodCourses="firstPeriodCourses" @sending-status="emitStatus"></PeriodContainer>
-            </div>
-            <div class="col">
-                <PeriodContainer :periodNumber="secondPeriodNumber" :periodCourses="secondPeriodCourses" @sending-status="emitStatus"></PeriodContainer>
-            </div>
-        </div>
-    </div>
-
-</template>
-
-
 <style scoped>
+
+.semester-title {
+    font-size: 150%;
+    color: var(--primary-color);
+    background-color: var(--secondary-com-color);
+}
 
 </style>
