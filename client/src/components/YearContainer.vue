@@ -70,7 +70,7 @@ const getSecondSemesterCourses = computed(() => {
 
 .year-container {
     border: 0.1rem solid var(--secondary-color);
-    box-shadow: 5px 5px 1px black;
+    box-shadow: 5px 5px 1px rgba(0, 0, 0, 0.4);
 }
 .year-title {
     font-size: 180%;
