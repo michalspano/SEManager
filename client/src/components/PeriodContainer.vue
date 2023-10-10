@@ -10,7 +10,6 @@ const props = defineProps({
 const emit = defineEmits(['sending-status']);
 
 const emitStatus = (courseCode, status) => {
-            console.log(`Emiting status ${status} from PeriodContainer for ${courseCode}`);
             emit('sending-status', courseCode, status);
         }
 

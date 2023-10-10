@@ -14,7 +14,6 @@ const secondPeriodNumber = ref(null);
 const emit = defineEmits(['sending-status']);
 
 const emitStatus = (courseCode, status) => {
-            console.log(`Emiting status ${status} from SemesterContainer for ${courseCode}`);
             emit('sending-status', courseCode, status);
         }
 
