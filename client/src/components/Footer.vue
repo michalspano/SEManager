@@ -33,18 +33,11 @@ onMounted(async () => {
     padding: 5px;
 }
 
-/* FIXME: fix the overflow on desktop devices */
-footer {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-}
-
 /* Wrap the footer below on smaller devices */
 @media (max-width: 756px) {
-    footer {
-        position: relative;
+    .footer-container {
+        padding: 2.5px;
+        font-size: 20px;
     }
 }
 
