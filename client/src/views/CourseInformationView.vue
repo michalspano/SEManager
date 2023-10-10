@@ -2,11 +2,11 @@
 
 import CourseInformation from '@/components/CourseInformation.vue';
 import { getCourse } from '../api/v1/courseApi';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const courseID = route.params.id;
+let courseID = route.params.id;
 const course = ref(null);
 
 onMounted(async () => {
@@ -14,38 +14,69 @@ onMounted(async () => {
     course.value = await getCourse(courseID);
 });
 
+watch(route, async (newRoute) => {
+    courseID = newRoute.params.id;
+    course.value = await getCourse(courseID);
+});
+
 </script>
 
 
 <template>
-    <div>
+    <div class="page-content">
 
-        <div class="back-button">
-            <router-link to="/courses">
-                <!-- TODO: replace with arrow vector-image as button instead? -->
-                <button type="button">Back</button>
-            </router-link>
+        <div class="page-header">
+            <div class="container-fluid">
+                <div class="row row-col-4">
+                    <div class="col">
+                        <div class="back-button">
+                            <router-link to="/courses">
+                                <!-- TODO: replace with arrow vector-image as button instead? -->
+                                <button type="button">Back to courses</button>
+                            </router-link>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h1 class="page-title text-center fw-bold text-nowrap">Course Details:</h1>
+                    </div>
+                    <div class="col">
+                        <!-- White space to the right of the heading -->
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="page-title">
-            <h1>Course</h1>
+        <div class="course-content">
+            <div class="container">
+                <div class="component">
+                    <CourseInformation
+                    v-if="course"
+                    :courseCode="course.courseCode"
+                    :courseName="course.courseName"
+                    :courseStaff="course.courseStaff"
+                    :dependencies="course.dependencies"
+                    ></CourseInformation>
+                </div>
+            </div>
         </div>
         
-        <div class="course-info-component">
-            <!-- TODO: double check prop names -->
-            <CourseInformation
-            v-if="course"
-            :courseCode="course.courseCode"
-            :courseName="course.courseName"
-            :courseStaff="course.courseStaff"
-            :dependencies="course.dependencies"
-            ></CourseInformation>
-        </div>
-
     </div>
 </template>
 
 
 <style scoped>
 
+/* TODO: remove - only used for development */
+.component {
+    border-style: dotted;
+    border-color: red;
+}
+.course-content {
+    border-style: dotted;
+    border-color: blue;
+}
+.page-content {
+    border-style: dotted;
+    border-color:forestgreen;
+}
 </style>
