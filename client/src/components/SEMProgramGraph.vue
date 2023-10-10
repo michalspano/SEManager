@@ -1,7 +1,8 @@
 <template>
     <div class="container-fluid text-center">
         <div class="row">
-            <h1>SEM Program Structure</h1>
+            <h1>Software Engineering and Management Program Structure</h1>
+            <span>{{ firstYearCourses }}</span>
         </div>
         <div class="row gy-2">
             <div class="col">
@@ -14,20 +15,6 @@
                 <YearContainer :yearNumber="3" :yearCourses="thirdYearCourses" @sending-status="testStatus"></YearContainer>
             </div>
         </div>
-    </div>
-    
-    <div>
-        EMTPY SPACE BECAUSE OF THE FOOTER THAT DOENS"T LET ME SEE ANYTHING ASFJKFJDKFSDJKFDKJ
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
     </div>
 
 </template>
@@ -72,51 +59,49 @@ const getCourseStatus = (courseCode) => {
     return targetCourse['courseStatus'];
 }
 
+/**
+ * This algorithms goes through every course and check its depedencies
+ * to determine its status.
+ * Status 0: Locked
+ * Status 1: Unlocked
+ * Status 2: Passed
+ */
 const updateCoursesCompletionStatus = () => {
-     // Go through all the courses and see if the dependencies are fulfilled
-    // If the dependencies have both status 2, then unlock the course (set status 1)
-    // If not, set status 0 (locked)
-    // console.log("Update courses");
+    
     for (var i of graphData.value.keys())
     {
-        if (getCourseStatus(i['courseCode']) === 2) {
-            // console.log(i['courseCode'] + ' is completed :)!');
-            continue;
-        }
         let dependencies = graphData.value.get(i);
         let numberOfDependencies = dependencies.length;
-        // console.log(i['courseCode'] + ' has ' + numberOfDependencies + ' dependencies: ');
 
         const totalPoints = numberOfDependencies * 2;
 
         let sumOfDependenciesStatus = 0;
+
         for (var j of dependencies)
         {
             sumOfDependenciesStatus += getCourseStatus(j);
-            // console.log(j + ' with status ' + getCourseStatus(j));
         }
 
-        // console.log('Sum of dependencies: ' + sumOfDependenciesStatus);
-
-        if(sumOfDependenciesStatus === totalPoints)
+        if(sumOfDependenciesStatus === totalPoints && i['courseStatus'] == 2)
         {
-            // console.log("Unlocked!");
+            // Course completed!
+            i['courseStatus'] = 2;
+        }
+        else if (sumOfDependenciesStatus === totalPoints && i['courseStatus'] != 2)
+        {
+            // Course unlocked :)
             i['courseStatus'] = 1;
         }
         else {
-            // console.log("Locked :(");
             i['courseStatus'] = 0;
         }
-
-        console.log('\n');
     }
 }
 
-/*
-    * TODO: There is some repetition going on here but there's no much to do
-    * I would like to make this a parameter but  vue doesn't allow it
-*/
-
+/**
+ * TODO: There is some repetition going on here but there's no much to do
+ * I would like to make this a parameter but  vue doesn't allow it
+ */
 const firstYearCourses  = computed(() => {
             
     if (!graphData.value) {
