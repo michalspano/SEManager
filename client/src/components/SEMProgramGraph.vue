@@ -2,7 +2,6 @@
     <div class="container-fluid text-center">
         <div class="row">
             <h1>Software Engineering and Management Program Structure</h1>
-            <span>{{ firstYearCourses }}</span>
         </div>
         <div class="row gy-2">
             <div class="col">
