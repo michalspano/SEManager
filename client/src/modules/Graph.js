@@ -7,7 +7,7 @@ class Graph {
 
     addVertexArrayObjects(coursesArray) {
 
-        for (var course of coursesArray) {
+        for (let course of coursesArray) {
             const courseObject = {
                 courseCode: course.courseCode,
                 courseName: course.courseName,
@@ -27,7 +27,7 @@ class Graph {
 
             // Add dependencies
             let dependencies = course.dependencies;
-            for (var dependency of dependencies)
+            for (let dependency of dependencies)
             {
                 this.addEdge(courseObject, dependency);
             }
@@ -47,17 +47,17 @@ class Graph {
 
     printObjectGraph()
     {
-        var get_keys = this.AdjList.keys();
+        let get_keys = this.AdjList.keys();
 
         // iterate over the vertices
-        for (var i of get_keys)
+        for (let i of get_keys)
         {
             // console.log(i.courseCode);
             // get the adjacency list
-            var get_values = this.AdjList.get(i);
-            var conc = "";
+            let get_values = this.AdjList.get(i);
+            let conc = "";
 
-            for (var j of get_values)
+            for (let j of get_values)
             {
                 conc += j + " ";
             }
