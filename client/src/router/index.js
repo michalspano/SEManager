@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue' // (merely for testing)
+import Home from '@/views/Home.vue'
+import PageNotFound from '@/views/PageNotFound.vue'
 import ProgramStructureView from '@/views/ProgramStructureView.vue'
 import jwt_decode from "jwt-decode";
 
@@ -46,6 +47,18 @@ const router = createRouter({
       name: 'course',
       component: () => import('@/views/CourseInformationView.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/AdminView.vue'),
+      // TODO: add logic to check the user is an admin only!
+      meta: { requiresAuth: true, isAdmin: true }
+    },
+    {
+      // if an unrecognized route is passed, default to here:
+      path: '/:catchAll(.*)',
+      component: PageNotFound
     }
   ]
 })

@@ -12,11 +12,7 @@ import * as config from '@/api/v1/apiConfig'
  * CourseApi is an Axios instance which provides the baseURL for all the HTTP requests.
  */
 export const UserApi = axios.create({
-    baseURL: `${config.BASE_URL}:${config.PORT}/api/v${config.VERSION}/users`,
-    // Always use the token in the Authorization header of HTTP requests
-    headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-    }
+    baseURL: `${config.BASE_URL}:${config.PORT}/api/v${config.VERSION}/users`
 })
 
 /**
@@ -34,3 +30,22 @@ export const authenticateUser = async (id, pass) => {
         throw error;
     }
 };
+
+/**
+ * Delete a specific user.
+ * @param {String} id - unique identifier of the user.
+ * @returns {Promise} Promise object represents the status of the HTTP request.
+ */
+export const deleteUser = async (id) => {
+    try {
+        const response = await UserApi.delete('/' + id, {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+            },
+        })
+        return response.status
+    } catch (err) {
+        throw err
+    }
+}

@@ -13,10 +13,7 @@ import Graph from '@/modules/Graph'
  * CourseApi is an Axios instance which provides the baseURL for all the HTTP requests.
  */
 const CourseApi = axios.create({
-    baseURL: `${config.BASE_URL}:${config.PORT}/api/v${config.VERSION}/courses`,
-    headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-    }
+    baseURL: `${config.BASE_URL}:${config.PORT}/api/v${config.VERSION}/courses`
 })
 
 /**
@@ -73,7 +70,7 @@ export const getTermCourses = async (term, period) => {
 
 export const getCoursesGraph = async () => {
     let response = null;
-    
+
     try {
         response = await CourseApi.get('/');
     } catch (err) {
@@ -90,4 +87,23 @@ export const getCoursesGraph = async () => {
     graph.addVertexArrayObjects(courses);
     
     return graph.getAdjList();
+}
+
+/**
+ * Delete a specific course.
+ * @param {String} id - unique identifier of the course.
+ * @returns {Promise} Promise object represents the status of the HTTP request.
+ */
+export const deleteCourse = async (id) => {
+    try {
+        const response = await CourseApi.delete('/' + id, {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+            },
+        })
+        return response.status
+    } catch (err) {
+        throw err
+    }
 }

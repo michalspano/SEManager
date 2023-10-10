@@ -42,3 +42,22 @@ export const getEmployee = async (employeeEmailAddress) => {
         throw err
     }
 }
+
+/**
+ * Delete a specific employee.
+ * @param {String} id - unique identifier of the employee.
+ * @returns {Promise} Promise object represents the status of the HTTP request.
+ */
+export const deleteEmployee = async (id) => {
+    try {
+        const response = await EmployeeApi.delete('/' + id, {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+            },
+        })
+        return response.status
+    } catch (err) {
+        throw err
+    }
+}
