@@ -17,31 +17,31 @@ const emitStatus = (courseCode, status) => {
             emit('sending-status', courseCode, status);
         }
 
-const firstTermCourses = computed(() => {
+const getFirstSemesterCourses = computed(() => {
 
     if (!props.yearCourses) {
         return null;
     }
 
-    let firstTerm = (props.yearNumber * 2) - 1;
-    firstSemesterNumber.value = firstTerm;
+    let firstSemester = (props.yearNumber * 2) - 1;
+    firstSemesterNumber.value = firstSemester;
 
     return props.yearCourses.filter(([key, _]) => 
-        key.courseTerm === firstTerm
+        key.courseTerm === firstSemester
     );
 })
 
-const secondTermCourses = computed(() => {
+const getSecondSemesterCourses = computed(() => {
     
     if (!props.yearCourses) {
         return null;
     }
     
-    let secondTerm = (props.yearNumber * 2);
-    secondSemesterNumber.value = secondTerm;
+    let secondSemester = (props.yearNumber * 2);
+    secondSemesterNumber.value = secondSemester;
 
     return props.yearCourses.filter(([key, _]) => 
-    key.courseTerm === secondTerm
+    key.courseTerm === secondSemester
     );
 })
 
@@ -56,10 +56,10 @@ const secondTermCourses = computed(() => {
         </div>
         <div class="row">
             <div class="col">
-                <SemesterContainer :semesterNumber="firstSemesterNumber" :semesterCourses="firstTermCourses" @sending-status="emitStatus"></SemesterContainer>
+                <SemesterContainer :semesterNumber="firstSemesterNumber" :semesterCourses="getFirstSemesterCourses" @sending-status="emitStatus"></SemesterContainer>
             </div>
             <div class="col">
-                <SemesterContainer :semesterNumber="secondSemesterNumber" :semesterCourses="secondTermCourses" @sending-status="emitStatus"></SemesterContainer>
+                <SemesterContainer :semesterNumber="secondSemesterNumber" :semesterCourses="getSecondSemesterCourses" @sending-status="emitStatus"></SemesterContainer>
             </div>
         </div>
     </div>
