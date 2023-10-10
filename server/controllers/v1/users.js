@@ -32,7 +32,7 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
             } catch (error) {
                 return res.status(400).json({ message: "The password count not be created." })
             }
-            
+
             // Create a user instance with the attributes
             const user = new User({
                 emailAddress: userId,
@@ -126,8 +126,16 @@ router.post('/auth/:id', (req, res, next) => {
             const secretKey = generateSecretKey();
 
             // Generate a token based on the payload, use the secret key
+            // Cache the secret key in the cookie. Both the secret key and the token
+            // are required to verify the token and are valid for 1 hour.
             const token = jwt.sign(tokenPayload, secretKey, { expiresIn: '1h' });
-            res.cookie(token, secretKey);
+            res.cookie(token, secretKey, {
+                maxAge: 60 * 60 * 1000,
+                httpOnly: true,
+                sameSite: false, // client and server operate on different domains
+                                 // FIXME: for production, this should be fixed
+                secure: true
+            });
 
             return res.json({
                 "verified": true,
