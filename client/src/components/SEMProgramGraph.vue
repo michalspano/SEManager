@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid text-center">
         <div class="row">
-            <h1>Node Test</h1>
+            <h1>SEM Program Structure</h1>
         </div>
         <div class="row gy-2">
             <div class="col">
