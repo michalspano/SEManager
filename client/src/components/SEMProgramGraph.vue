@@ -4,13 +4,13 @@
             <h1 class="program-title">Software Engineering and Management</h1>
         </div>
         <div class="row gy-2">
-            <div class="col">
+            <div class="col-md">
                 <YearContainer :yearNumber="1" :yearCourses="firstYearCourses" @sending-status="testStatus"></YearContainer>
             </div>
-            <div class="col">
+            <div class="col-md">
                 <YearContainer :yearNumber="2" :yearCourses="secondYearCourses" @sending-status="testStatus"></YearContainer>
             </div>
-            <div class="col">
+            <div class="col-md">
                 <YearContainer :yearNumber="3" :yearCourses="thirdYearCourses" @sending-status="testStatus"></YearContainer>
             </div>
         </div>
@@ -31,6 +31,8 @@ const testStatus = (courseCode, status) => {
 
 onMounted(async () => {
     graphData.value = await getCoursesGraph();
+    const storedGraphData =  localStorage.getItem('coursesData');
+    console.log(`Local Storage: \n ${storedGraphData}`);
 });
 
 const updateCourseStatus = (courseCode, status) => {
@@ -94,6 +96,8 @@ const updateCoursesCompletionStatus = () => {
             i['courseStatus'] = 0;
         }
     }
+
+    localStorage.setItem('coursesData', JSON.stringify(Array.from(graphData.value)));
 }
 
 /**
