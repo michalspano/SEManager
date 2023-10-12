@@ -33,7 +33,11 @@ const onDelete = async () => {
         errorMsg.value = ''
         alert('Success!')
     } catch (error) {
-        errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
+        if (error.response) {
+            errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
+        } else {
+            errorMsg.value = 'Problem with API or network.'
+        }
     }
 }
 
