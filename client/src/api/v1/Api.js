@@ -27,3 +27,27 @@ export const getApi = async () => {
         throw err
     }
 }
+
+/**
+ * Generic method to perform HTTP requests based on the method type and URL obtained from
+ * responses that contain HATEOAS links.
+ * @param {string} methodType - The HTTP method type (e.g., GET, PUT, PATCH, POST, DELETE).
+ * @param {string} url - The URL to make the HTTP request to.
+ * @param {object} data - Optional data to send in the request body (for PUT and POST).
+ * @returns {Promise} Promise object represents the HTTP response.
+ */
+export const performRequest = async (methodType, url, data = null) => {
+    try {
+        const axiosConfig = {
+            method: methodType, url, data,
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+            }
+        }
+        const response = await axios(axiosConfig)
+        return response.data
+    } catch (error) {
+        throw error;
+    }
+}

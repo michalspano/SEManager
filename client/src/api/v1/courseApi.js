@@ -11,6 +11,7 @@ import Graph from '@/modules/Graph'
 
 /**
  * CourseApi is an Axios instance which provides the baseURL for all the HTTP requests.
+ * The reason why the headers are not created here is that the token can be mutated.
  */
 const CourseApi = axios.create({
     baseURL: `${config.BASE_URL}:${config.PORT}/api/v${config.VERSION}/courses`
@@ -34,12 +35,14 @@ export const getCourses = async () => {
  * Function to return a specific course.
  * @returns {Promise} Promise object represents the course.
  */
-export const getCourse = async (courseCode) => {
+export const getCourse = async (courseCode, includeLinks = false) => {
     try {
         const response = await CourseApi.get('/' + courseCode);
+        if (includeLinks) {
+            return response.data
+        }
         return response.data.course
     } catch (err) {
-        console.log(err)
         throw err
     }
 }
@@ -85,7 +88,7 @@ export const getCoursesGraph = async () => {
     var graph = new Graph(numberOfCourses);
 
     graph.addVertexArrayObjects(courses);
-    
+
     return graph.getAdjList();
 }
 
@@ -97,6 +100,43 @@ export const getCoursesGraph = async () => {
 export const deleteCourse = async (id) => {
     try {
         const response = await CourseApi.delete('/' + id, {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+            },
+        })
+        return response.status
+    } catch (err) {
+        throw err
+    }
+}
+
+/**
+ * Function to create a new course.
+ * @param {Object} body - the body of the request
+ * @returns {Promise} - a promise that resolves to the response data
+ */
+export const postCourse = async (body) => {
+    try {
+        const response = await CourseApi.post('/', body, {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+            }
+        })
+        return response.data
+    } catch (err) {
+        throw err
+    }
+}
+
+/**
+ * Delete all courses
+ * @returns {Promise} Promise object represents the status of the HTTP request.
+ */
+export const deleteCourses = async () => {
+    try {
+        const response = await CourseApi.delete('/', {
             withCredentials: true,
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
