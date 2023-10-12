@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid text-center period-container p-2">
+    <div class="container-fluid text-center period-container p-2 rounded-2">
         <div class="row">
             <div class="col">
                 <h4 class="period-title">{{ 'LP' + periodNumber }}</h4>
@@ -36,7 +36,9 @@ const emitStatus = (courseCode, status) => {
 <style scoped>
 
 .period-container {
-    border: 0.1rem solid var(--secondary-color);
+    /* border: 0.1rem solid var(--secondary-color); */
+    /* background-color: beige; */
+    box-shadow: 2.5px 2.5px 5px rgba(0, 0, 0, 0.2);
 }
 
 .period-title {

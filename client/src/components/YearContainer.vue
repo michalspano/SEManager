@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid text-center year-container p-2">
+    <div class="container-fluid text-center year-container p-2 rounded-2 bg-light">
         <div class="row">
             <div class="col">
                 <h2 class="year-title p-1">{{ 'Year ' + yearNumber }}</h2>
@@ -69,8 +69,8 @@ const getSecondSemesterCourses = computed(() => {
 <style scoped>
 
 .year-container {
-    border: 0.1rem solid var(--secondary-color);
-    box-shadow: 5px 5px 1px rgba(0, 0, 0, 0.4);
+    /* border: 0.1rem solid var(--secondary-color); */
+    box-shadow: 2.5px 2.5px 5px rgba(0, 0, 0, 0.2);
 }
 .year-title {
     font-size: 180%;
