@@ -31,7 +31,7 @@ const HOST = process.env.HOST || "http://localhost";
  * @returns {String} - the formatted URI.
  */
 const formatHref = (parts) => {
-    return `${HOST}:${PORT}/${CONFIG.version}/${parts.join('/')}`;
+    return `${HOST}:${PORT}/api/${CONFIG.version}/${parts.join('/')}`;
 };
 
 module.exports = { formatHref, CONFIG };

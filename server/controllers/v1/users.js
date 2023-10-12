@@ -15,6 +15,7 @@ const { fetchCourseIds, generateLinks, generateSecretKey } = require("../../util
 const { verifyTokenAndRole } = require('../../utils/utils')
 
 const RESOURCE = "users";
+const TYPES = ["student", "admin"];
 
 // Note: because the User entity contains sensitive information, like password or
 // e-mail address, only the admin can get the instances of this entity.
@@ -37,11 +38,17 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
             const user = new User({
                 emailAddress: userId,
                 password: hashed,
-                type: req.body.type,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 courses: courseIds
             });
+            
+            // Ensure that the enum type is valid
+            if (TYPES.includes(req.body.type)) {
+                user.type = req.body.type;
+            } else {
+                return res.status(400).json({ message: "Type is not valid." })
+            }
 
             const links = generateLinks([
                 ["self", [RESOURCE, userId], "get"],

@@ -63,14 +63,22 @@ router.delete('/', verifyTokenAndRole('admin'), (_, res, next) => {
 
 // Return an employee given an ID
 router.get('/:id', (req, res, next) => {
-    Employee.findOne({ emailAddress: req.params.id }).exec()
+    const employeeId = req.params.id;
+    Employee.findOne({ emailAddress: employeeId }).exec()
         .then((employee) => {
             if (employee == null) {
                 return res.status(404).json({
                     "message": "Employee not found."
                 });
             }
-            res.json({ "employee": employee });
+
+            const links = generateLinks([
+                ["update", [RESOURCE, employeeId], "PUT"],
+                ["edit", [RESOURCE, employeeId], "PATCH"],
+                ["delete", [RESOURCE, employeeId], "DELETE"]
+            ]);
+
+            res.json({ employee, links });
         }).catch(next);
 });
 
