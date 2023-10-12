@@ -1,8 +1,5 @@
 <template>
     <div class="container-fluid text-center">
-        <div class="row">
-            <h1 class="program-title">Software Engineering and Management</h1>
-        </div>
         <div class="row gy-2">
             <div class="col-md">
                 <YearContainer :yearNumber="1" :yearCourses="firstYearCourses" @sending-status="testStatus"></YearContainer>
@@ -178,11 +175,3 @@ const generateCourses = (year) => {
     });
 }
 </script>
-
-<style scoped>
-
-.program-title {
-    font-weight: bold;
-}
-
-</style>
