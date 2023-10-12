@@ -1,6 +1,8 @@
 <template>
     <div class="card" :class="courseCardClass" @click="handleCardClick">
-        <div class="card-header card-accent" :class="cardAccentClass">{{ courseCode }}</div>
+        <div class="card-header card-accent" :class="cardAccentClass">
+            <button class="btn bg-transparent" id="courseInfoButton" @click.stop="handleButtonClick"> {{ courseCode }}</button>
+        </div>
         <div class="card-body">
             {{ courseName }}
         </div>
@@ -11,6 +13,9 @@
 <script setup>
 
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const passed = ref(false);
 
@@ -55,6 +60,13 @@ const handleCardClick = () => {
 
     emit('sending-status', props.courseCode, status);
 }
+
+const handleButtonClick = () => {
+
+    const routePath = '/courses/' + props.courseCode;
+
+    router.push(routePath);
+}
 </script>
 
 <style scoped>
@@ -76,6 +88,10 @@ p {
     cursor: pointer;
 }
 
+.card.locked:hover {
+    cursor: default;
+}
+
 .passed {
     color: green;
 }
@@ -86,7 +102,6 @@ p {
 
 .locked {
     color: rgb(183, 183, 183);;
-    pointer-events: none;
 }
 
 .card-accent {
@@ -104,6 +119,14 @@ p {
 
 .card-accent-passed {
     background-color: #0e742c;
-    
+}
+
+.btn {
+    background-color: transparent;
+    box-shadow: 0px 0px 0px;
+}
+
+#courseInfoButton:hover {
+    box-shadow: none !important;
 }
 </style>
