@@ -18,6 +18,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { getCoursesGraph } from '@/api/v1/courseApi';
 import YearContainer from '@/components/YearContainer.vue'
+import Graph from '@/modules/Graph'
 
 const graphData = ref(null);
 
@@ -27,10 +28,30 @@ const testStatus = (courseCode, status) => {
         };
 
 onMounted(async () => {
-    graphData.value = await getCoursesGraph();
-    const storedGraphData =  localStorage.getItem('coursesData');
-    console.log(`Local Storage: \n ${storedGraphData}`);
+
+    let data = generateMap(localStorage.getItem('coursesData'));
+
+    if(!data){
+        graphData.value = await getCoursesGraph();
+    }
+    else {
+        graphData.value = data;
+    }
 });
+
+const generateMap = (coursesData) => {
+
+    let coursesArray = JSON.parse(coursesData);
+
+    let testMap = new Map();
+
+    for(let course of coursesArray)
+    {
+        testMap.set(course[0], course[1]);
+    }
+
+    return testMap;
+}
 
 const updateCourseStatus = (courseCode, status) => {
     for (var i of graphData.value.keys())
