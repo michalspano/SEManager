@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import router from '@/router';
 import { deleteUser, deleteUsers } from '@/api/v1/userApi'
 import { deleteCourse, deleteCourses } from '@/api/v1/courseApi'
 import { deleteEmployee, deleteEmployees } from '@/api/v1/employeeApi'
@@ -34,7 +35,11 @@ const onDelete = async () => {
         alert('Success!')
     } catch (error) {
         if (error.response) {
-            errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
+            if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
+                handleExpiredToken()
+            } else {
+                errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
+            }
         } else {
             errorMsg.value = 'Problem with API or network.'
         }
@@ -55,6 +60,19 @@ const changeEntity = (type) => {
  */
 const toggleCheckbox = () => {
     toDropCollection.value = !toDropCollection.value
+}
+
+/**
+ * A function that is called when the token is expired.
+ * Note: it would be desirable to make this function reusable, because it is repeated in the
+ * AdminCreateSelector.vue component, but since it uses a ref, it may introduce some problems.
+ */
+const handleExpiredToken = () => {
+    errorMsg.value = 'Your session has expired. Please log in again.'
+    setTimeout(() => {
+        localStorage.removeItem('token')
+        router.push('/login')
+    }, 2000);
 }
 
 </script>

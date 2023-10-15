@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import router from '@/router';
 import { performRequest } from '@/api/v1/Api';
 import { getCourse, postCourse } from '@/api/v1/courseApi'
 import { getUser, postUser } from '@/api/v1/userApi'
@@ -120,6 +121,17 @@ const extractLinks = (links) => {
 }
 
 /**
+ * A function that is called when the token is expired.
+ */
+const handleExpiredToken = () => {
+    errorMsg.value = 'Your session has expired. Please log in again.'
+    setTimeout(() => {
+        localStorage.removeItem('token')
+        router.push('/login')
+    }, 2000);
+}
+
+/**
  * Function to handle posting an entity.
  */
 const postEntity = async () => {
@@ -155,7 +167,11 @@ const postEntity = async () => {
         }
     } catch (error) {
         if (error.response) {
-            errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
+            if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
+                handleExpiredToken()
+            } else {
+                errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
+            }
         } else {
             errorMsg.value = 'Problem with API or network.'
         }
@@ -164,7 +180,7 @@ const postEntity = async () => {
 
     // Success!
     errorMsg.value = ''
-    alert('Success!')
+    alert(`${entityId.value} updated successfully!`)
 }
 
 // TODO: extract the functionality to more granular functions
@@ -201,8 +217,15 @@ const onClick = async () => {
                     return;
             }
         } catch (error) {
+            console.log(error)
             if (error.response) {
-                errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
+                // Check for TokenExpiredError, then delete the local token and navigate to /login
+                // This can only be raised from the `GET /user` endpoint.
+                if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
+                    handleExpiredToken()
+                } else {
+                    errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
+                }
             } else {
                 errorMsg.value = 'Problem with API or network.'
             }
@@ -235,8 +258,10 @@ const onClick = async () => {
         // is successful.
         await performRequest(method, newLink, updatedBody)
         errorMsg.value = ''
-        alert('Success!') // TODO: perhaps show a success message in the UI
+        alert(`${entityId.value} updated successfully!`)
     } catch (error) {
+        // FIXME: add the error handling for ExpiredTokenError. However, we expect the throughput to be low,
+        // so it is enough to check if a quite seconds before, namely when we get the links from the API.
         try {
             errorMsg.value = error.response.status + ": " + error.response.data.message
         } catch {
