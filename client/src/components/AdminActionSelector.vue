@@ -133,10 +133,12 @@ const handleExpiredToken = () => {
 
 /**
  * Function to handle posting an entity.
+ * Note: since the response body of the POST requests only returns the entity itself (201),
+ * we don't need to store it, instead, only the methods are called. The retrieval of the
+ * HATEOAS links could technically take place here too, however, posting an entity may or may not
+ * take place before a PUT/PATCH request, so it is better to keep the logic separated.
  */
 const postEntity = async () => {
-    let response;
-
     // Make sure that all fields are converted to Array (if necessary)
     for (const key of ARRAY_ANSWER_TYPES) {
         const answerValue = answer.value[formType.value][key]
@@ -149,17 +151,17 @@ const postEntity = async () => {
             case 'user':
                 // Add the email address to the body
                 answer.value[formType.value].emailAddress = entityId.value
-                response = await postUser(answer.value[formType.value]);
+                await postUser(answer.value[formType.value]);
                 break
             case 'course':
                 // Add the course code to the body
                 answer.value[formType.value].courseCode = entityId.value
-                response = await postCourse(answer.value[formType.value]);
+                await postCourse(answer.value[formType.value]);
                 break
             case 'employee':
                 // Add the email address to the body
                 answer.value[formType.value].emailAddress = entityId.value
-                response = await postEmployee(answer.value[formType.value]);
+                await postEmployee(answer.value[formType.value]);
                 break
             default:
                 errorMsg.value = 'Unrecognized type';
