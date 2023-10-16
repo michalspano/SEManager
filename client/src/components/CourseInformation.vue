@@ -61,7 +61,7 @@ onBeforeRouteUpdate(() => {
 
 
 <template>
-    <div class="container">
+    <div class="container pt-3 pb-3">
 
         <div class="course-title">
             <h2 class="fw-bold">{{ props.courseCode }}: {{ props.courseName }}</h2>
@@ -78,7 +78,7 @@ onBeforeRouteUpdate(() => {
             </span>
         </div>
 
-        <div class="course-dependencies fs-5 mt-2 mb-2">
+        <div class="course-dependencies fs-5 mt-2">
             <span class="sub-heading">Dependencies: </span>
             <span v-if="dependencies.length <= 0">-</span>
             <span v-else
@@ -90,7 +90,7 @@ onBeforeRouteUpdate(() => {
             </span>
         </div>
 
-        <div class="pop-up row justify-content-center pb-3">
+        <div class="pop-up row justify-content-center">
             <EmployeePopUp v-if="activePopUp !== null"
             :emailAddress="employees[activePopUp].emailAddress"
             :name="employees[activePopUp].name"

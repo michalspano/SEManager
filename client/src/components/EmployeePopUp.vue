@@ -50,7 +50,6 @@ const props = defineProps({
     overflow-wrap: break-word;
 }
 .staff-info-item a {
-    text-decoration: none;
     color: inherit;
 }
 #close-button {
