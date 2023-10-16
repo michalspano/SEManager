@@ -22,14 +22,11 @@ export const UserApi = axios.create({
  * @param {String} id - given ID of the entity
  * @param {String} pass - as password provided by the user in the session
  * @returns {Promise} - a promise that resolves to the response data
+ * @throws {Error} - an error that contains the error status and message
  */
 export const authenticateUser = async (id, pass) => {
-    try {
-        const response = await UserApi.post(`/auth/${id}`, { password: pass }, { withCredentials: true });
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
+    const response = await UserApi.post(`/auth/${id}`, { password: pass }, { withCredentials: true });
+    return response.data;
 };
 
 /**
@@ -38,17 +35,13 @@ export const authenticateUser = async (id, pass) => {
  * @returns {Promise} - a promise that resolves to the response data
  */
 export const postUser = async (body) => {
-    try {
-        const response = await UserApi.post('/', body, {
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-            }
-        })
-        return response.data
-    } catch (err) {
-        throw err
-    }
+    const response = await UserApi.post('/', body, {
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+    })
+    return response.data
 }
 
 /**
@@ -56,20 +49,16 @@ export const postUser = async (body) => {
  * @returns {Promise} Promise object represents the user.
  */
 export const getUser = async (id, includeLinks = false) => {
-    try {
-        const response = await UserApi.get('/' + id, {
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-            }
-        })
-        if (includeLinks) {
-            return response.data
+    const response = await UserApi.get('/' + id, {
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
         }
-        return response.data.user
-    } catch (err) {
-        throw err
+    })
+    if (includeLinks) {
+        return response.data
     }
+    return response.data.user
 }
 
 /**
@@ -78,17 +67,13 @@ export const getUser = async (id, includeLinks = false) => {
  * @returns {Promise} Promise object represents the status of the HTTP request.
  */
 export const deleteUser = async (id) => {
-    try {
-        const response = await UserApi.delete('/' + id, {
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-            }
-        })
-        return response.status
-    } catch (err) {
-        throw err
-    }
+    const response = await UserApi.delete('/' + id, {
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+    })
+    return response.status
 }
 
 /**
@@ -96,15 +81,11 @@ export const deleteUser = async (id) => {
  * @returns {Promise} Promise object represents the status of the HTTP request.
  */
 export const deleteUsers = async () => {
-    try {
-        const response = await UserApi.delete('/', {
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-            }
-        })
-        return response.status
-    } catch (err) {
-        throw err
-    }
+    const response = await UserApi.delete('/', {
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+    })
+    return response.status
 }

@@ -21,13 +21,8 @@ const EmployeeApi = axios.create({
  * @returns {Promise} Promise object represents the list of employees.
  */
 export const getEmployees = async () => {
-    try {
-        const response = await EmployeeApi.get('/');
-        return response.data.employees
-    } catch (err) {
-        console.log(err)
-        throw err
-    }
+    const response = await EmployeeApi.get('/');
+    return response.data.employees
 }
 
 /**
@@ -35,15 +30,11 @@ export const getEmployees = async () => {
  * @returns {Promise} Promise object represents the employee.
  */
 export const getEmployee = async (employeeEmailAddress, includeLinks = false) => {
-    try {
-        const response = await EmployeeApi.get('/' + employeeEmailAddress);
-        if (includeLinks) {
-            return response.data
-        }
-        return response.data.employee
-    } catch (err) {
-        throw err
+    const response = await EmployeeApi.get('/' + employeeEmailAddress);
+    if (includeLinks) {
+        return response.data
     }
+    return response.data.employee
 }
 
 /**
@@ -52,17 +43,13 @@ export const getEmployee = async (employeeEmailAddress, includeLinks = false) =>
  * @returns {Promise} Promise object represents the status of the HTTP request.
  */
 export const deleteEmployee = async (id) => {
-    try {
-        const response = await EmployeeApi.delete('/' + id, {
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-            },
-        })
-        return response.status
-    } catch (err) {
-        throw err
-    }
+    const response = await EmployeeApi.delete('/' + id, {
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        },
+    })
+    return response.status
 }
 
 /**
@@ -71,17 +58,13 @@ export const deleteEmployee = async (id) => {
  * @returns {Promise} - a promise that resolves to the response data
  */
 export const postEmployee = async (body) => {
-    try {
-        const response = await EmployeeApi.post('/', body, {
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-            }
-        })
-        return response.data
-    } catch (err) {
-        throw err
-    }
+    const response = await EmployeeApi.post('/', body, {
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+    })
+    return response.data
 }
 
 /**
@@ -89,15 +72,11 @@ export const postEmployee = async (body) => {
  * @returns {Promise} Promise object represents the status of the HTTP request.
  */
 export const deleteEmployees = async () => {
-    try {
-        const response = await EmployeeApi.delete('/', {
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-            },
-        })
-        return response.status
-    } catch (err) {
-        throw err
-    }
+    const response = await EmployeeApi.delete('/', {
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        },
+    })
+    return response.status
 }

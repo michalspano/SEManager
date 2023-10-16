@@ -20,12 +20,8 @@ const Api = axios.create({
  * @returns {Promise} Promise JSON Object with API's configuration.
  */
 export const getApi = async () => {
-    try {
-        const response = await Api.get('/')
-        return response.data
-    } catch (err) {
-        throw err
-    }
+    const response = await Api.get('/')
+    return response.data
 }
 
 /**
@@ -37,17 +33,13 @@ export const getApi = async () => {
  * @returns {Promise} Promise object represents the HTTP response.
  */
 export const performRequest = async (methodType, url, data = null) => {
-    try {
-        const axiosConfig = {
-            method: methodType, url, data,
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-            }
+    const axiosConfig = {
+        method: methodType, url, data,
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
         }
-        const response = await axios(axiosConfig)
-        return response.data
-    } catch (error) {
-        throw error;
     }
+    const response = await axios(axiosConfig)
+    return response.data
 }
