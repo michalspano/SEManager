@@ -10,7 +10,7 @@ const router = express.Router();
 const Course = require('../../models/course');
 const Employee = require('../../models/employee');
 const { generateLinks } = require('../../utils/utils');
-const { verifyTokenAndRole } = require('../../utils/utils')
+const { verifyTokenAndRole } = require('../../utils/utils');
 
 /* Note: the convention is, when returning the Entity object
  * to wrap it in an Object which carries the name of the entity.
@@ -41,7 +41,7 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
         .then(() => {
             res.status(201).json({ course, links });
         }).catch((error) => {
-            if (error.code === 11_000) { // duplicate unique key error is 11_000 by Mongoose
+            if (error.code === 11000) { // duplicate unique key error is 11_000 by Mongoose
                 // HTTP error code 409 denotes a 'conflict'
                 res.status(409).json({ error: "Course with this unique key already exists" });
             } else next(error);
@@ -73,7 +73,7 @@ router.get('/', (req, res, next) => {
     let sortOptions = {};
     let filterOptions = {};
 
-    for (item of sortBy) {
+    for (const item of sortBy) {
         sortOptions[item] = order;
     }
 

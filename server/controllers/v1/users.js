@@ -12,7 +12,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const { fetchCourseIds, generateLinks, generateSecretKey } = require("../../utils/utils");
-const { verifyTokenAndRole } = require('../../utils/utils')
+const { verifyTokenAndRole } = require('../../utils/utils');
 
 const RESOURCE = "users";
 const TYPES = ["student", "admin"];
@@ -31,7 +31,7 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
             try {
                 hashed = await bcrypt.hash(req.body.password, 10);
             } catch (error) {
-                return res.status(400).json({ message: "The password count not be created." })
+                return res.status(400).json({ message: "The password count not be created." });
             }
 
             // Create a user instance with the attributes
@@ -47,7 +47,7 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
             if (TYPES.includes(req.body.type)) {
                 user.type = req.body.type;
             } else {
-                return res.status(400).json({ message: "Type is not valid." })
+                return res.status(400).json({ message: "Type is not valid." });
             }
 
             const links = generateLinks([
@@ -61,7 +61,7 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
                 .then(() => {
                     res.status(201).json({ user, links });
                 }).catch((error) => {
-                    if (error.code === 11_000) {
+                    if (error.code === 11000) {
                         res.status(409).json({ error: "User with this unique key already exists" });
                     } else next(error);
                 });
@@ -157,7 +157,6 @@ router.post('/auth/:id', (req, res, next) => {
 // Update all users fields given an ID
 router.put('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
     const userId = req.params.id;
-    console.log(req.body)
     User.findOne({ emailAddress: userId }).exec()
         .then(async (user) => {
             if (user == null) {
@@ -171,7 +170,7 @@ router.put('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
             try {
                 hashedPassword = await bcrypt.hash(req.body.password, 10);
             } catch (error) {
-                return res.status(400).json({ message: "The password count not be created." })
+                return res.status(400).json({ message: "The password count not be created." });
             }
 
             // Fetch the course IDs based on the String identifiers
@@ -236,7 +235,7 @@ router.patch('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
                     const hashedPassword = await bcrypt.hash(req.body.password, 10);
                     user.password = hashedPassword;
                 } catch (error) {
-                    return res.status(400).json({ message: "The password count not be created." })
+                    return res.status(400).json({ message: "The password count not be created." });
                 }
             }
 

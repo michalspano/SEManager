@@ -15,7 +15,7 @@ const history = require('connect-history-api-fallback');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const { generateSecretKey } = require('./utils/utils')
+const { generateSecretKey } = require('./utils/utils');
 
 // Import routes of the versioned API
 const v1Routes = require('./routes/v1');

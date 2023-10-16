@@ -103,6 +103,6 @@ const verifyTokenAndRole = (role) => {
             } else return res.status(403).json({ message: 'Forbidden: Insufficient privileges' });
         });
     };
-}
+};
 
 module.exports = { fetchCourseIds, generateLinks, generateSecretKey, verifyTokenAndRole };
