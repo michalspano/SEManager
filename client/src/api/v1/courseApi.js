@@ -114,3 +114,19 @@ export const deleteCourses = async () => {
     })
     return response.status
 }
+
+/**
+ * Function to create an employee for a specific course.
+ * @param {String} id - a unique identifier of the course
+ * @param {Object} employeeBody - the Object containing the employee information
+ * @returns {Promise} Promise object represents the response data.
+ */
+export const postEmployeeForCourse = async (id, employeeBody) => {
+    const response = await CourseApi.post('/' + id + '/employees', employeeBody, {
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+    })
+    return response.data
+}
