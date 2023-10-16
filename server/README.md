@@ -1,6 +1,7 @@
 # Server – ExpressJS Backend
 
-This [ExpressJS](https://expressjs.com/) template provides the basic infrastructure for a JSON API with MongoDB persistency with [Mongoose](https://mongoosejs.com/).
+This [ExpressJS](https://expressjs.com/) template provides the basic infrastructure for a JSON API with MongoDB persistency with [Mongoose](https://mongoosejs.com/). Despite the migration to a newer version of
+the `Vue.js` framework (i.e., the client part), the backend is still based on the original template.
 
 ## Server Structure
 

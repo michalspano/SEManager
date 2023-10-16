@@ -1,6 +1,13 @@
-# Client – Vue.js Frontend
+# Client – `Vue.js 3` Frontend
 
-This [Vue.js](https://vuejs.org/) template provides sample code how to connect to the ExpressJS backend.
+&#10071; **Important**: the team has decided to migrate to `Vue.js 3` and `Bootstrap 5` for the client (this decision was approved by the course instructor and the assigned coach).
+The main reason for this decision is that `Vue.js 3` is the latest version of the framework and `Vue.js 2` is going to be deprecated within a few months (i.e., at the end of 2023).
+Hence, the following documentation is outdated and will be updated if desired by the examiners.
+However, the [Project Setup](#project-setup) remain the same, so one can still use this template as a starting point.
+
+The current structure of the project adopts the latest trends in a `Vue.js` project powered by the [`Vite.js`](https://vitejs.dev/) build tool and environment.
+
+This [Vue.js](https://vuejs.org/) template provides sample code how to connect to the `ExpressJS` backend.
 
 ## Client Structure
 
@@ -77,6 +84,8 @@ npm run lint
 * [Documentation with Examples](https://github.com/axios/axios#axios)
 
 ## Bootstrap 4 and BootstrapVue
+
+TODO: Update the documentation to `Bootstrap 5`
 
 * [BootstrapVue Components](https://bootstrap-vue.js.org/docs/components)
   * [Layout and Grid System](https://bootstrap-vue.js.org/docs/components/layout/)

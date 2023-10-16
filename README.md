@@ -1,8 +1,8 @@
-# Backend and Frontend Template
+# `DIT342` - Group 15 - SEManager 
 
-Latest version: https://git.chalmers.se/courses/dit342/group-00-web
-
-This template refers to itself as `group-00-web`. In your project, use your group number in place of `00`.
+This project is adapted from the [Backend-Frontend](https://git.chalmers.se/courses/dit342/group-00-web) template and migrated to a
+later later version of `Vue.js` and `Bootstrap 5`. Hence, some of
+the documentation is outdated and will be updated if desired by the examiners.
 
 ## Project Structure
 
@@ -12,7 +12,7 @@ This template refers to itself as `group-00-web`. In your project, use your grou
 | [server/README.md](server/README.md)                 | Everything about the server       | **READ ME** carefully!                    |
 | `client/`                                            | Frontend client code              | All your client code                      |
 | [client/README.md](client/README.md)                 | Everything about the client       | **READ ME** carefully!                    |
-| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)             | Free online production deployment | Deploy your app online in production mode |
+| [~~docs/DEPLOYMENT.md~~](docs/DEPLOYMENT.md)             | Deprecated | The remote deployment was **removed** from the scope | 
 | [docs/LOCAL_DEPLOYMENT.md](docs/LOCAL_DEPLOYMENT.md) | Local production deployment       | Deploy your app local in production mode  |
 
 ## Requirements
@@ -39,10 +39,10 @@ You can also use alternative tools if you know how to configure them (e.g., Fire
 
 ```bash
 # Clone repository
-git clone git@git.chalmers.se:courses/dit342/group-00-web.git
+git clone git@git.chalmers.se:courses/dit342/2023/group-15-web.git
 
 # Change into the directory
-cd group-00-web
+cd group-15-web
 
 # Setup backend
 cd server && npm install
@@ -53,20 +53,20 @@ cd client && npm install
 npm run serve
 ```
 
-> Check out the detailed instructions for [backend](./server/README.md) and [frontend](./client/README.md).
-
-## Visual Studio Code (VSCode)
+## Visual Studio Code (VSCode) Support
 
 Open the `server` and `client` in separate VSCode workspaces or open the combined [backend-frontend.code-workspace](./backend-frontend.code-workspace). Otherwise, workspace-specific settings don't work properly.
 
 ## System Definition (MS0)
+
+The following describes the project's system definition.
 
 ### Purpose
 
 Our project is focused on improving the experience of the `SEM` (Software Engineering and Management) students by providing a tool
 that allows them to easily **visualize** the programme's structure.
 This would allow the students to **plan** their studies, **track** their progress, and understand the **pre-requisites** of each course.
-Furthermore, the users would also be able to interact with the course curriculum to **personalize their study plan**.
+Furthermore, the user is also be able to interact with the course curriculum to **personalize their study plan**.
 For instance, in the event that the student wants to take a study break, failed a course, is doing an exchange year, etc.
 
 ### Pages
@@ -76,13 +76,9 @@ The following section contains the description of the pages that will be impleme
 #### Login screen
 
 This page will be the first page that the user will see when accessing the website.
-There's two possible scenarios: (i) guest user, and (ii) registered user.
+There's two possible scenarios: (i) guest user, and (ii) registered user (i.e., student or an administrator). For now, the focus will be on the former; the guest user cannot access the main dashboard (home) without logging in (to prevent share of personal information).
 
-A **guest** user will simply want to explore the program's structure and courses.
-Therefore, the user will be able to access the main dashboard (home) without having to login.
-
-A **registered** user will be able to access the main dashboard (home) with a personalized
-experience based on the user's profile & preferences.
+<!-- TODO: discuss the feasibility of the 'unregistered user' -->
 
 #### Main Dashboard (Home)
 
@@ -90,19 +86,29 @@ The **main dashboard** is a fundamental page of the website. It is essentially a
 the current **static** picture with the structure of the programme. The user will be able to interact with the
 courses to highlight a **study path** and create a personalized *"study journey"*.
 
-#### Course Page (Pop-up)
+At each point in time, the user is unable to uncheck a course that has been marked as completed and the path is automatically updated to reflect the change. Furthermore, the user can also add a course to their study plan by clicking on the course and selecting the desired study period.
 
-When the user clicks on a course, the application will display all the relevant **course information** such as
-its study period, teaching staff, pre-requisites, etc. Herein, the user can mark a course as **completed**,
-**in progress** or **failed**. They can similarly input their grade and other relevant information in regards to the course.
+#### Course Page
 
-#### User Profile (Settings)
+When the user clicks on a course, the application will display all the relevant **course information** such as the teaching staff and the pre-requisites. The user can navigate back to the dashboard or to another course that has a dependency on the current course.
 
-This page will contain the user's visual preferences for the tool (themes, animations, etc.) and other relevant
-personal information.
+#### Employee Information (Pop-up)
+
+Given a selected course, the user can click on the teaching staff to display their information. This will be displayed in a pop-up window centered on the screen. This pop-up contains additional information about the teacher. From there, the user can navigate back to the Main Dashboard or close the pop-up.
+
+#### Admin Page
+
+A restricted page that is only accessible to the administrators. This page allows the administrators to add, update, remove entities to the system (see the ER diagram below). For instance, the administrator can add a new course, update the course information, remove a course from the system, or create an employee and assign them to a course.
+
+The Admin page contains a component that serves the role of a **manual** to help the administrator to use the page. This component contains a description of the page and a list of all the possible actions that the administrator can perform.
+
+#### `404` Page
+
+In case the user tries to access a page that does not exist, the application will display a 404 page.
 
 ### Entity-Relationship (ER) Diagram
 
+<!-- TODO: discuss the feasibility of the 'unregistered user' -->
 ![ER Diagram](./images/er_diagram.png)
 
 ## Teaser (MS3) [TODO]
