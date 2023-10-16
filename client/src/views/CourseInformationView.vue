@@ -10,15 +10,19 @@ const route = useRoute();
 let courseID = route.params.id;
 const course = ref(null);
 const employeesList = ref(null);
+const errorMsg = ref('');
 
 const fetchData = async (courseID) => {
-    //TODO: proper error handling
-    const [courseData, employeesData] = await Promise.all([
-        getCourse(courseID),
-        getCourseEmployees(courseID)
-    ]);
-    course.value = courseData;
-    employeesList.value = employeesData;
+    try {
+        const [courseData, employeesData] = await Promise.all([
+            getCourse(courseID),
+            getCourseEmployees(courseID)
+        ]);
+        course.value = courseData;
+        employeesList.value = employeesData;
+    } catch (error) {
+        errorMsg.value = error.message;
+    }
 };
 
 onMounted(async () => {
@@ -47,13 +51,14 @@ watch(route, async (newRoute) => {
 
         <div class="course-content container justify-content-center">
             <CourseInformation
-            v-if="course && employeesList"
+            v-if="course && employeesList && !errorMsg"
             :courseCode="course.courseCode"
             :courseName="course.courseName"
             :courseStaff="course.courseStaff"
             :dependencies="course.dependencies"
             :employees="employeesList"
             ></CourseInformation>
+            <div class="text-danger p-2" v-if="errorMsg">Unable to fetch course data from server: {{ errorMsg }}</div>
         </div>
                 
     </div>
