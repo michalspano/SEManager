@@ -42,6 +42,9 @@ onMounted(async () => {
 const generateMap = (coursesData) => {
 
     let coursesArray = JSON.parse(coursesData);
+    if (coursesArray === null) {
+        return null;
+    }
 
     let testMap = new Map();
 
