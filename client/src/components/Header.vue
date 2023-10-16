@@ -17,7 +17,8 @@ onMounted(() => {
 const toggleLogin = () => {
     const token = localStorage.getItem('token')
     if (token) {
-        localStorage.removeItem('token');
+        // Remove the token and the graph state from the local storage
+        localStorage.clear()
 
         /* An alternative approach is to emit a signal to the event bus, using the following:
          * eventBus.emit('logout-success'). However that is not required, because the change
