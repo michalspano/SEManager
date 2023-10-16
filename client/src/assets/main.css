@@ -12,6 +12,7 @@
   border: var(--accent-color);
   color: var(--primary-color);
   background-color: var(--accent-color);
+  transition: all 0.1s ease-in;
 }
 
 #app button:hover, .router-link-class.btn:hover {
@@ -29,6 +30,25 @@
 /* forms with identifiers should be displayed differently */
 #app #entity-identifier.form-control {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px var(--accent-color);
+}
+
+/* Navigation 'back' icon arrow */
+#app #nav-back-icon {
+  transition: transform 0.1s ease-in;
+}
+
+#app #nav-back-icon:hover {
+  transform: scale(1.075);
+}
+
+/* Add hover shadow animation for cards */
+#app .card-hoverable {
+  transition: all 0.15s ease-in;
+}
+
+#app .card-hoverable:hover {
+  box-shadow: 2.5px 4px 6px rgba(0, 0, 0, 0.15);
+  transform: translate(0px, -2px);
 }
 
 html {

@@ -8,9 +8,8 @@ const props = defineProps({
 
 </script>
 
-
 <template>
-    <div class="employee-pop-up rounded-3 bg-light">
+    <div class="employee-pop-up rounded-3 card-hoverable mb-4">
         <div class="staff-member row">
             <p id="staff-name" class="col-8 mt-2">{{ props.name }}</p>
             <div class="col-4">
@@ -34,7 +33,8 @@ const props = defineProps({
     }
 }
 .employee-pop-up {
-    box-shadow: 2.5px 2.5px 5px rgba(0, 0, 0, 0.2);    
+    box-shadow: 2.5px 2.5px 5px rgba(0, 0, 0, 0.2);
+    background-color: var(--primary-color);
 }
 #staff-name {
     font-size: 140%;

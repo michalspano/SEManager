@@ -43,13 +43,14 @@ watch(route, async (newRoute) => {
         <div class="page-header">
             <div class="container-fluid">
                 <router-link to="/courses">
-                    <button type="button" class="btn mt-2">Back to courses</button>
+                    <img src="@/assets/back-icon.png" alt="Back to courses" id="nav-back-icon" width="75" height="75"
+                        class="d-inline-block mt-3">
                 </router-link>
                 <h1 class="page-title text-center fw-bold text-nowrap">Course Details:</h1>
             </div>
         </div>
 
-        <div class="course-content container justify-content-center">
+        <div class="course-content container justify-content-center bg-light rounded-2">
             <CourseInformation
             v-if="course && employeesList && !errorMsg"
             :courseCode="course.courseCode"
@@ -70,6 +71,6 @@ watch(route, async (newRoute) => {
     color: var(--tertiary-color);
 }
 .course-content {
-    box-shadow: 1px 1px 10px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 6px 2px rgba(0, 0, 0, 0.1);
 }
 </style>
