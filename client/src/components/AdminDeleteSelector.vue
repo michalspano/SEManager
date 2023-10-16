@@ -78,7 +78,8 @@ const handleExpiredToken = () => {
 </script>
 
 <template>
-    <div class="container">
+    <div class="p-4 bg-body-tertiary rounded-4 subtle-shadow card-hoverable">
+        <p class="fs-1 fw-bolder mx-2">Add/Update</p>
         <div class="btn-group d-md-block mb-3">
             <button class="btn" :style="{ backgroundColor: formType === entity ? 'var(--highlight-color)' : '' }"
                 v-for="(entity, index) in ENTITIES" :key="index" @click="changeEntity(entity)">
