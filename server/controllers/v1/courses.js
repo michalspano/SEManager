@@ -48,8 +48,22 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
         });
 });
 
-// Return the list of all courses
+/* Return the list of all courses, or, if the `x-http-method-override`
+ * header is set to 'delete', delete all courses. This is to satisfy the
+ * requirement of the assignment, regarding having a certain endpoint
+ * use a method override. To satisfy the RESTful API requirements,
+ * we use a GET request to delete all courses.*/
 router.get('/', (req, res, next) => {
+    const HTTPOverride = req.headers['x-http-method-override'];
+    if (HTTPOverride && HTTPOverride.toLowerCase() === 'delete') {
+        return Course.deleteMany({})
+            .then(() => {
+                // Note: code 204 indicates that no context is provided
+                // and the request is completed.
+                res.status(204).send();
+            })
+            .catch(next);
+    }
 
     const sortBy = req.query.sortBy || 'courseName';
     const order = req.query.order || 'ascending';
@@ -70,17 +84,6 @@ router.get('/', (req, res, next) => {
     Course.find({}).where(filterOptions).sort(sortOptions).limit(limit)
         .then((courses) => {
             res.json({ "courses": courses });
-        })
-        .catch(next);
-});
-
-// Delete all courses
-router.delete('/', verifyTokenAndRole('admin'), (_, res, next) => {
-    Course.deleteMany({})
-        .then(() => {
-            // Note: code 204 indicates that no context is provided
-            // and the request is completed.
-            res.status(204).send();
         })
         .catch(next);
 });

@@ -63,6 +63,8 @@ app.use(morgan('dev'));
 app.use(cors({ withCredentials: true, credentials: true, origin: true }));
 
 // Enable HTTP overriding (for multiple formats)
+// This means that all middleware can be reached by using the GET/POST
+// method given the method override parameter in the request body.
 app.use(methodOverride('X-HTTP-Method'));           // Microsoft
 app.use(methodOverride('X-HTTP-Method-Override'));  // Google/GData
 app.use(methodOverride('X-Method-Override'));       // IBM

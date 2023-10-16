@@ -136,9 +136,10 @@ export const postCourse = async (body) => {
  */
 export const deleteCourses = async () => {
     try {
-        const response = await CourseApi.delete('/', {
+        const response = await CourseApi.get('/', {
             withCredentials: true,
             headers: {
+                'X-HTTP-Method-Override': 'DELETE',
                 'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
             },
         })
