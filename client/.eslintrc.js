@@ -24,7 +24,14 @@ module.exports = {
     'space-before-function-paren': [2, { anonymous: 'always', named: 'never' }],
     'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    // disable unused vars rule in both JS and Vue files, this is to avoid errors,
+    // such as having '_' as an unused var in Vue files.
+    'no-unused-vars': 'off',
+    'vue/no-unused-vars': 'off',
+    // Our computed properties are not pure functions, so we need to disable this rule.
+    // This enables us to compute Graph-like data structures to represent the course interdependencies.
+    'vue/no-side-effects-in-computed-properties': 'off'
   },
   // Ignore the dist build folder
   ignorePatterns: ['dist/']
