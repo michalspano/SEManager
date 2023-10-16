@@ -25,7 +25,7 @@ require('dotenv').config(); // set-up environment variables (.env)
 
 // Attempt to access .env variables, otherwise replace by the default values
 const port = process.env.PORT || 3000;
-const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/testDatabaseNew';
+const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/SEManagerDB';
 const SESSION_SECRET = process.env.SESSION_SECRET || generateSecretKey();
 
 // Attempt to establish a connection with MongoDB
@@ -124,6 +124,7 @@ app.listen(port, (err) => {
     console.log(`Express server listening on port ${port}, in ${env} mode`);
     console.log(`Backend: http://localhost:${port}/api/v${API_VERSION}`);
     console.log(`Frontend (production): http://localhost:${port}/`);
+    console.log(`Connected to MongoDB with URI: ${mongoURI}`)
 });
 
 module.exports = app;
