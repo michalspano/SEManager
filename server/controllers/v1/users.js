@@ -199,8 +199,6 @@ router.put('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
                 ["delete", [RESOURCE, userId], "DELETE"]
             ]);
 
-            console.log(user);
-
             // Save updated user, resolve promise before sending response
             user.save().then((user) => {
                 res.json({ user, links });

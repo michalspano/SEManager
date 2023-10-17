@@ -226,7 +226,6 @@ const onClick = async () => {
                     return;
             }
         } catch (error) {
-            console.log(error)
             if (error.response) {
                 // Check for TokenExpiredError, then delete the local token and navigate to /login
                 // This can only be raised from the `GET /user` endpoint.
