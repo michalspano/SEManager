@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import router from '@/router';
 import { performRequest } from '@/api/v1/Api';
-import { getCourse, postCourse } from '@/api/v1/courseApi'
+import { getCourse, postCourse, postEmployeeForCourse } from '@/api/v1/courseApi'
 import { getUser, postUser } from '@/api/v1/userApi'
 import { getEmployee, postEmployee } from '@/api/v1/employeeApi'
 
@@ -47,8 +47,10 @@ const resetAnswerState = () => {
 
 const formType = ref('course'); // auto-select 'course' by default
 const entityId = ref('')
+const relationId = ref('')
 const errorMsg = ref('')
-const toCreate = ref(false)    // creation defaults to false
+const toCreate = ref(false)     // creation defaults to false
+const hasRelation = ref(false)  // possibility to create an employee with a relation to a course
 const answer = ref(resetAnswerState())
 
 /**
@@ -160,8 +162,13 @@ const postEntity = async () => {
                 break
             case 'employee':
                 // Add the email address to the body
-                answer.value[formType.value].emailAddress = entityId.value
-                await postEmployee(answer.value[formType.value]);
+                const employeeBody = answer.value[formType.value]
+                employeeBody.emailAddress = entityId.value
+                if (hasRelation) {
+                    await postEmployeeForCourse(relationId.value, employeeBody)
+                } else {
+                    await postEmployee(employeeBody);
+                }
                 break
             default:
                 errorMsg.value = 'Unrecognized type';
@@ -169,7 +176,10 @@ const postEntity = async () => {
         }
     } catch (error) {
         if (error.response) {
-            if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
+            if (error.response.status === 500) {
+                errorMsg.value = 'Error: server malfunction.'
+            }
+            else if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
                 handleExpiredToken()
             } else {
                 errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
@@ -182,10 +192,13 @@ const postEntity = async () => {
 
     // Success!
     errorMsg.value = ''
-    alert(`${entityId.value} updated successfully!`)
+    alert(`${entityId.value} created successfully!`)
 }
 
-// TODO: extract the functionality to more granular functions
+// FIXME: decompose this function into more granular functions
+// to enhance readability and maintainability. However, we ran
+// out of time and faced some compatibility, so we did not have
+// time to work on this.
 const onClick = async () => {
     let method, response;
     try {
@@ -219,11 +232,13 @@ const onClick = async () => {
                     return;
             }
         } catch (error) {
-            console.log(error)
             if (error.response) {
+                if (error.response.status === 500) {
+                    errorMsg.value = 'Error: server malfunction.'
+                }
                 // Check for TokenExpiredError, then delete the local token and navigate to /login
                 // This can only be raised from the `GET /user` endpoint.
-                if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
+                else if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
                     handleExpiredToken()
                 } else {
                     errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
@@ -264,9 +279,13 @@ const onClick = async () => {
     } catch (error) {
         // FIXME: add the error handling for ExpiredTokenError. However, we expect the throughput to be low,
         // so it is enough to check if a quite seconds before, namely when we get the links from the API.
-        try {
-            errorMsg.value = error.response.status + ": " + error.response.data.message
-        } catch {
+        if (error.response) {
+            if (error.response.status === 500) {
+                errorMsg.value = 'Error: server malfunction.'
+            } else {
+                errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
+            }
+        } else {
             errorMsg.value = 'Problem with API or network.'
         }
     }
@@ -290,10 +309,20 @@ const toggleCheckbox = () => {
     toCreate.value = !toCreate.value
 }
 
+/**
+ * Toggle the hasRelation state. Furthermore, if the state is true, then
+ * set toCreate to true (creating a relationship requires creating an employee).
+ */
+const toggleHasRelation = () => {
+    hasRelation.value = !hasRelation.value
+    hasRelation.value ? toCreate.value = true : toCreate.value = false
+}
+
 </script>
 
 <template>
-    <div class="container">
+    <div class="p-4 bg-body-tertiary rounded-4 subtle-shadow card-hoverable">
+        <p class="fs-1 fw-bolder mx-2">Add/Update</p>
         <div class="btn-group d-md-block mb-3">
             <button class="btn" :style="{ backgroundColor: formType === entity ? 'var(--highlight-color)' : '' }"
                 v-for="(entity, index) in ENTITIES" :key="index" @click="changeEntity(entity)">
@@ -348,7 +377,7 @@ const toggleCheckbox = () => {
             <br>
             <div class="mb-3">
                 <label>Password:</label>
-                <input type="password" id="userPassword" v-model="answer.user.password" class="form-control"
+                <input type="text" id="userPassword" v-model="answer.user.password" class="form-control"
                     v-bind:required="toCreate">
             </div>
             <div class="mb-3">
@@ -372,24 +401,33 @@ const toggleCheckbox = () => {
                 <div id="dlHelp" class="form-text">Course codes, comma separated.</div>
             </div>
         </form>
-        <form v-else-if="formType === 'employee'" @submit.prevent="onClick">
-            <div class="mb-3">
-                <label class="fw-bolder">Email address:</label>
-                <input type="text" id="entity-identifier" v-model="entityId" class="form-control"
-                    v-bind:required="toCreate">
+        <div v-else-if="formType === 'employee'">
+            <form @submit.prevent="onClick">
+                <div class="mb-3">
+                    <label class="fw-bolder">Email address:</label>
+                    <input type="text" id="entity-identifier" v-model="entityId" class="form-control"
+                        v-bind:required="toCreate">
+                </div>
+                <br>
+                <div class="mb-3">
+                    <label>Name:</label>
+                    <input type="text" id="employeeName" v-model="answer.employee.name" class="form-control"
+                        v-bind:required="toCreate">
+                </div>
+                <div class="mb-3">
+                    <label>Contact info:</label>
+                    <input type="text" id="employeeContactInfo" v-model="answer.employee.contactInfo" class="form-control">
+                </div>
+            </form>
+            <button class="btn btn-primary btn-lg mb-2" @click="toggleHasRelation">Link with a course</button>
+            <div class="container p-2 my-3 rounded-2 subtle-shadow relationship-container" v-if="hasRelation">
+                <div class="mb-3">
+                    <label class="fw-bolder">Course code</label>
+                    <input type="text" id="entity-identifier" v-model="relationId" class="form-control">
+                    <div id="dlHelp" class="form-text relationship-label">Course code to add the employee to.</div>
+                </div>
             </div>
-            <br>
-            <div class="mb-3">
-                <label>Name:</label>
-                <input type="text" id="employeeName" v-model="answer.employee.name" class="form-control"
-                    v-bind:required="toCreate">
-            </div>
-            <div class="mb-3">
-                <label>Contact info:</label>
-                <input type="text" id="employeeContactInfo" v-model="answer.employee.contactInfo" class="form-control">
-            </div>
-        </form>
-
+        </div>
         <div class="row">
             <div class="col-xl-2 col-4">
                 <button class="btn btn-primary btn-lg" :class="{ disabled: !entityId || !answer }"
@@ -406,3 +444,14 @@ const toggleCheckbox = () => {
         </div>
     </div>
 </template>
+
+<style scoped>
+.relationship-container,
+.relationship-label {
+    color: var(--primary-color);
+}
+
+.relationship-container {
+    background-color: var(--secondary-accent-color);
+}
+</style>

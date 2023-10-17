@@ -31,7 +31,7 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
             res.status(201).json({ employee, links });
         }).catch((error) => {
             if (error.code === 11000) {
-                res.status(409).json({ error: "Employee with this unique key already exists" });
+                res.status(409).json({ message: "Employee with this unique key already exists" });
             } else next(error);
         });
 });
@@ -135,7 +135,7 @@ router.patch('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
         }).catch(next);
 });
 
-// Get all the courses of a given employee
+// Get all the courses given an employee
 router.get('/:id/courses', (req, res, next) => {
     Employee.findOne({ emailAddress: req.params.id }).exec()
         .then((employee) => {
@@ -144,8 +144,8 @@ router.get('/:id/courses', (req, res, next) => {
                     message: 'Employee not found.'
                 });
             }
-
-            // Get all the courses whose courseStaff matches employee
+            
+            // Course.find returns all matching courses
             Course.find({ courseStaff: employee.emailAddress }).exec()
                 .then((courses) => {
                     if (courses == null) {
@@ -153,11 +153,12 @@ router.get('/:id/courses', (req, res, next) => {
                             message: "Courses not found."
                         });
                     }
-                    res.json(courses);
+                    res.json({ 'courses': courses });
                 }).catch(next);
         });
 });
 
+// Get a specific course given an employee
 router.get('/:id/courses/:course_id', (req, res, next) => {
     const course_id = req.params.course_id;
     Employee.findOne({ emailAddress: req.params.id }).exec()
@@ -175,7 +176,7 @@ router.get('/:id/courses/:course_id', (req, res, next) => {
                         });
                     }
                     // Find the second :id that matches the course
-                    res.json(course);
+                    res.json({ 'course': course });
                 }).catch(next);
         });
 });

@@ -53,7 +53,6 @@ class Graph {
         // iterate over the vertices
         for (let i of get_keys)
         {
-            // console.log(i.courseCode);
             // get the adjacency list
             let get_values = this.AdjList.get(i);
             let conc = "";
@@ -62,8 +61,8 @@ class Graph {
             {
                 conc += j + " ";
             }
-
-            console.log(i.courseCode + " -> " + conc);
+            // For testing only:
+            // console.log(i.courseCode + " -> " + conc);
         }
     }
 

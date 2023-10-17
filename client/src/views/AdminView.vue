@@ -1,27 +1,31 @@
 <script setup>
+import AdminManual from '@/components/AdminManual.vue';
 import AdminDeleteSelector from '@/components/AdminDeleteSelector.vue';
 import AdminActionSelector from '@/components/AdminActionSelector.vue';
 </script>
 
 <template>
+    <div class="container-fluid py-4">
+        <router-link to="/courses">
+            <img src="@/assets/back-icon.png" alt="Back to courses" id="nav-back-icon" width="75" height="75"
+                class="d-inline-block">
+        </router-link>
+    </div>
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <!-- Note: herein, the layout changes at large, so that the text size is not too small -->
+            <div class="col-lg-6">
                 <div class="container py-3">
-                    <div class="p-4 bg-body-tertiary rounded-4 subtle-shadow">
-                        <p class="fs-1 fw-bolder mx-2">Add/Update</p>
-                        <AdminActionSelector />
-                    </div>
+                    <AdminActionSelector />
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="container py-3">
-                    <div class="p-4 bg-body-tertiary rounded-4 subtle-shadow">
-                        <p class="fs-1 fw-bolder mx-2">Delete</p>
-                        <AdminDeleteSelector/>
-                    </div>
+                    <AdminDeleteSelector />
                 </div>
-                <h1>TODO: ADD LAST CONTAINER</h1>
+                <div class="container py-3">
+                    <AdminManual />
+                </div>
             </div>
         </div>
     </div>

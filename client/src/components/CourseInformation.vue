@@ -44,6 +44,7 @@ const handleClickEvent = (event) => {
 }
 
 onMounted(() => {
+    window.scrollTo(0, 0); // because the course page is long, scroll to the top when this component is mounted
     window.addEventListener('mousedown', handleClickEvent);
     window.addEventListener('touchstart', handleClickEvent);
 })

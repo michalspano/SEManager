@@ -43,7 +43,7 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
         }).catch((error) => {
             if (error.code === 11000) { // duplicate unique key error is 11_000 by Mongoose
                 // HTTP error code 409 denotes a 'conflict'
-                res.status(409).json({ error: "Course with this unique key already exists" });
+                res.status(409).json({ message: "Course with this unique key already exists" });
             } else next(error);
         });
 });
@@ -192,7 +192,6 @@ router.delete('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
 });
 
 // Post a new employee to a given course
-// TODO: optimize this and check for exceptions
 router.post('/:id/employees', verifyTokenAndRole('admin'), (req, res, next) => {
     Course.findOne({ courseCode: req.params.id }).exec()
         .then((course) => {
@@ -202,20 +201,22 @@ router.post('/:id/employees', verifyTokenAndRole('admin'), (req, res, next) => {
                 });
             }
 
-            // Create the employee
-            // TODO: properly handle the duplicates (when an employee)
-            // with an existing ID is passed.
             const employee = new Employee(req.body);
-            employee.save().catch(next);
+            try {
+                employee.save();
+            } catch (error) {
+                if (error.code === 11000) { // duplicate unique key error is 11_000 by Mongoose
+                    res.status(409).json({ error: "Employee with this unique key already exists" });
+                } else next(error);
+            }
 
-            // Patch a course and assign the new employee to the course staff
+            // Edit the course and assign the new employee to the course staff
             let newCourseStaff = course.courseStaff;
             newCourseStaff.push(req.body.emailAddress);
             course.courseStaff = newCourseStaff;
 
-            // Save the changes that
             course.save().catch(next);
-            res.status(201).json(course);
+            res.status(201).json({ "course": course });
         });
 });
 

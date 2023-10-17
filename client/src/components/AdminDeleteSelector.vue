@@ -35,7 +35,10 @@ const onDelete = async () => {
         alert('Success!')
     } catch (error) {
         if (error.response) {
-            if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
+            if (error.response.status === 500) {
+                errorMsg.value = 'Error: server malfunction.'
+            }
+            else if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
                 handleExpiredToken()
             } else {
                 errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
@@ -78,7 +81,8 @@ const handleExpiredToken = () => {
 </script>
 
 <template>
-    <div class="container">
+    <div class="p-4 bg-body-tertiary rounded-4 subtle-shadow card-hoverable">
+        <p class="fs-1 fw-bolder mx-2">Add/Update</p>
         <div class="btn-group d-md-block mb-3">
             <button class="btn" :style="{ backgroundColor: formType === entity ? 'var(--highlight-color)' : '' }"
                 v-for="(entity, index) in ENTITIES" :key="index" @click="changeEntity(entity)">
@@ -89,21 +93,21 @@ const handleExpiredToken = () => {
             <div class="mb-3">
                 <label>Course code:</label>
                 <input type="text" id="entity-identifier" v-model="answer" class="form-control"
-                    v-bind:disabled="toDropCollection" v-bind:required="toDropCollection">
+                    v-bind:disabled="toDropCollection">
             </div>
         </form>
         <form v-else-if="formType === 'user'" @submit.prevent="onDelete">
             <div class="mb-3">
                 <label>Email address:</label>
                 <input type="text" id="entity-identifier" v-model="answer" class="form-control"
-                    v-bind:disabled="toDropCollection" v-bind:required="toDropCollection">
+                    v-bind:disabled="toDropCollection">
             </div>
         </form>
         <form v-else-if="formType === 'employee'" @submit.prevent="onDelete">
             <div class="mb-3">
                 <label>Email address:</label>
                 <input type="text" id="entity-identifier" v-model="answer" class="form-control"
-                    v-bind:disabled="toDropCollection" v-bind:required="toDropCollection">
+                    v-bind:disabled="toDropCollection">
             </div>
         </form>
 

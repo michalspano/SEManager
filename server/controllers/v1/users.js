@@ -62,7 +62,7 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
                     res.status(201).json({ user, links });
                 }).catch((error) => {
                     if (error.code === 11000) {
-                        res.status(409).json({ error: "User with this unique key already exists" });
+                        res.status(409).json({ message: "User with this unique key already exists" });
                     } else next(error);
                 });
         });
@@ -131,16 +131,20 @@ router.post('/auth/:id', (req, res, next) => {
             };
 
             const secretKey = generateSecretKey();
+            const TOKEN_TIMEOUT = 60 * 60 * 1000; // 1 hour
 
             // Generate a token based on the payload, use the secret key
             // Cache the secret key in the cookie. Both the secret key and the token
             // are required to verify the token and are valid for 1 hour.
-            const token = jwt.sign(tokenPayload, secretKey, { expiresIn: '1h' });
+            const token = jwt.sign(tokenPayload, secretKey, { expiresIn: TOKEN_TIMEOUT });
+
+            // For production, the origins must be the same
+            const env = process.env.ENV_NODE || 'development';
+
             res.cookie(token, secretKey, {
-                maxAge: 60 * 60 * 1000,
+                maxAge: TOKEN_TIMEOUT,
                 httpOnly: true,
-                sameSite: false, // client and server operate on different domains
-                // FIXME: for production, this should be fixed
+                sameSite: env.toLowerCase() === 'production' ? true : false,
                 secure: true
             });
 
@@ -194,8 +198,6 @@ router.put('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
                 ["edit", [RESOURCE, userId], "PATCH"],
                 ["delete", [RESOURCE, userId], "DELETE"]
             ]);
-
-            console.log(user);
 
             // Save updated user, resolve promise before sending response
             user.save().then((user) => {
