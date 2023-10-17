@@ -71,9 +71,24 @@ app.use(methodOverride('X-Method-Override'));       // IBM
 
 /* ---Middleware----------------------------------------------------------------------------- */
 
-// TODO: Add HATEOAS here to indicate to the client that the API is versioned.
 app.get('/api', (req, res) => {
-    res.json({ 'message': 'DIT342, Group 15 Backend.' });
+    const VERSION_LINKS = {
+        'v1': {
+            'status': 'stable',
+            'href': '/api/v1',
+            'type': 'application/json'
+        },
+        /* Add new API versions here.
+        'v1.x': {
+            'status': 'experimental',
+            'href': '/api/v1.x',
+            'type': 'application/json'
+        } */
+    }
+    res.json({
+        'message': 'Welcome to the SEManager API',
+        'version_links': VERSION_LINKS
+    });
 });
 
 /* ---VERSION 1.0 API--- */
