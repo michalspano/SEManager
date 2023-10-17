@@ -95,7 +95,7 @@ app.get('/api', (req, res) => {
 app.use('/api/v1', v1Routes);
 
 /* ---VERSION 1.x API--- */
-// TODO: increment the API version if required.
+// Increment the API version and add the new routes here
 
 // Handle all undefined routes
 app.use('/api/*', (req, res) => {
@@ -115,7 +115,7 @@ const client = path.join(root, 'client', 'dist');
 app.use(express.static(client));
 
 // Error handler (i.e., when exception is thrown) must be registered last
-const env = app.get('env');
+const env = process.env.NODE_ENV || 'development';
 
 // Note: if the product is in development mode, the returned JSON object
 // contains the full stack off the error.

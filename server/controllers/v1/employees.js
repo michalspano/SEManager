@@ -135,8 +135,7 @@ router.patch('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
         }).catch(next);
 });
 
-// TODO: check for exceptions
-// Get all the courses of a given employee
+// Get all the courses given an employee
 router.get('/:id/courses', (req, res, next) => {
     Employee.findOne({ emailAddress: req.params.id }).exec()
         .then((employee) => {
@@ -145,9 +144,8 @@ router.get('/:id/courses', (req, res, next) => {
                     message: 'Employee not found.'
                 });
             }
-            // Try to find the courses here
-            // Get all the courses whose courseStaff matches employee I think
-            // TODO: See why this works
+            
+            // Course.find returns all matching courses
             Course.find({ courseStaff: employee.emailAddress }).exec()
                 .then((courses) => {
                     if (courses == null) {
@@ -155,12 +153,12 @@ router.get('/:id/courses', (req, res, next) => {
                             message: "Courses not found."
                         });
                     }
-                    res.json(courses);
+                    res.json({ 'courses': courses });
                 }).catch(next);
-
         });
 });
 
+// Get a specific course given an employee
 router.get('/:id/courses/:course_id', (req, res, next) => {
     const course_id = req.params.course_id;
     Employee.findOne({ emailAddress: req.params.id }).exec()
@@ -178,7 +176,7 @@ router.get('/:id/courses/:course_id', (req, res, next) => {
                         });
                     }
                     // Find the second :id that matches the course
-                    res.json(course);
+                    res.json({ 'course': course });
                 }).catch(next);
         });
 });
