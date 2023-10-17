@@ -73,15 +73,23 @@ router.get('/', (req, res, next) => {
     let sortOptions = {};
     let filterOptions = {};
 
-    for (const item of sortBy) {
-        sortOptions[item] = order;
+    if (Array.isArray(sortBy))
+    {
+        for (const item of sortBy) {
+            sortOptions[item] = order;
+        }
+    }
+    else {
+        for (const item of Array(sortBy)) {
+            sortOptions[item] = order;
+        }
     }
 
     for (const key in filterBy) {
         filterOptions[key] = filterBy[key];
     }
 
-    Course.find({}).where(filterOptions).sort(sortOptions).limit(limit)
+    Course.find({}).where(filterBy).sort(sortOptions).limit(limit)
         .then((courses) => {
             res.json({ "courses": courses });
         })
