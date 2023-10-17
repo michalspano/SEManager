@@ -9,7 +9,8 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="container py-4">
+    <div>
+        <div class="container py-4">
         <p class="fs-1 fw-bold text-center">Software Engineering and Management</p>
         <div class="d-flex justify-content-center align-items-center">
             <p class="fs-2 text-center">You're logged in as {{ userType === 'admin' ? 'an' : 'a' }}
@@ -19,8 +20,9 @@ const props = defineProps({
                 <span v-else class="fw-bold">{{ userType }}</span>
             </p>
         </div>
+        </div>
+        <SEMProgramGraph/>
     </div>
-    <SEMProgramGraph></SEMProgramGraph>
 </template>
 
 <style scoped>
