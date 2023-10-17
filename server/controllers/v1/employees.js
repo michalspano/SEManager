@@ -135,7 +135,6 @@ router.patch('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
         }).catch(next);
 });
 
-// TODO: check for exceptions
 // Get all the courses of a given employee
 router.get('/:id/courses', (req, res, next) => {
     Employee.findOne({ emailAddress: req.params.id }).exec()
@@ -145,9 +144,8 @@ router.get('/:id/courses', (req, res, next) => {
                     message: 'Employee not found.'
                 });
             }
-            // Try to find the courses here
-            // Get all the courses whose courseStaff matches employee I think
-            // TODO: See why this works
+
+            // Get all the courses whose courseStaff matches employee
             Course.find({ courseStaff: employee.emailAddress }).exec()
                 .then((courses) => {
                     if (courses == null) {
