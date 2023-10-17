@@ -84,7 +84,7 @@ app.get('/api', (req, res) => {
             'href': '/api/v1.x',
             'type': 'application/json'
         } */
-    }
+    };
     res.json({
         'message': 'Welcome to the SEManager API',
         'version_links': VERSION_LINKS
@@ -139,7 +139,7 @@ app.listen(port, (err) => {
     console.log(`Express server listening on port ${port}, in ${env} mode`);
     console.log(`Backend: http://localhost:${port}/api/v${API_VERSION}`);
     console.log(`Frontend (production): http://localhost:${port}/`);
-    console.log(`Connected to MongoDB with URI: ${mongoURI}`)
+    console.log(`Connected to MongoDB with URI: ${mongoURI}`);
 });
 
 module.exports = app;
