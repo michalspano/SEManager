@@ -78,8 +78,6 @@ The following section contains the description of the pages that will be impleme
 This page will be the first page that the user will see when accessing the website.
 There's two possible scenarios: (i) guest user, and (ii) registered user (i.e., student or an administrator). For now, the focus will be on the former; the guest user cannot access the main dashboard (home) without logging in (to prevent share of personal information).
 
-<!-- TODO: discuss the feasibility of the 'unregistered user' -->
-
 #### Main Dashboard (Home)
 
 The **main dashboard** is a fundamental page of the website. It is essentially a much improved version of
@@ -108,9 +106,8 @@ In case the user tries to access a page that does not exist, the application wil
 
 ### Entity-Relationship (ER) Diagram
 
-<!-- TODO: discuss the feasibility of the 'unregistered user' -->
 ![ER Diagram](./images/er_diagram.png)
 
-## Teaser (MS3) [TODO]
+## Teaser (MS3)
 
 ![Teaser](./images/teaser.png)
