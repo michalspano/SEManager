@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <div v-for="(courses, _) of periodCourses" class="col mb-2">
+                <div v-for="(courses, index) of periodCourses" :key="index" class="col mb-2">
                     <CourseNode :courseCode="courses[0]['courseCode']" :courseName="courses[0]['courseName']" :status="courses[0]['courseStatus']" @sending-status="emitStatus"/>
                 </div>
             </div>
