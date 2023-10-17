@@ -62,7 +62,7 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
                     res.status(201).json({ user, links });
                 }).catch((error) => {
                     if (error.code === 11000) {
-                        res.status(409).json({ error: "User with this unique key already exists" });
+                        res.status(409).json({ message: "User with this unique key already exists" });
                     } else next(error);
                 });
         });

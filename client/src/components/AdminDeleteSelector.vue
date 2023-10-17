@@ -35,7 +35,10 @@ const onDelete = async () => {
         alert('Success!')
     } catch (error) {
         if (error.response) {
-            if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
+            if (error.response.status === 500) {
+                errorMsg.value = 'Error: server malfunction.'
+            }
+            else if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
                 handleExpiredToken()
             } else {
                 errorMsg.value = `${error.response.status}: ${error.response.data.message}`;

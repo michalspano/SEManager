@@ -176,7 +176,10 @@ const postEntity = async () => {
         }
     } catch (error) {
         if (error.response) {
-            if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
+            if (error.response.status === 500) {
+                errorMsg.value = 'Error: server malfunction.'
+            }
+            else if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
                 handleExpiredToken()
             } else {
                 errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
@@ -192,7 +195,10 @@ const postEntity = async () => {
     alert(`${entityId.value} created successfully!`)
 }
 
-// TODO: extract the functionality to more granular functions
+// FIXME: decompose this function into more granular functions
+// to enhance readability and maintainability. However, we ran
+// out of time and faced some compatibility, so we did not have
+// time to work on this.
 const onClick = async () => {
     let method, response;
     try {
@@ -227,9 +233,12 @@ const onClick = async () => {
             }
         } catch (error) {
             if (error.response) {
+                if (error.response.status === 500) {
+                    errorMsg.value = 'Error: server malfunction.'
+                }
                 // Check for TokenExpiredError, then delete the local token and navigate to /login
                 // This can only be raised from the `GET /user` endpoint.
-                if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
+                else if (error.response.data.message === 'TokenExpiredError' && error.response.status === 401) {
                     handleExpiredToken()
                 } else {
                     errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
@@ -270,9 +279,13 @@ const onClick = async () => {
     } catch (error) {
         // FIXME: add the error handling for ExpiredTokenError. However, we expect the throughput to be low,
         // so it is enough to check if a quite seconds before, namely when we get the links from the API.
-        try {
-            errorMsg.value = error.response.status + ": " + error.response.data.message
-        } catch {
+        if (error.response) {
+            if (error.response.status === 500) {
+                errorMsg.value = 'Error: server malfunction.'
+            } else {
+                errorMsg.value = `${error.response.status}: ${error.response.data.message}`;
+            }
+        } else {
             errorMsg.value = 'Problem with API or network.'
         }
     }

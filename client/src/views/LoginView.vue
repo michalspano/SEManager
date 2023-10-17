@@ -20,7 +20,7 @@ const login = async () => {
             localStorage.setItem('token', response.token)
 
             eventBus.emit('login-success')
-            router.push('/')
+            router.push('/courses')
         }).catch(() => {
             errorMessage.value = "Error: invalid password."
         });

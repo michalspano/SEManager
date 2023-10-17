@@ -43,7 +43,7 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
         }).catch((error) => {
             if (error.code === 11000) { // duplicate unique key error is 11_000 by Mongoose
                 // HTTP error code 409 denotes a 'conflict'
-                res.status(409).json({ error: "Course with this unique key already exists" });
+                res.status(409).json({ message: "Course with this unique key already exists" });
             } else next(error);
         });
 });
