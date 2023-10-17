@@ -155,7 +155,6 @@ router.get('/:id/courses', (req, res, next) => {
                     }
                     res.json(courses);
                 }).catch(next);
-
         });
 });
 
