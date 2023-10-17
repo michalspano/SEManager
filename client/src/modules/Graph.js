@@ -15,11 +15,10 @@ class Graph {
                 courseTerm: course.term,
                 courseStatus: 0};
 
-            // TODO: Initialize the first courses with status: 1
-            // I should change this to the courses of the first period instead of hard coding it
             // status 0: locked, status 1: unlocked, status 2: passed
-            if(courseObject.courseCode === 'DIT023' || courseObject.courseCode === 'DIT043')
-            {
+            
+            // Initialize courses with no dependencies with status: 1
+            if(course.dependencies.length === 0) {
                 courseObject.courseStatus = 1;
             }
             // Add the current course as a key
@@ -31,6 +30,8 @@ class Graph {
             {
                 this.addEdge(courseObject, dependency);
             }
+
+            
         }
     }
 
