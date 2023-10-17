@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue' // (merely for testing)
+import Home from '@/views/Home.vue'
+import PageNotFound from '@/views/PageNotFound.vue'
 import ProgramStructureView from '@/views/ProgramStructureView.vue'
 import jwt_decode from "jwt-decode";
 
-// TODO: Redirect unrecognized routes to something like
-// 'invalid' and make a component for that. Similar to
-// 404 page not found.
+/**
+ * The definition of the routes of the application.
+ */
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -46,6 +47,17 @@ const router = createRouter({
       name: 'course',
       component: () => import('@/views/CourseInformationView.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/AdminView.vue'),
+      meta: { requiresAuth: true, isAdmin: true }
+    },
+    {
+      // if an unrecognized route is passed, default to here:
+      path: '/:catchAll(.*)',
+      component: PageNotFound
     }
   ]
 })
@@ -58,7 +70,16 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !token) {
     next('/login');
   } else if (to.name === 'login' && token) {
-    next('/courses') // once logged in, go the CourseView
+    // Once logged in, go to the courses page
+    next('/courses')
+  } else if (to.meta.isAdmin && token) {
+    const decoded = jwt_decode(token);
+    if (decoded && decoded.type && decoded.type === 'admin') {
+      next();
+    } else {
+      // If the user is not an admin, redirect to the courses page
+      next('/courses');
+    }
   } else next();
 });
 

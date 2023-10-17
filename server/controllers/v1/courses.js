@@ -10,7 +10,7 @@ const router = express.Router();
 const Course = require('../../models/course');
 const Employee = require('../../models/employee');
 const { generateLinks } = require('../../utils/utils');
-const { verifyTokenAndRole } = require('../../utils/utils')
+const { verifyTokenAndRole } = require('../../utils/utils');
 
 /* Note: the convention is, when returning the Entity object
  * to wrap it in an Object which carries the name of the entity.
@@ -41,15 +41,29 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
         .then(() => {
             res.status(201).json({ course, links });
         }).catch((error) => {
-            if (error.code === 11_000) { // duplicate unique key error is 11_000 by Mongoose
+            if (error.code === 11000) { // duplicate unique key error is 11_000 by Mongoose
                 // HTTP error code 409 denotes a 'conflict'
-                res.status(409).json({ error: "Course with this unique key already exists" });
+                res.status(409).json({ message: "Course with this unique key already exists" });
             } else next(error);
         });
 });
 
-// Return the list of all courses
+/* Return the list of all courses, or, if the `x-http-method-override`
+ * header is set to 'delete', delete all courses. This is to satisfy the
+ * requirement of the assignment, regarding having a certain endpoint
+ * use a method override. To satisfy the RESTful API requirements,
+ * we use a GET request to delete all courses.*/
 router.get('/', (req, res, next) => {
+    const HTTPOverride = req.headers['x-http-method-override'];
+    if (HTTPOverride && HTTPOverride.toLowerCase() === 'delete') {
+        return Course.deleteMany({})
+            .then(() => {
+                // Note: code 204 indicates that no context is provided
+                // and the request is completed.
+                res.status(204).send();
+            })
+            .catch(next);
+    }
 
     const sortBy = req.query.sortBy || 'courseName';
     const order = req.query.order || 'ascending';
@@ -59,28 +73,25 @@ router.get('/', (req, res, next) => {
     let sortOptions = {};
     let filterOptions = {};
 
-    for (item of sortBy) {
-        sortOptions[item] = order;
+    if (Array.isArray(sortBy))
+    {
+        for (const item of sortBy) {
+            sortOptions[item] = order;
+        }
+    }
+    else {
+        for (const item of Array(sortBy)) {
+            sortOptions[item] = order;
+        }
     }
 
     for (const key in filterBy) {
         filterOptions[key] = filterBy[key];
     }
 
-    Course.find({}).where(filterOptions).sort(sortOptions).limit(limit)
+    Course.find({}).where(filterBy).sort(sortOptions).limit(limit)
         .then((courses) => {
             res.json({ "courses": courses });
-        })
-        .catch(next);
-});
-
-// Delete all courses
-router.delete('/', verifyTokenAndRole('admin'), (_, res, next) => {
-    Course.deleteMany({})
-        .then(() => {
-            // Note: code 204 indicates that no context is provided
-            // and the request is completed.
-            res.status(204).send();
         })
         .catch(next);
 });
@@ -181,7 +192,6 @@ router.delete('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
 });
 
 // Post a new employee to a given course
-// TODO: optimize this and check for exceptions
 router.post('/:id/employees', verifyTokenAndRole('admin'), (req, res, next) => {
     Course.findOne({ courseCode: req.params.id }).exec()
         .then((course) => {
@@ -191,25 +201,27 @@ router.post('/:id/employees', verifyTokenAndRole('admin'), (req, res, next) => {
                 });
             }
 
-            // Create the employee
-            // TODO: properly handle the duplicates (when an employee)
-            // with an existing ID is passed.
             const employee = new Employee(req.body);
-            employee.save().catch(next);
+            try {
+                employee.save();
+            } catch (error) {
+                if (error.code === 11000) { // duplicate unique key error is 11_000 by Mongoose
+                    res.status(409).json({ error: "Employee with this unique key already exists" });
+                } else next(error);
+            }
 
-            // Patch a course and assign the new employee to the course staff
+            // Edit the course and assign the new employee to the course staff
             let newCourseStaff = course.courseStaff;
             newCourseStaff.push(req.body.emailAddress);
             course.courseStaff = newCourseStaff;
 
-            // Save the changes that
             course.save().catch(next);
-            res.status(201).json(course);
+            res.status(201).json({ "course": course });
         });
 });
 
 // Get all employees of a given course
-router.get('/:id/employees/', (req, res, next) => {
+router.get('/:id/employees', (req, res, next) => {
     Course.findOne({ courseCode: req.params.id }).exec()
         .then((course) => {
             if (course == null) {

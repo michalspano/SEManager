@@ -1,21 +1,21 @@
 {
 	"info": {
-		"_postman_id": "9b0a3de6-533e-470e-acde-dd859b2e83e0",
+		"_postman_id": "a0d98a9d-adfe-45f7-9099-2eb78b560b2d",
 		"name": "Server",
 		"description": "The collection of versioned API CRUD operations for the server.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29461036",
-		"_collection_link": "https://lively-robot-331309.postman.co/workspace/SEMProgramProject~7a29e83c-9fda-4a9d-9373-b8ef48c7414e/collection/18528997-9b0a3de6-533e-470e-acde-dd859b2e83e0?action=share&source=collection_link&creator=29461036"
+		"_exporter_id": "29663637",
+		"_collection_link": "https://lively-robot-331309.postman.co/workspace/SEMProgramProject~7a29e83c-9fda-4a9d-9373-b8ef48c7414e/collection/18528997-a0d98a9d-adfe-45f7-9099-2eb78b560b2d?action=share&source=collection_link&creator=29663637"
 	},
 	"item": [
 		{
 			"name": "v1",
 			"item": [
 				{
-					"name": "DROP_DB",
+					"name": "Clean DB",
 					"item": [
 						{
-							"name": "DELETE /courses",
+							"name": "Delete all courses",
 							"event": [
 								{
 									"listen": "test",
@@ -30,8 +30,14 @@
 								}
 							],
 							"request": {
-								"method": "DELETE",
-								"header": [],
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-HTTP-Method-Override",
+										"value": "DELETE",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "{{host}}/api/v1/courses",
 									"host": [
@@ -47,7 +53,7 @@
 							"response": []
 						},
 						{
-							"name": "DELETE /employees",
+							"name": "Delete all employees",
 							"event": [
 								{
 									"listen": "test",
@@ -79,7 +85,7 @@
 							"response": []
 						},
 						{
-							"name": "DELETE /users",
+							"name": "Delete all users",
 							"event": [
 								{
 									"listen": "test",
@@ -117,10 +123,56 @@
 					"name": "Courses",
 					"item": [
 						{
-							"name": "Add Courses",
+							"name": "Add/Update a course",
 							"item": [
 								{
-									"name": "POST /courses (1)",
+									"name": "Add course with invalid number of credits",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Invalid number of credits\", function () {",
+													"    const jsonResponse = pm.response.json();",
+													"    pm.expect(jsonResponse.message).to.eql(\"Invalid number of credits.\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT043\",\n    \"courseName\": \"Object Oriented Programming\",\n    \"credits\": -7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"oop-teacher-email@gu.se\"],\n    \"dependencies\": []\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add course",
 									"event": [
 										{
 											"listen": "test",
@@ -131,93 +183,14 @@
 													"});",
 													"pm.test(\"There's at least one course staff per course\", function () {",
 													"    pm.expect(pm.response.json().course.courseStaff).to.be.an('array').and.to.not.be.empty;",
+													"});",
+													"pm.test(\"Fields are correctly defined\", function () {",
+													"    const responseJson = pm.response.json();",
+													"    pm.expect(responseJson.course.courseCode).to.eql(\"DIT043\");",
+													"    pm.expect(responseJson.course.courseName).to.eql(\"Object Oriented Programming\");",
+													"    pm.expect(responseJson.course.credits).to.eql(7.5);",
 													"});",
 													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"math-teacher-email@gu.se\"],\n    \"dependencies\": []\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/courses",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "POST /courses (2)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 201\", function () {",
-													"    pm.response.to.have.status(201);",
-													"});",
-													"pm.test(\"There's at least one course staff per course\", function () {",
-													"    pm.expect(pm.response.json().course.courseStaff).to.be.an('array').and.to.not.be.empty;",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT043\",\n    \"courseName\": \"Object Oriented Programming\",\n    \"credits\": 7,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"oop-teacher-email@gu.se\"],\n    \"dependencies\": []\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/courses",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "POST /courses (2) invalid",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 409\", function () {",
-													"    pm.response.to.have.status(409);",
-													"});"
 												],
 												"type": "text/javascript"
 											}
@@ -250,272 +223,7 @@
 									"response": []
 								},
 								{
-									"name": "POST /courses (3)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 201\", function () {",
-													"    pm.response.to.have.status(201);",
-													"});",
-													"pm.test(\"There's at least one course staff per course\", function () {",
-													"    pm.expect(pm.response.json().course.courseStaff).to.be.an('array').and.to.not.be.empty;",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"courseCode\": \"DIT046\",\r\n    \"courseName\": \"Requirements and User Experience\",\r\n    \"credits\": 7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"ux-teacher-email@gu.se\"],\r\n    \"dependencies\": [\"DIT043\"]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/courses",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "POST /courses (3) invalid",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 400\", function () {",
-													"    pm.response.to.have.status(400);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"courseCode\": \"DIT094\",\r\n    \"courseName\": \"Mini Project: Team Programming\",\r\n    \"credits\": -7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"mp-teacher-email@gu.se\"],\r\n    \"dependencies\": [\"DIT043\"]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/courses",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "POST /courses (4)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 201\", function () {",
-													"    pm.response.to.have.status(201);",
-													"});",
-													"pm.test(\"There's at least one course staff per course\", function () {",
-													"    pm.expect(pm.response.json().course.courseStaff).to.be.an('array').and.to.not.be.empty;",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"courseCode\": \"DIT094\",\r\n    \"courseName\": \"Mini Project: Team Programming\",\r\n    \"credits\": 7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 2,\r\n    \"courseStaff\": [\"mp-teacher-email@gu.se\"],\r\n    \"dependencies\": [\"DIT043\"]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/courses/",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses",
-												""
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Request Courses",
-							"item": [
-								{
-									"name": "GET /courses",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/v1/courses",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET /courses (sort)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {\r",
-													"    pm.response.to.have.status(200);\r",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/v1/courses/?sortBy=term&sortBy=studyPeriod&sortBy=name&limit=4&order=ascending",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses",
-												""
-											],
-											"query": [
-												{
-													"key": "sortBy",
-													"value": "term"
-												},
-												{
-													"key": "sortBy",
-													"value": "studyPeriod"
-												},
-												{
-													"key": "sortBy",
-													"value": "name"
-												},
-												{
-													"key": "limit",
-													"value": "4"
-												},
-												{
-													"key": "order",
-													"value": "ascending"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET /courses (filter)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {\r",
-													"    pm.response.to.have.status(200);\r",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/v1/courses/?filterBy[term]=1&filterBy[studyPeriod]=2",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses",
-												""
-											],
-											"query": [
-												{
-													"key": "filterBy[term]",
-													"value": "1"
-												},
-												{
-													"key": "filterBy[studyPeriod]",
-													"value": "2"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET /courses/:id",
+									"name": "Get course",
 									"event": [
 										{
 											"listen": "test",
@@ -567,14 +275,55 @@
 										}
 									},
 									"response": []
-								}
-							]
-						},
-						{
-							"name": "Update Courses",
-							"item": [
+								},
 								{
-									"name": "PUT /courses/:id",
+									"name": "Add existing course",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 409\", function () {",
+													"    pm.response.to.have.status(409);",
+													"});",
+													"",
+													"pm.test(\"Unique key already exists\", function () {",
+													"    const jsonResponse = pm.response.json();",
+													"    pm.expect(jsonResponse.message).to.equal(\"Course with this unique key already exists\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT043\",\n    \"courseName\": \"Object Oriented Programming\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"oop-teacher-email@gu.se\"],\n    \"dependencies\": []\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update course information",
 									"event": [
 										{
 											"listen": "test",
@@ -584,14 +333,19 @@
 													"    pm.response.to.have.status(200);",
 													"});",
 													"",
-													"pm.test(\"All fields to be updated are non-empty\", function () {",
-													"    const courseResponseJSON = pm.response.json().course;",
+													"pm.test(\"All fields were correctly updated\", function () {",
+													"    const courseResponse = pm.response.json().course;",
 													"",
-													"    // there's at least one person responsible for a course",
-													"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
-													"    // a course can have 0 dependencies",
-													"    pm.expect(courseResponseJSON.dependencies).to.be.an('array');",
-													"});"
+													"    pm.expect(courseResponse.courseCode).to.eql(\"DIT023\");",
+													"    pm.expect(courseResponse.courseName).to.eql(\"Mathematics Foundations for Software Engineering\");",
+													"    pm.expect(courseResponse.credits).to.eql(7.5);",
+													"    pm.expect(courseResponse.term).to.eql(1);",
+													"    pm.expect(courseResponse.studyPeriod).to.eql(1);",
+													"    pm.expect(courseResponse.courseStaff).to.be.an('array').to.include(\"math-teacher-email@gu.se\");",
+													"    pm.expect(courseResponse.courseStaff).to.be.an('array').to.include(\"phd-teacher-email@gu.se\");",
+													"    pm.expect(courseResponse.dependencies).to.be.an('array').and.to.be.empty;",
+													"});",
+													""
 												],
 												"type": "text/javascript"
 											}
@@ -623,7 +377,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "DIT023"
+													"value": "DIT043"
 												}
 											]
 										}
@@ -631,7 +385,7 @@
 									"response": []
 								},
 								{
-									"name": "PUT /courses/:id",
+									"name": "Edit course information",
 									"event": [
 										{
 											"listen": "test",
@@ -641,88 +395,15 @@
 													"    pm.response.to.have.status(200);",
 													"});",
 													"",
-													"pm.test(\"All fields to be updated are non-empty\", function () {",
-													"    const courseResponseJSON = pm.response.json().course;",
+													"pm.test(\"All fields were correctly updated\", function () {",
+													"    const courseResponse = pm.response.json().course;",
 													"",
-													"    pm.expect(courseResponseJSON.courseName).to.not.be.empty;",
-													"",
-													"    // there's at least one person responsible for a course",
-													"    pm.expect(courseResponseJSON.courseStaff).to.be.an('array').and.to.not.be.empty;",
-													"    // a course can have 0 dependencies",
-													"    pm.expect(courseResponseJSON.dependencies).to.be.an('array');",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "prerequest",
-											"script": {
-												"exec": [
+													"    pm.expect(courseResponse.courseStaff.length).to.eql(2);",
+													"    pm.expect(courseResponse.courseStaff).to.be.an('array').to.include(\"new-math-teacher-email@gu.se\");",
+													"    pm.expect(courseResponse.courseStaff).to.be.an('array').to.include(\"phd-teacher-email@gu.se\");",
+													"    pm.expect(courseResponse.dependencies).to.be.an('array').and.to.be.empty;",
+													"});",
 													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"protocolProfileBehavior": {
-										"followAuthorizationHeader": false,
-										"followRedirects": true,
-										"removeRefererHeaderOnRedirect": false,
-										"insecureHTTPParser": false,
-										"disableUrlEncoding": true,
-										"strictSSL": false
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-HTTP-Method-Override",
-												"value": "PUT",
-												"description": "POST -> PUT (sample request; works only for POST remapping).",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Mathematics Foundations for Software Engineering\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"math-teacher-email@gu.se\", \"phd-teacher-email@gu.se\", \"another-math-teacher-email@gu.se\"],\n    \"dependencies\": []\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/courses/:id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"courses",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "DIT023"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "PATCH /courses/:id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
 												],
 												"type": "text/javascript"
 											}
@@ -733,7 +414,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"credits\": 7.5\n}",
+											"raw": "{\n    \"courseStaff\": [\"new-math-teacher-email@gu.se\", \"phd-teacher-email@gu.se\"]\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -754,25 +435,106 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "DIT043"
+													"value": "DIT023"
 												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete course",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT043\",\n    \"courseName\": \"Object Oriented Programming\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [\"oop-teacher-email@gu.se\"],\n    \"dependencies\": []\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT023"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check course deleted",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"No courses are defined\", function () {",
+													"    const jsonResponse = pm.response.json();",
+													"    pm.expect(jsonResponse.courses.length).to.eql(0);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
 											]
 										}
 									},
 									"response": []
 								}
 							]
-						}
-					]
-				},
-				{
-					"name": "Employees",
-					"item": [
+						},
 						{
-							"name": "Add Employees",
+							"name": "Employees for a given course",
 							"item": [
 								{
-									"name": "POST /employees",
+									"name": "Add course #1",
 									"event": [
 										{
 											"listen": "test",
@@ -780,7 +542,15 @@
 												"exec": [
 													"pm.test(\"Response status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
-													"});"
+													"});",
+													"",
+													"pm.test(\"Fields are correctly defined\", function () {",
+													"    const responseJson = pm.response.json();",
+													"    pm.expect(responseJson.course.courseCode).to.eql(\"DIT043\");",
+													"    pm.expect(responseJson.course.courseName).to.eql(\"Object Oriented Programming\");",
+													"    pm.expect(responseJson.course.credits).to.eql(7.5);",
+													"});",
+													""
 												],
 												"type": "text/javascript"
 											}
@@ -791,7 +561,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"oop-teacher-email@gu.se\",\r\n    \"name\": \"Francisco Gomes\",\r\n    \"contactInfo\": \"+46 555 444\"\r\n}",
+											"raw": "{\n    \"courseCode\": \"DIT043\",\n    \"courseName\": \"Object Oriented Programming\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [],\n    \"dependencies\": []\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -799,21 +569,21 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/api/v1/employees",
+											"raw": "{{host}}/api/v1/courses",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"employees"
+												"courses"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "POST /employees (2)",
+									"name": "Add employee to a given course #1",
 									"event": [
 										{
 											"listen": "test",
@@ -821,7 +591,14 @@
 												"exec": [
 													"pm.test(\"Response status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
-													"});"
+													"});",
+													"",
+													"const jsonResponse = pm.response.json();",
+													"pm.test(\"Course staff updated\", function () {",
+													"    pm.expect(jsonResponse.course.courseStaff).to.be.an('array').and.to.not.be.empty;",
+													"    pm.expect(jsonResponse.course.courseStaff).to.be.an('array').to.include(\"oop-teacher-email@gu.se\");",
+													"});",
+													""
 												],
 												"type": "text/javascript"
 											}
@@ -832,89 +609,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"math-teacher-email@gu.se\",\r\n    \"name\": \"Christian Berger\",\r\n    \"contactInfo\": \"+46 111 222\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/employees",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"employees"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "POST /employees (2) invalid",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 409\", function () {",
-													"    pm.response.to.have.status(409);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"math-teacher-email@gu.se\",\r\n    \"name\": \"Christian Berger\",\r\n    \"contactInfo\": \"+46 111 222\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/employees",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"employees"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "POST /courses/:course_id/employees",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 201\", function () {",
-													"    pm.response.to.have.status(201);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"oop-phd-email@gu.se\",\r\n    \"name\": \"Generic Name\",\r\n    \"contactInfo\": \"+46 420 69\"\r\n}",
+											"raw": "{\n    \"emailAddress\": \"oop-teacher-email@gu.se\",\n    \"name\": \"Francisco Gomes\",\n    \"contactInfo\": \"+46 000 111\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -942,14 +637,63 @@
 										}
 									},
 									"response": []
-								}
-							]
-						},
-						{
-							"name": "Request Employees",
-							"item": [
+								},
 								{
-									"name": "GET /employees",
+									"name": "Add employee to a given course #2",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"const jsonResponse = pm.response.json();",
+													"pm.test(\"Course staff updated\", function () {",
+													"    pm.expect(jsonResponse.course.courseStaff).to.be.an('array').and.to.not.be.empty;",
+													"    pm.expect(jsonResponse.course.courseStaff).to.be.an('array').to.include(\"other-oop-teacher-email@gu.se\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"emailAddress\": \"other-oop-teacher-email@gu.se\",\n    \"name\": \"Teacher Teachersson\",\n    \"contactInfo\": \"+46 222 333\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id",
+												"employees"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT043"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get all the employees of a given course",
 									"event": [
 										{
 											"listen": "test",
@@ -957,7 +701,1771 @@
 												"exec": [
 													"pm.test(\"Response status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Check response data\", function () {",
+													"    const response = pm.response.json().employees;",
+													"    pm.expect(response.length).to.eql(2);",
+													"    pm.expect(response[0].emailAddress).to.eql(\"oop-teacher-email@gu.se\");",
+													"    pm.expect(response[1].emailAddress).to.eql(\"other-oop-teacher-email@gu.se\");",
+													"})"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id",
+												"employees"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT043"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get employees of a course given its ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Fields are correctly defined\", function () {",
+													"    const responseJson = pm.response.json();",
+													"    pm.expect(responseJson.employee.emailAddress).to.eql(\"other-oop-teacher-email@gu.se\");",
+													"    pm.expect(responseJson.employee.name).to.eql(\"Teacher Teachersson\");",
+													"    pm.expect(responseJson.employee.contactInfo).to.eql(\"+46 222 333\");",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:course_id/employees/:employee_id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":course_id",
+												"employees",
+												":employee_id"
+											],
+											"variable": [
+												{
+													"key": "course_id",
+													"value": "DIT043"
+												},
+												{
+													"key": "employee_id",
+													"value": "other-oop-teacher-email@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get an invalid employee given a course",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 404\", function () {",
+													"    pm.response.to.have.status(404);",
+													"});",
+													"",
+													"pm.test(\"Check proper message\", function () {",
+													"    pm.expect(pm.response.json().message).to.eql(\"another-generic-email@gu.se not found in DIT043\");",
 													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id/employees/:employee_id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id",
+												"employees",
+												":employee_id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT043"
+												},
+												{
+													"key": "employee_id",
+													"value": "another-generic-email@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete employee of a course",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"pm.test(\"Course staff is not empty\", function () {",
+													"    pm.expect(pm.response.json().course.courseStaff).to.be.an('array').and.to.be.not.empty;",
+													"    pm.expect(pm.response.json().course.courseStaff).to.be.an('array').and.to.include(\"oop-teacher-email@gu.se\");",
+													"});",
+													"pm.test(\"Fields are correctly defined\", function () {",
+													"    const responseJson = pm.response.json();",
+													"    pm.expect(responseJson.course.courseCode).to.eql(\"DIT043\");",
+													"    pm.expect(responseJson.course.courseName).to.eql(\"Object Oriented Programming\");",
+													"    pm.expect(responseJson.course.credits).to.eql(7.5);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:course_id/employees/:employee_id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":course_id",
+												"employees",
+												":employee_id"
+											],
+											"variable": [
+												{
+													"key": "course_id",
+													"value": "DIT043"
+												},
+												{
+													"key": "employee_id",
+													"value": "other-oop-teacher-email@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete course",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT043"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check courses deleted",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"pm.test(\"No courses\", function () {\r",
+													"    pm.expect(pm.response.json().courses).to.be.an('array').and.to.be.empty;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												""
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Request Courses (sorting and filtering)",
+							"item": [
+								{
+									"name": "Add course #1",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"pm.test(\"Fields are correctly defined\", function () {",
+													"    const responseJson = pm.response.json();",
+													"    pm.expect(responseJson.course.courseCode).to.eql(\"DIT043\");",
+													"    pm.expect(responseJson.course.courseName).to.eql(\"OOP\");",
+													"    pm.expect(responseJson.course.credits).to.eql(7.5);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT043\",\n    \"courseName\": \"OOP\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [],\n    \"dependencies\": []\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add course #2",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Math\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [],\n    \"dependencies\": []\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add course #3",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT1182\",\n    \"courseName\": \"DSA\",\n    \"credits\": 7.5,\n    \"term\": 2,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [],\n    \"dependencies\": [\"DIT023\", \"DIT043\"]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add course #4",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT094\",\n    \"courseName\": \"MINI\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 2,\n    \"courseStaff\": [],\n    \"dependencies\": [\"DIT023\", \"DIT043\"]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add course #5",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT419\",\n    \"courseName\": \"ADV PROG\",\n    \"credits\": 7.5,\n    \"term\": 4,\n    \"studyPeriod\": 4,\n    \"courseStaff\": [],\n    \"dependencies\": [\"DIT023\", \"DIT043\"]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get invalid courses",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 404\", function () {",
+													"    pm.response.to.have.status(404);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/foo/bar",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												"foo",
+												"bar"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Sort courses",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check order of the response\", function() {\r",
+													"    const coursesResponse = pm.response.json().courses;\r",
+													"    \r",
+													"    pm.expect(coursesResponse[0].courseName).to.eql(\"Math\");\r",
+													"    pm.expect(coursesResponse[1].courseName).to.eql(\"OOP\");\r",
+													"    pm.expect(coursesResponse[2].courseName).to.eql(\"MINI\");\r",
+													"    pm.expect(coursesResponse[3].courseName).to.eql(\"DSA\");\r",
+													"    pm.expect(coursesResponse[4].courseName).to.eql(\"ADV PROG\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/?sortBy=term&sortBy=studyPeriod&sortBy=courseName&order=1",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												""
+											],
+											"query": [
+												{
+													"key": "sortBy",
+													"value": "term"
+												},
+												{
+													"key": "sortBy",
+													"value": "studyPeriod"
+												},
+												{
+													"key": "sortBy",
+													"value": "courseName"
+												},
+												{
+													"key": "limit",
+													"value": "3",
+													"disabled": true
+												},
+												{
+													"key": "order",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Filter courses",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check response size\", function () {\r",
+													"    const courses = pm.response.json().courses;\r",
+													"    pm.expect(courses.length).to.eql(2);\r",
+													"})\r",
+													"\r",
+													"pm.test(\"Check correct courses\", function () {\r",
+													"    const courses = pm.response.json().courses;\r",
+													"    pm.expect(courses[0].courseName).to.eql(\"Math\");\r",
+													"    pm.expect(courses[1].courseName).to.eql(\"OOP\");\r",
+													"})"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/?filterBy[term]=1&filterBy[studyPeriod]=1",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												""
+											],
+											"query": [
+												{
+													"key": "filterBy[term]",
+													"value": "1"
+												},
+												{
+													"key": "filterBy[studyPeriod]",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Delete courses",
+							"item": [
+								{
+									"name": "Delete all courses",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-HTTP-Method-Override",
+												"value": "DELETE",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get all courses",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"No courses are defined\", function () {",
+													"    const response = pm.response.json().courses;",
+													"    pm.expect(response.length).to.eql(0);",
+													"})"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete all employees",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Employees",
+					"item": [
+						{
+							"name": "Add/Update Employees",
+							"item": [
+								{
+									"name": "Add employee",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"const jsonResponse = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Fields to be correctly defined\", function () {\r",
+													"    pm.expect(jsonResponse.employee.emailAddress).to.equal(\"christian.sattler@gu.se\");\r",
+													"    pm.expect(jsonResponse.employee.name).to.equal(\"Christian Sattler\");\r",
+													"    pm.expect(jsonResponse.employee.contactInfo).to.equal(\"+46 31-772 81 36\");\r",
+													"});\r",
+													"\r",
+													"// Check if the \"links\" key exists in the response+\r",
+													"pm.test(\"Response contains HATEOAS links\", function () {\r",
+													"    pm.expect(jsonResponse).to.have.property(\"links\");\r",
+													"\r",
+													"    // Check if the \"links\" property is an array (more links can be defined)\r",
+													"    pm.expect(jsonResponse.links).to.be.an(\"array\");\r",
+													"\r",
+													"    // Check if the \"links\" object is not empty\r",
+													"    pm.expect(Object.keys(jsonResponse.links).length).to.be.above(0);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"christian.sattler@gu.se\",\r\n    \"name\": \"Christian Sattler\",\r\n    \"contactInfo\": \"+46 31-772 81 36\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add duplicate employee",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 409\", function () {\r",
+													"    pm.response.to.have.status(409);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Unique key should already exist\", function () {\r",
+													"    const jsonResponse = pm.response.json();\r",
+													"    pm.expect(jsonResponse.message).to.eql(\"Employee with this unique key already exists\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"christian.sattler@gu.se\",\r\n    \"name\": \"Christian Sattler\",\r\n    \"contactInfo\": \"+46 31-772 81 36\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get employee",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"const jsonResponse = pm.response.json();\r",
+													"\r",
+													"\r",
+													"// Check if the \"links\" key exists in the response+\r",
+													"pm.test(\"Response contains HATEOAS links\", function () {\r",
+													"    pm.expect(jsonResponse).to.have.property(\"links\");\r",
+													"\r",
+													"    // Check if the \"links\" property is an array (more links can be defined)\r",
+													"    pm.expect(jsonResponse.links).to.be.an(\"array\");\r",
+													"\r",
+													"    // Check if the \"links\" object is not empty\r",
+													"    pm.expect(Object.keys(jsonResponse.links).length).to.be.above(0);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "christian.sattler@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update employee information",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"All fields were correctly updated\", function () {\r",
+													"    const employeeResponse = pm.response.json().employee;\r",
+													"\r",
+													"    pm.expect(employeeResponse.emailAddress).to.equal(\"alexg@chalmers.se\");\r",
+													"    pm.expect(employeeResponse.name).to.equal(\"Alex Gerdes\");\r",
+													"    pm.expect(employeeResponse.contactInfo).to.be.empty;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"alexg@chalmers.se\",\r\n    \"name\": \"Alex Gerdes\",\r\n    \"contactInfo\": \"\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "christian.sattler@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Edit employee information",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"All fields were correctly updated\", function () {\r",
+													"    const employeeResponse = pm.response.json().employee;\r",
+													"\r",
+													"    pm.expect(employeeResponse.emailAddress).to.equal(\"alexg@chalmers.se\");\r",
+													"    pm.expect(employeeResponse.name).to.equal(\"Alex Gerdes\");\r",
+													"    pm.expect(employeeResponse.contactInfo).to.not.be.empty;\r",
+													"    pm.expect(employeeResponse.contactInfo).to.equal(\"+46 31–772 1065\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"contactInfo\": \"+46 31–772 1065\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "alexg@chalmers.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete employee",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "alexg@chalmers.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check employee deleted",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"No employee is found\", function () {\r",
+													"    pm.expect(pm.response.json().message).to.equal(\"Employee not found.\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "alexg@chalmers.se"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get courses of an employee",
+							"item": [
+								{
+									"name": "Add employee",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"christian.berger@gu.se\",\r\n    \"name\": \"Christian Berger\",\r\n    \"contactInfo\": \"+46 31-772 60 38\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add course #1",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"courseCode\": \"DIT023\",\r\n    \"courseName\": \"Mathematical Foundations of Software Engineering\",\r\n    \"credits\": 7.5,\r\n    \"term\": 1,\r\n    \"studyPeriod\": 1,\r\n    \"courseStaff\": [\"christian.berger@gu.se\", \"beatriz.cabrero-daniel@gu.se\"],\r\n    \"dependencies\": []\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add course #2",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"courseCode\": \"DIT639\",\r\n    \"courseName\": \"Cyber Physical Systems and Systems of Systems\",\r\n    \"credits\": 15,\r\n    \"term\": 4,\r\n    \"studyPeriod\": 4,\r\n    \"courseStaff\": [\"christian.berger@gu.se\"],\r\n    \"dependencies\": [\"DIT345\", \"DIT023\", \"DIT633\", \"DIT113\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add course #3",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"courseCode\": \"DIT999\",\r\n    \"courseName\": \"Made-up Course\",\r\n    \"credits\": 7.5,\r\n    \"term\": 4,\r\n    \"studyPeriod\": 3,\r\n    \"courseStaff\": [\"christian.berger@gu.se\"],\r\n    \"dependencies\": [\"DIT043\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get all courses of an employee",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"const jsonResponse = pm.response.json();\r",
+													"\r",
+													"pm.test(\"Response to include courses\", function () {\r",
+													"    pm.expect\r",
+													"\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/employees/:id/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees",
+												":id",
+												"courses"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "christian.berger@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get a course of an employee",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response to include\", function () {\r",
+													"    const jsonResponse = pm.response.json();\r",
+													"\r",
+													"    pm.expect(jsonResponse.course.courseCode).to.be.equal(\"DIT023\");\r",
+													"\r",
+													"    pm.expect(jsonResponse.course.courseStaff).to.include(\"christian.berger@gu.se\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/employees/:id/courses/:course_id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees",
+												":id",
+												"courses",
+												":course_id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "christian.berger@gu.se"
+												},
+												{
+													"key": "course_id",
+													"value": "DIT023"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete employee",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/employees/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "christian.berger@gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete course #1",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT023"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete courses #2",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT639"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete courses #3",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/courses/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "DIT999"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Request Employees",
+							"item": [
+								{
+									"name": "Add employee #1",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"const jsonResponse = pm.response.json();\r",
+													"\r",
+													"// Check if the \"links\" key exists in the response+\r",
+													"pm.test(\"Response contains HATEOAS links\", function () {\r",
+													"    pm.expect(jsonResponse).to.have.property(\"links\");\r",
+													"\r",
+													"    // Check if the \"links\" property is an array (more links can be defined)\r",
+													"    pm.expect(jsonResponse.links).to.be.an(\"array\");\r",
+													"\r",
+													"    // Check if the \"links\" object is not empty\r",
+													"    pm.expect(Object.keys(jsonResponse.links).length).to.be.above(0);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"christian.sattler@gu.se\",\r\n    \"name\": \"Christian Sattler\",\r\n    \"contactInfo\": \"+46 31-772 81 36\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add employee #2",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"const jsonResponse = pm.response.json();\r",
+													"\r",
+													"// Check if the \"links\" key exists in the response+\r",
+													"pm.test(\"Response contains HATEOAS links\", function () {\r",
+													"    pm.expect(jsonResponse).to.have.property(\"links\");\r",
+													"\r",
+													"    // Check if the \"links\" property is an array (more links can be defined)\r",
+													"    pm.expect(jsonResponse.links).to.be.an(\"array\");\r",
+													"\r",
+													"    // Check if the \"links\" object is not empty\r",
+													"    pm.expect(Object.keys(jsonResponse.links).length).to.be.above(0);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"made-up-email@gu.se\",\r\n    \"name\": \"Made up name\",\r\n    \"contactInfo\": \"+46 11 22 33 44\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add employee #3",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"const jsonResponse = pm.response.json();\r",
+													"\r",
+													"// Check if the \"links\" key exists in the response+\r",
+													"pm.test(\"Response contains HATEOAS links\", function () {\r",
+													"    pm.expect(jsonResponse).to.have.property(\"links\");\r",
+													"\r",
+													"    // Check if the \"links\" property is an array (more links can be defined)\r",
+													"    pm.expect(jsonResponse.links).to.be.an(\"array\");\r",
+													"\r",
+													"    // Check if the \"links\" object is not empty\r",
+													"    pm.expect(Object.keys(jsonResponse.links).length).to.be.above(0);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"garfield@gu.se\",\r\n    \"name\": \"Garfield\",\r\n    \"contactInfo\": \"+46 000\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/employees",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get employees",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Employees exist\", function () {",
+													"    const response = pm.response.json().employees;",
+													"    pm.expect(response[0].emailAddress).to.eql(\"christian.sattler@gu.se\");",
+													"    pm.expect(response[1].emailAddress).to.eql(\"garfield@gu.se\");",
+													"    pm.expect(response[2].emailAddress).to.eql(\"made-up-email@gu.se\");",
+													"});",
+													""
 												],
 												"type": "text/javascript"
 											}
@@ -982,7 +2490,7 @@
 									"response": []
 								},
 								{
-									"name": "GET /employees (sort)",
+									"name": "Get employees sorted",
 									"event": [
 										{
 											"listen": "test",
@@ -990,7 +2498,15 @@
 												"exec": [
 													"pm.test(\"Response status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
-													"});"
+													"});",
+													"",
+													"pm.test(\"Employees are sorted in descending order\", function () {",
+													"    const response = pm.response.json().employees;",
+													"    pm.expect(response[0].emailAddress).to.eql(\"made-up-email@gu.se\");",
+													"    pm.expect(response[1].emailAddress).to.eql(\"garfield@gu.se\");",
+													"    pm.expect(response[2].emailAddress).to.eql(\"christian.sattler@gu.se\");",
+													"});",
+													""
 												],
 												"type": "text/javascript"
 											}
@@ -1029,7 +2545,7 @@
 									"response": []
 								},
 								{
-									"name": "GET /employees/:id",
+									"name": "Get employee",
 									"event": [
 										{
 											"listen": "test",
@@ -1037,6 +2553,11 @@
 												"exec": [
 													"pm.test(\"Response status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Correct fields\", function () {",
+													"    const response = pm.response.json();",
+													"    pm.expect(response.employee.emailAddress).to.eql(\"christian.sattler@gu.se\");",
 													"});"
 												],
 												"type": "text/javascript"
@@ -1060,7 +2581,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "oop-teacher-email@gu.se"
+													"value": "christian.sattler@gu.se"
 												}
 											]
 										}
@@ -1068,7 +2589,7 @@
 									"response": []
 								},
 								{
-									"name": "GET /employees/*/invalid",
+									"name": "Get invalid employee",
 									"event": [
 										{
 											"listen": "test",
@@ -1100,246 +2621,6 @@
 										}
 									},
 									"response": []
-								},
-								{
-									"name": "GET /employees/:id/courses",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/v1/employees/:id/courses",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"employees",
-												":id",
-												"courses"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "oop-teacher-email@gu.se"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET /employees/:id/courses/:course_id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{host}}/api/v1/employees/:id/courses/:course_id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"employees",
-												":id",
-												"courses",
-												":course_id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "oop-teacher-email@gu.se"
-												},
-												{
-													"key": "course_id",
-													"value": "DIT043"
-												}
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Update Employees",
-							"item": [
-								{
-									"name": "PUT /employees/:id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "PUT",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"oop-teacher-email@gu.se\",\r\n    \"name\": \"Francisco Gomes Oliveira de Neto\",\r\n    \"contactInfo\": \"+46 555 444\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/employees/:id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"employees",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "oop-teacher-email@gu.se"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "PATCH /employees/:id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"contactInfo\": \"JUPITER 402\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/employees/:id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"employees",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "oop-teacher-email@gu.se"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "PATCH /employees/:id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "X-HTTP-Method-Override",
-												"value": "PATCH",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"contactInfo\": \"JUPITER 472\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/employees/:id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"employees",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "oop-teacher-email@gu.se"
-												}
-											]
-										}
-									},
-									"response": []
 								}
 							]
 						}
@@ -1349,10 +2630,10 @@
 					"name": "Users",
 					"item": [
 						{
-							"name": "Add Users",
+							"name": "Add/Update a user",
 							"item": [
 								{
-									"name": "POST student",
+									"name": "Add student",
 									"event": [
 										{
 											"listen": "test",
@@ -1361,47 +2642,26 @@
 													"pm.test(\"Response status code is 201\", function () {\r",
 													"    pm.response.to.have.status(201);\r",
 													"});\r",
-													""
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"password\": \"da!@sda%*sda\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": [\"DIT043\", \"DIT023\"]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/users",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"users"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "POST student (invalid)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 409\", function () {\r",
-													"    pm.response.to.have.status(409);\r",
+													"pm.test(\"Fields are correctly defined\", function () {\r",
+													"    const responseJson = pm.response.json();\r",
+													"    pm.expect(responseJson.user.emailAddress).to.eql(\"gusschomc@student.gu.se\");\r",
+													"    pm.expect(responseJson.user.firstName).to.eql(\"Scholar\");\r",
+													"    pm.expect(responseJson.user.lastName).to.eql(\"McScholarsson\");\r",
+													"    pm.expect(responseJson.user.type).to.eql(\"student\");\r",
+													"});\r",
+													"\r",
+													"\r",
+													"// Check if the \"links\" key exists in the response\r",
+													"pm.test(\"Response contains HATEOAS links\", function () {\r",
+													"    const responseBody = pm.response.json();\r",
+													"\r",
+													"    pm.expect(responseBody).to.have.property(\"links\");\r",
+													"\r",
+													"    // Check if the \"links\" property is an array (more links can be defined)\r",
+													"    pm.expect(responseBody.links).to.be.an(\"array\");\r",
+													"\r",
+													"    // Check if the \"links\" object is not empty\r",
+													"    pm.expect(Object.keys(responseBody.links).length).to.be.above(0);\r",
 													"});\r",
 													""
 												],
@@ -1436,14 +2696,19 @@
 									"response": []
 								},
 								{
-									"name": "POST student (2)",
+									"name": "Add existing student",
 									"event": [
 										{
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Response status code is 201\", function () {\r",
-													"    pm.response.to.have.status(201);\r",
+													"pm.test(\"Response status code is 409\", function () {\r",
+													"    pm.response.to.have.status(409);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Unique key already exists\", function () {\r",
+													"    const jsonResponse = pm.response.json();\r",
+													"    pm.expect(jsonResponse.message).to.eql(\"User with this unique key already exists\");\r",
 													"});\r",
 													""
 												],
@@ -1456,7 +2721,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"gusadnam@student.gu.se\",\r\n    \"password\": \"dpijq)*&!\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Adam\",\r\n    \"lastName\": \"Namesson\",\r\n    \"courses\": [\"DIT043\"]\r\n}",
+											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"password\": \"da!@sda%*sda\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": []\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1478,14 +2743,78 @@
 									"response": []
 								},
 								{
-									"name": "POST student (3)",
+									"name": "Update student",
 									"event": [
 										{
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Response status code is 201\", function () {\r",
-													"    pm.response.to.have.status(201);\r",
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"All fields are updated properly\", function () {\r",
+													"    const studentResponseJSON = pm.response.json().user;\r",
+													"\r",
+													"    pm.expect(studentResponseJSON.password).to.not.be.empty;\r",
+													"    pm.expect(studentResponseJSON.type).to.eql(\"student\");\r",
+													"    pm.expect(studentResponseJSON.firstName).to.eql(\"Sven\");\r",
+													"    pm.expect(studentResponseJSON.lastName).to.eql(\"Svensson\");\r",
+													"    pm.expect(studentResponseJSON.courses).to.be.an('array').and.to.be.empty;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\":\"gusschomc@student.gu.se\",\r\n    \"password\": \"dpijq)*&!\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Sven\",\r\n    \"lastName\": \"Svensson\",\r\n    \"courses\": []\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/users/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "gusschomc@student.gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Edit student",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"All fields are updated properly\", function () {\r",
+													"    const studentResponseJSON = pm.response.json().updatedUser;\r",
+													"\r",
+													"    pm.expect(studentResponseJSON.lastName).to.eql(\"Adamsson\");\r",
 													"});\r",
 													""
 												],
@@ -1494,11 +2823,11 @@
 										}
 									],
 									"request": {
-										"method": "POST",
+										"method": "PATCH",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"emailAddress\": \"gusjoefred@student.gu.se\",\r\n    \"password\": \"_(*@!mbgalsd\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Joel\",\r\n    \"lastName\": \"Fredriksson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
+											"raw": "{\r\n    \"password\": \"das13te2130edhsa\",\r\n    \"lastName\": \"Adamsson\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1506,21 +2835,132 @@
 											}
 										},
 										"url": {
-											"raw": "{{host}}/api/v1/users",
+											"raw": "{{host}}/api/v1/users/:id",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"users"
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "gusschomc@student.gu.se"
+												}
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "POST admin",
+									"name": "Check student data",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check fields\", function () {\r",
+													"    const studentResponseJSON = pm.response.json().user;\r",
+													"\r",
+													"    pm.expect(studentResponseJSON.lastName).to.eql(\"Adamsson\");\r",
+													"    pm.expect(studentResponseJSON.firstName).to.eql(\"Sven\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{host}}/api/v1/users/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "gusschomc@student.gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete student",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"password\": \"da!@sda%*sda\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": [\"DIT043\", \"DIT023\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/users/:id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "gusschomc@student.gu.se"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add admin",
 									"event": [
 										{
 											"listen": "test",
@@ -1560,14 +3000,9 @@
 										}
 									},
 									"response": []
-								}
-							]
-						},
-						{
-							"name": "Request Users",
-							"item": [
+								},
 								{
-									"name": "GET /users",
+									"name": "Get all users",
 									"event": [
 										{
 											"listen": "prerequest",
@@ -1584,7 +3019,11 @@
 												"exec": [
 													"pm.test(\"Response status code is 200\", function () {\r",
 													"    pm.response.to.have.status(200);\r",
-													"});"
+													"});\r",
+													"\r",
+													"pm.test(\"Number of users is 1\", function () {\r",
+													"    pm.expect(pm.response.json().users.length).to.eql(1);\r",
+													"})"
 												],
 												"type": "text/javascript"
 											}
@@ -1606,9 +3045,14 @@
 										}
 									},
 									"response": []
-								},
+								}
+							]
+						},
+						{
+							"name": "Check student courses",
+							"item": [
 								{
-									"name": "GET /users/*/invalid",
+									"name": "Get invalid user",
 									"event": [
 										{
 											"listen": "prerequest",
@@ -1651,23 +3095,119 @@
 									"response": []
 								},
 								{
-									"name": "GET /users/:id",
+									"name": "Add course 1",
 									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"exec": [
-													""
-												],
-												"type": "text/javascript"
-											}
-										},
 										{
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Response status code is 200\", function () {\r",
-													"    pm.response.to.have.status(200);\r",
+													"pm.test(\"Response status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT023\",\n    \"courseName\": \"Math\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [],\n    \"dependencies\": []\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add course 2",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"courseCode\": \"DIT043\",\n    \"courseName\": \"OOP\",\n    \"credits\": 7.5,\n    \"term\": 1,\n    \"studyPeriod\": 1,\n    \"courseStaff\": [],\n    \"dependencies\": []\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/api/v1/courses",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add student",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"pm.test(\"Fields are correctly defined\", function () {\r",
+													"    const responseJson = pm.response.json();\r",
+													"    pm.expect(responseJson.user.emailAddress).to.eql(\"gusschomc@student.gu.se\");\r",
+													"    pm.expect(responseJson.user.firstName).to.eql(\"Scholar\");\r",
+													"    pm.expect(responseJson.user.lastName).to.eql(\"McScholarsson\");\r",
+													"    pm.expect(responseJson.user.type).to.eql(\"student\");\r",
+													"});\r",
+													"\r",
+													"\r",
+													"// Check if the \"links\" key exists in the response\r",
+													"pm.test(\"Response contains HATEOAS links\", function () {\r",
+													"    const responseBody = pm.response.json();\r",
+													"\r",
+													"    pm.expect(responseBody).to.have.property(\"links\");\r",
+													"\r",
+													"    // Check if the \"links\" property is an array (more links can be defined)\r",
+													"    pm.expect(responseBody.links).to.be.an(\"array\");\r",
+													"\r",
+													"    // Check if the \"links\" object is not empty\r",
+													"    pm.expect(Object.keys(responseBody.links).length).to.be.above(0);\r",
 													"});\r",
 													""
 												],
@@ -1676,31 +3216,33 @@
 										}
 									],
 									"request": {
-										"method": "GET",
+										"method": "POST",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"emailAddress\": \"gusschomc@student.gu.se\",\r\n    \"password\": \"da!@sda%*sda\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Scholar\",\r\n    \"lastName\": \"McScholarsson\",\r\n    \"courses\": [\"DIT023\", \"DIT043\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": {
-											"raw": "{{host}}/api/v1/users/:id",
+											"raw": "{{host}}/api/v1/users",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"api",
 												"v1",
-												"users",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "gusadnam@student.gu.se"
-												}
+												"users"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "GET /users/:id/courses",
+									"name": "Get student courses",
 									"event": [
 										{
 											"listen": "test",
@@ -1709,7 +3251,13 @@
 													"pm.test(\"Response status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
 													"});",
-													""
+													"",
+													"pm.test(\"Check courses\", function () {",
+													"    const courses = pm.response.json().courses;",
+													"    pm.expect(courses.length).to.eql(2);",
+													"    pm.expect(courses[0].courseCode).to.eql(\"DIT023\");",
+													"    pm.expect(courses[1].courseCode).to.eql(\"DIT043\");",
+													"})"
 												],
 												"type": "text/javascript"
 											}
@@ -1733,7 +3281,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "gusadnam@student.gu.se"
+													"value": "gusschomc@student.gu.se"
 												}
 											]
 										}
@@ -1741,7 +3289,7 @@
 									"response": []
 								},
 								{
-									"name": "GET /users/:id/courses/:course_id",
+									"name": "Get a course from a student",
 									"event": [
 										{
 											"listen": "test",
@@ -1750,6 +3298,11 @@
 													"pm.test(\"Response status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
 													"});",
+													"",
+													"pm.test(\"Check course\", function () {",
+													"    const course = pm.response.json().course;",
+													"    pm.expect(course[0].courseCode).to.eql(\"DIT043\")",
+													"})",
 													""
 												],
 												"type": "text/javascript"
@@ -1775,7 +3328,7 @@
 											"variable": [
 												{
 													"key": "id",
-													"value": "gusadnam@student.gu.se"
+													"value": "gusschomc@student.gu.se"
 												},
 												{
 													"key": "course_id",
@@ -1787,132 +3340,21 @@
 									"response": []
 								}
 							]
-						},
-						{
-							"name": "Update Users",
-							"item": [
-								{
-									"name": "PUT /users/:id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {\r",
-													"    pm.response.to.have.status(200);\r",
-													"});\r",
-													"\r",
-													"pm.test(\"All fields to be updated are non-empty\", function () {\r",
-													"    const studentResponseJSON = pm.response.json().user;\r",
-													"\r",
-													"    pm.expect(studentResponseJSON.password).to.not.be.empty;\r",
-													"    pm.expect(studentResponseJSON.type).to.not.be.empty;\r",
-													"    pm.expect(studentResponseJSON.firstName).to.not.be.empty;\r",
-													"    pm.expect(studentResponseJSON.lastName).to.not.be.empty;\r",
-													"    pm.expect(studentResponseJSON.courses).to.be.an('array').and.to.not.be.empty;\r",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "PUT",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{ \r\n    \"password\": \"dpijq)*&!\",\r\n    \"type\": \"student\",\r\n    \"firstName\": \"Sven\",\r\n    \"lastName\": \"Svensson\",\r\n    \"courses\": [\"DIT023\"]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/users/:id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"users",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "gusadnam@student.gu.se"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "PATCH /users/:id",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Response status code is 200\", function () {\r",
-													"    pm.response.to.have.status(200);\r",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"lastName\": \"Adamsson\",\r\n    \"courses\": [\"DIT023\", \"DIT046\"]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{host}}/api/v1/users/:id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"users",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "gusadnam@student.gu.se"
-												}
-											]
-										}
-									},
-									"response": []
-								}
-							]
 						}
 					]
 				},
 				{
-					"name": "RELATIONSHIPS",
+					"name": "Delete collections",
 					"item": [
 						{
-							"name": "GET /courses/:id/employees",
+							"name": "Delete all courses",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Response status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
+											"pm.test(\"Response status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1921,31 +3363,93 @@
 							],
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "X-HTTP-Method-Override",
+										"value": "DELETE",
+										"type": "text"
+									}
+								],
 								"url": {
-									"raw": "{{host}}/api/v1/courses/:id/employees",
+									"raw": "{{host}}/api/v1/courses",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"courses",
-										":id",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete all employees",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/employees",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
 										"employees"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "DIT043"
-										}
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "GET /courses/:id/employees/:employee_id",
+							"name": "Delete all users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 204\", function () {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/users",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check all courses deleted Copy",
 							"event": [
 								{
 									"listen": "test",
@@ -1953,6 +3457,11 @@
 										"exec": [
 											"pm.test(\"Response status code is 200\", function () {",
 											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"No courses are defined\", function () {",
+											"    const jsonResponse = pm.response.json();",
+											"    pm.expect(jsonResponse.courses.length).to.eql(0);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1963,41 +3472,33 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/courses/:id/employees/:employee_id",
+									"raw": "{{host}}/api/v1/courses",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"courses",
-										":id",
-										"employees",
-										":employee_id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "DIT023"
-										},
-										{
-											"key": "employee_id",
-											"value": "math-teacher-email@gu.se"
-										}
+										"courses"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "GET /courses/:id/employees/:employee_id (invalid)",
+							"name": "Check all employees deleted",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Response status code is 404\", function () {",
-											"    pm.response.to.have.status(404);",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"No courses are defined\", function () {",
+											"    const jsonResponse = pm.response.json();",
+											"    pm.expect(jsonResponse.courses.length).to.eql(0);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -2008,41 +3509,33 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/courses/:id/employees/:employee_id",
+									"raw": "{{host}}/api/v1/courses",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"courses",
-										":id",
-										"employees",
-										":employee_id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "DIT023"
-										},
-										{
-											"key": "employee_id",
-											"value": "another-generic-email@gu.se"
-										}
+										"courses"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "GET /courses/*/invalid",
+							"name": "Check all users deleted",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Response status code is 404\", function () {",
-											"    pm.response.to.have.status(404);",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"No courses are defined\", function () {",
+											"    const jsonResponse = pm.response.json();",
+											"    pm.expect(jsonResponse.courses.length).to.eql(0);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -2053,273 +3546,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/courses/foo/bar",
+									"raw": "{{host}}/api/v1/courses",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"courses",
-										"foo",
-										"bar"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "DELETE",
-					"item": [
-						{
-							"name": "DELETE /courses/:id/employees/:employee_id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Response status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/v1/courses/:id/employees/:employee_id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"courses",
-										":id",
-										"employees",
-										":employee_id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "DIT023"
-										},
-										{
-											"key": "employee_id",
-											"value": "another-math-teacher-email@gu.se"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "DELETE /courses/:id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Response status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/v1/courses/:id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"courses",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "DIT046"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "DEL /users/:id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Response status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/v1/users/:id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "gusadnam@student.gu.se"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "DELETE /employees/:id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Response status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/api/v1/employees/:id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"employees",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "oop-phd-email@gu.se"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "DEL /users/:id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Response status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-HTTP-Method-Override",
-										"value": "DELETE",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{host}}/api/v1/users/:id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "gusjoefred@student.gu.se"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "DEL /users/:id (invalid)",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Response status code is 404\", function () {\r",
-											"    pm.response.to.have.status(404);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-HTTP-Method-Override",
-										"value": "DELETE",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{host}}/api/v1/users/:id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "gusjoefred@student.gu.se"
-										}
+										"courses"
 									]
 								}
 							},
@@ -2346,14 +3580,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/v1/courses",
+							"raw": "{{host}}/api/v1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"v1",
-								"courses"
+								"v1"
 							]
 						}
 					},

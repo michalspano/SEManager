@@ -1,3 +1,21 @@
+<template>
+    <div class="container-fluid text-center year-container p-2 rounded-2 bg-light">
+        <div class="row">
+            <div class="col">
+                <h2 class="year-title p-1">{{ 'Year ' + yearNumber }}</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <SemesterContainer :semesterNumber="firstSemesterNumber" :semesterCourses="getFirstSemesterCourses" @sending-status="emitStatus"></SemesterContainer>
+            </div>
+            <div class="col">
+                <SemesterContainer :semesterNumber="secondSemesterNumber" :semesterCourses="getSecondSemesterCourses" @sending-status="emitStatus"></SemesterContainer>
+            </div>
+        </div>
+    </div>
+</template>
+
 <script setup>
 
 import { ref, computed } from 'vue';
@@ -47,26 +65,17 @@ const getSecondSemesterCourses = computed(() => {
 
 </script>
 
-<template>
-    <div class="container-fluid text-center">
-        <div class="row">
-            <div class="col">
-                <h1 class="yearTitle">{{ 'Year ' + yearNumber }}</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <SemesterContainer :semesterNumber="firstSemesterNumber" :semesterCourses="getFirstSemesterCourses" @sending-status="emitStatus"></SemesterContainer>
-            </div>
-            <div class="col">
-                <SemesterContainer :semesterNumber="secondSemesterNumber" :semesterCourses="getSecondSemesterCourses" @sending-status="emitStatus"></SemesterContainer>
-            </div>
-        </div>
-    </div>
-
-</template>
-
 
 <style scoped>
+
+.year-container {
+    /* border: 0.1rem solid var(--secondary-color); */
+    box-shadow: 2.5px 2.5px 5px rgba(0, 0, 0, 0.2);
+}
+.year-title {
+    font-size: 180%;
+    color: var(--primary-color);
+    background-color: var(--primary-com-color);
+}
 
 </style>

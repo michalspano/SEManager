@@ -12,9 +12,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const { fetchCourseIds, generateLinks, generateSecretKey } = require("../../utils/utils");
-const { verifyTokenAndRole } = require('../../utils/utils')
+const { verifyTokenAndRole } = require('../../utils/utils');
 
 const RESOURCE = "users";
+const TYPES = ["student", "admin"];
 
 // Note: because the User entity contains sensitive information, like password or
 // e-mail address, only the admin can get the instances of this entity.
@@ -30,18 +31,24 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
             try {
                 hashed = await bcrypt.hash(req.body.password, 10);
             } catch (error) {
-                return res.status(400).json({ message: "The password count not be created." })
+                return res.status(400).json({ message: "The password count not be created." });
             }
 
             // Create a user instance with the attributes
             const user = new User({
                 emailAddress: userId,
                 password: hashed,
-                type: req.body.type,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 courses: courseIds
             });
+
+            // Ensure that the enum type is valid
+            if (TYPES.includes(req.body.type)) {
+                user.type = req.body.type;
+            } else {
+                return res.status(400).json({ message: "Type is not valid." });
+            }
 
             const links = generateLinks([
                 ["self", [RESOURCE, userId], "get"],
@@ -54,8 +61,8 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
                 .then(() => {
                     res.status(201).json({ user, links });
                 }).catch((error) => {
-                    if (error.code === 11_000) {
-                        res.status(409).json({ error: "User with this unique key already exists" });
+                    if (error.code === 11000) {
+                        res.status(409).json({ message: "User with this unique key already exists" });
                     } else next(error);
                 });
         });
@@ -124,16 +131,20 @@ router.post('/auth/:id', (req, res, next) => {
             };
 
             const secretKey = generateSecretKey();
+            const TOKEN_TIMEOUT = 60 * 60 * 1000; // 1 hour
 
             // Generate a token based on the payload, use the secret key
             // Cache the secret key in the cookie. Both the secret key and the token
             // are required to verify the token and are valid for 1 hour.
-            const token = jwt.sign(tokenPayload, secretKey, { expiresIn: '1h' });
+            const token = jwt.sign(tokenPayload, secretKey, { expiresIn: TOKEN_TIMEOUT });
+
+            // For production, the origins must be the same
+            const env = process.env.ENV_NODE || 'development';
+
             res.cookie(token, secretKey, {
-                maxAge: 60 * 60 * 1000,
+                maxAge: TOKEN_TIMEOUT,
                 httpOnly: true,
-                sameSite: false, // client and server operate on different domains
-                                 // FIXME: for production, this should be fixed
+                sameSite: env.toLowerCase() === 'production' ? true : false,
                 secure: true
             });
 
@@ -151,23 +162,36 @@ router.post('/auth/:id', (req, res, next) => {
 router.put('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
     const userId = req.params.id;
     User.findOne({ emailAddress: userId }).exec()
-        .then((user) => {
+        .then(async (user) => {
             if (user == null) {
                 return res.status(404).json({
                     "message": "User not found."
                 });
             }
 
-            fetchCourseIds(req.body.courses)
-                .then((courseIds) => {
-                    user.firstName = req.body.firstName;
-                    user.lastName = req.body.lastName;
-                    user.courses = courseIds;
-                }).catch((error) => {
-                    return res.status(400).json({
-                        "message": error.message
-                    });
+            // Since `PUT` replaces all the fields, the password must be re-hashed 
+            let hashedPassword;
+            try {
+                hashedPassword = await bcrypt.hash(req.body.password, 10);
+            } catch (error) {
+                return res.status(400).json({ message: "The password count not be created." });
+            }
+
+            // Fetch the course IDs based on the String identifiers
+            let courseIds;
+            try {
+                courseIds = await fetchCourseIds(req.body.courses);
+            } catch (error) {
+                return res.status(400).json({
+                    "message": error.message
                 });
+            }
+
+            user.password = hashedPassword;
+            user.type = req.body.type;
+            user.firstName = req.body.firstName;
+            user.lastName = req.body.lastName;
+            user.courses = courseIds;
 
             const links = generateLinks([
                 ["self", [RESOURCE, userId], "GET"],
@@ -186,23 +210,38 @@ router.put('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
 router.patch('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
     const userId = req.params.id;
     User.findOne({ emailAddress: userId }).exec()
-        .then((user) => {
+        .then(async (user) => {
             if (user == null) {
                 return res.status(404).json({
                     "message": "User not found."
                 });
             }
 
+            // Check if the courses were provided in the request body, if so,
+            // add them to the user instance
             if ("courses" in req.body) {
-                fetchCourseIds(req.body.courses)
-                    .then((courseIds) => {
-                        user.courses = courseIds;
-                    }).catch((error) => {
-                        return res.status(400).json({
-                            "message": error.message
-                        });
+                try {
+                    const courseIds = await fetchCourseIds(req.body.courses);
+                    user.courses = courseIds;
+                } catch (error) {
+                    return res.status(400).json({
+                        "message": error.message
                     });
+                }
             }
+
+            // Check if the password was provided in the request body, if so,
+            // re-hash it and update the user instance.
+            if ("password" in req.body) {
+                try {
+                    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+                    user.password = hashedPassword;
+                } catch (error) {
+                    return res.status(400).json({ message: "The password count not be created." });
+                }
+            }
+
+            user.type = req.body.type || user.type;
             user.firstName = req.body.firstName || user.firstName;
             user.lastName = req.body.lastName || user.lastName;
 

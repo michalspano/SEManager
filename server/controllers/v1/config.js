@@ -11,7 +11,7 @@
 const CONFIG = Object.freeze({
     "version": 'v1',
     "api_info": {
-        "releaseDate": Date('2023-09-16'),
+        "releaseDate": new Date(2023, 10, 6).toDateString(),
         "description": "Version 1 of the API for the SEM Program System.",
         "authors": ["Michal Spano", "Erik Lindstrand", "Ionel Pop Jara"]
     }
@@ -31,7 +31,7 @@ const HOST = process.env.HOST || "http://localhost";
  * @returns {String} - the formatted URI.
  */
 const formatHref = (parts) => {
-    return `${HOST}:${PORT}/${CONFIG.version}/${parts.join('/')}`;
+    return `${HOST}:${PORT}/api/${CONFIG.version}/${parts.join('/')}`;
 };
 
 module.exports = { formatHref, CONFIG };

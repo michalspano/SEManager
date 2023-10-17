@@ -1,6 +1,23 @@
+<template>
+    <div class="card card-container" :class="courseCardClass">
+        <div @click="handleCardClick">
+            <div class="card-header card-accent" :class="cardAccentClass">
+                {{ courseCode }}
+            </div>
+            <div class="card-body">{{ courseName }}</div>
+        </div>
+        <div class="card-footer card-accent" :class="cardAccentClass">
+            <img src="@/assets/right-arrow-icon.png" @click="handleButtonClick" width="20" height="20" class="right-arrow">
+        </div>
+    </div>
+</template>
+
 <script setup>
 
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const passed = ref(false);
 
@@ -22,6 +39,14 @@ const courseCardClass = computed(() => {
     }
 })
 
+const cardAccentClass = computed(() => {
+    return {
+        'card-accent-locked': props.status === 0,
+        'card-accent-not-passed': props.status === 1,
+        'card-accent-passed': props.status === 2
+    }
+})
+
 const handleCardClick = () => {
 
     passed.value = !passed.value;
@@ -37,17 +62,14 @@ const handleCardClick = () => {
 
     emit('sending-status', props.courseCode, status);
 }
-</script>
 
-<template>
-    <div class="card w-100" :class="courseCardClass" @click="handleCardClick">
-        <div class="card-header">{{ courseCode }}</div>
-        <div class="card-body">
-            {{ courseName }}
-        </div>
-        <div class="card-footer"></div>
-    </div>
-</template>
+const handleButtonClick = () => {
+
+    const routePath = '/courses/' + props.courseCode;
+
+    router.push(routePath);
+}
+</script>
 
 <style scoped>
 p {
@@ -57,14 +79,20 @@ p {
     font-size: 130%;
 }
 
-.card {
-    transition: transform .2s;
+.card-container {
+    transition: transform .25s;
+    border: 0px;
+    user-select: none;
 }
-.card:hover {
-    /* color: aqua; */
-    transform: scale(1.05);
+
+.card-container:hover {
+    transform: scale(1.02);
     box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 10px;
     cursor: pointer;
+}
+
+.card.locked:hover {
+    cursor: default;
 }
 
 .passed {
@@ -76,7 +104,31 @@ p {
 }
 
 .locked {
-    color: white;
-    pointer-events: none;
+    color: rgb(183, 183, 183);
+}
+
+.card-accent {
+    color: var(--primary-color);
+    font-weight: bolder;
+}
+
+.card-accent-locked {
+    background-color: rgb(183, 183, 183);
+}
+
+.card-accent-not-passed {
+    background-color: var(--accent-color);
+}
+
+.card-accent-passed {
+    background-color: #0e742c;
+}
+
+.right-arrow {
+    transition: transform .2s;
+}
+
+.right-arrow:hover {
+    transform: rotate(-5deg) scale(1.1);
 }
 </style>

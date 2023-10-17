@@ -1,22 +1,37 @@
 <script setup>
 
 import CourseInformation from '@/components/CourseInformation.vue';
-import { getCourse } from '../api/v1/courseApi';
+import { getCourse } from '@/api/v1/courseApi';
+import { getCourseEmployees } from '@/api/v1/courseApi';
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 let courseID = route.params.id;
 const course = ref(null);
+const employeesList = ref(null);
+const errorMsg = ref('');
+
+const fetchData = async (courseID) => {
+    try {
+        const [courseData, employeesData] = await Promise.all([
+            getCourse(courseID),
+            getCourseEmployees(courseID)
+        ]);
+        course.value = courseData;
+        employeesList.value = employeesData;
+    } catch (error) {
+        errorMsg.value = error.message;
+    }
+};
 
 onMounted(async () => {
-    //TODO: Should we catch potential errors here?
-    course.value = await getCourse(courseID);
+    await fetchData(courseID);
 });
 
 watch(route, async (newRoute) => {
     courseID = newRoute.params.id;
-    course.value = await getCourse(courseID);
+    await fetchData(courseID);
 });
 
 </script>
@@ -27,56 +42,35 @@ watch(route, async (newRoute) => {
 
         <div class="page-header">
             <div class="container-fluid">
-                <div class="row row-col-4">
-                    <div class="col">
-                        <div class="back-button">
-                            <router-link to="/courses">
-                                <!-- TODO: replace with arrow vector-image as button instead? -->
-                                <button type="button">Back to courses</button>
-                            </router-link>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <h1 class="page-title text-center fw-bold text-nowrap">Course Details:</h1>
-                    </div>
-                    <div class="col">
-                        <!-- White space to the right of the heading -->
-                    </div>
-                </div>
+                <router-link to="/courses">
+                    <img src="@/assets/back-icon.png" alt="Back to courses" id="nav-back-icon" width="75" height="75"
+                        class="d-inline-block mt-3">
+                </router-link>
+                <h1 class="page-title text-center fw-bold text-nowrap">Course Details:</h1>
             </div>
         </div>
 
-        <div class="course-content">
-            <div class="container">
-                <div class="component">
-                    <CourseInformation
-                    v-if="course"
-                    :courseCode="course.courseCode"
-                    :courseName="course.courseName"
-                    :courseStaff="course.courseStaff"
-                    :dependencies="course.dependencies"
-                    ></CourseInformation>
-                </div>
-            </div>
+        <div class="course-content container justify-content-center bg-light rounded-2">
+            <CourseInformation
+            v-if="course && employeesList && !errorMsg"
+            :courseCode="course.courseCode"
+            :courseName="course.courseName"
+            :courseStaff="course.courseStaff"
+            :dependencies="course.dependencies"
+            :employees="employeesList"
+            ></CourseInformation>
+            <div class="text-danger p-2" v-if="errorMsg">Unable to fetch course data from server: {{ errorMsg }}</div>
         </div>
-        
+                
     </div>
 </template>
 
 
 <style scoped>
-
-/* TODO: remove - only used for development */
-.component {
-    border-style: dotted;
-    border-color: red;
+.page-title {
+    color: var(--tertiary-color);
 }
 .course-content {
-    border-style: dotted;
-    border-color: blue;
-}
-.page-content {
-    border-style: dotted;
-    border-color:forestgreen;
+    box-shadow: 1px 1px 6px 2px rgba(0, 0, 0, 0.1);
 }
 </style>

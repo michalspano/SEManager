@@ -11,6 +11,7 @@ onMounted(async () => {
         apiInfo.value = response.version;
     } catch {
         console.error('Problem getting API information')
+        apiInfo.value = 'error'
     }
 })
 
@@ -32,10 +33,12 @@ onMounted(async () => {
     padding: 5px;
 }
 
-footer {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    left: 0;
+/* Wrap the footer below on smaller devices */
+@media (max-width: 756px) {
+    .footer-container {
+        padding: 2.5px;
+        font-size: 20px;
+    }
 }
+
 </style>

@@ -10,7 +10,7 @@ const router = express.Router();
 const Employee = require('../../models/employee');
 const Course = require('../../models/course');
 const { generateLinks } = require('../../utils/utils');
-const { verifyTokenAndRole } = require('../../utils/utils')
+const { verifyTokenAndRole } = require('../../utils/utils');
 
 const RESOURCE = "employees";
 
@@ -30,8 +30,8 @@ router.post('/', verifyTokenAndRole('admin'), (req, res, next) => {
         .then(() => {
             res.status(201).json({ employee, links });
         }).catch((error) => {
-            if (error.code === 11_000) {
-                res.status(409).json({ error: "Employee with this unique key already exists" });
+            if (error.code === 11000) {
+                res.status(409).json({ message: "Employee with this unique key already exists" });
             } else next(error);
         });
 });
@@ -63,14 +63,22 @@ router.delete('/', verifyTokenAndRole('admin'), (_, res, next) => {
 
 // Return an employee given an ID
 router.get('/:id', (req, res, next) => {
-    Employee.findOne({ emailAddress: req.params.id }).exec()
+    const employeeId = req.params.id;
+    Employee.findOne({ emailAddress: employeeId }).exec()
         .then((employee) => {
             if (employee == null) {
                 return res.status(404).json({
                     "message": "Employee not found."
                 });
             }
-            res.json({ "employee": employee });
+
+            const links = generateLinks([
+                ["update", [RESOURCE, employeeId], "PUT"],
+                ["edit", [RESOURCE, employeeId], "PATCH"],
+                ["delete", [RESOURCE, employeeId], "DELETE"]
+            ]);
+
+            res.json({ employee, links });
         }).catch(next);
 });
 
@@ -127,8 +135,7 @@ router.patch('/:id', verifyTokenAndRole('admin'), (req, res, next) => {
         }).catch(next);
 });
 
-// TODO: check for exceptions
-// Get all the courses of a given employee
+// Get all the courses given an employee
 router.get('/:id/courses', (req, res, next) => {
     Employee.findOne({ emailAddress: req.params.id }).exec()
         .then((employee) => {
@@ -137,9 +144,8 @@ router.get('/:id/courses', (req, res, next) => {
                     message: 'Employee not found.'
                 });
             }
-            // Try to find the courses here
-            // Get all the courses whose courseStaff matches employee I think
-            // TODO: See why this works
+            
+            // Course.find returns all matching courses
             Course.find({ courseStaff: employee.emailAddress }).exec()
                 .then((courses) => {
                     if (courses == null) {
@@ -147,12 +153,12 @@ router.get('/:id/courses', (req, res, next) => {
                             message: "Courses not found."
                         });
                     }
-                    res.json(courses);
+                    res.json({ 'courses': courses });
                 }).catch(next);
-
         });
 });
 
+// Get a specific course given an employee
 router.get('/:id/courses/:course_id', (req, res, next) => {
     const course_id = req.params.course_id;
     Employee.findOne({ emailAddress: req.params.id }).exec()
@@ -170,7 +176,7 @@ router.get('/:id/courses/:course_id', (req, res, next) => {
                         });
                     }
                     // Find the second :id that matches the course
-                    res.json(course);
+                    res.json({ 'course': course });
                 }).catch(next);
         });
 });

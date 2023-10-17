@@ -1,31 +1,99 @@
+<script setup>
+import ApiInfo from '@/components/ApiInfo.vue';
+</script>
+
 <template>
-    <!-- A simple simulation of the previous template -->
     <div class="container py-4">
-        <h1 class="display-2">DIT342 Group &#45; 15</h1>
-        <div class="p-5 mb-4 bg-body-tertiary rounded-3">
-            <button type="button" class="btn btn-outline-primary btn-lg" @click="updateMessage">Get response</button>
-            <p>The server says:<br/>{{ message }}</p>
+        <div class="p-5 mb-4 bg-body-tertiary rounded-3 subtle-shadow">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="container">
+                        <p class="fs-1">
+                            <span class="fw-bolder">Welcome to</span> <span id="heading">SEManager</span>
+                        </p>
+                        <p class="fs-4 fw-light fst-italic">&#8208; for the "real" SEM experience</p>
+                    </div>
+                    <!-- Body with text about SEManager -->
+                    <div class="mt-2 body-text">
+                        <p>
+                            Welcome to our innovative solution tailored for <b>SEM</b> (Software Engineering and Management)
+                            students!
+                            Our mission is to enhance your academic journey by offering a comprehensive tool that simplifies
+                            the <b>visualization</b> of your program's structure.
+                        </p>
+                        <p>
+                            With our platform, you can effortlessly plan your
+                            studies, monitor your progress, and gain insights into course prerequisites. Experience a <b>new
+                            level of control</b> and efficiency in your academic pursuits with <strong>SEManager</strong>.
+                        </p>
+                        <p>Your academic success starts here!</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="d-flex items-center justify-content-center">
+                        <img src="@/assets/logo.gif" width=325px alt="SEManager logo" class="img-fluid rounded logotype" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-2">
+            <div class="row">
+                <div class="col-md-6">
+                    <ApiInfo />
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="d-flex items-center justify-content-center mt-4">
+                        <router-link to="/courses" class="btn btn-primary btn-lg router-link-class">
+                            Explore Courses
+                        </router-link>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
 </template>
 
-<script>
-import { ref } from 'vue';
-import { getApi } from '@/api/v1/Api';
+<style scoped>
+/* make the button appear bigger */
+.btn-lg {
+    padding: 1.25rem 2.25rem;
+    font-size: 1.75rem;
+    font-weight: 800;
+}
 
-export default {
-    name: 'Home',
-    setup() {
-        const message = ref('none');
+/* Make the router button more apparent to the user */
+.router-link-class {
+    border-radius: 15px;
+}
 
-        return { message };
-    },
-    methods: {
-        async updateMessage() {
-            const response = await getApi()
-            this.message = response.api_info.description
-        }
+.body-text {
+    font-size: 1.35rem;
+}
+
+#heading {
+    color: var(--highlight-color);
+    font-weight: 825;
+    font-size: 3.25rem;
+}
+
+/* Additional styling for smaller devices */
+@media (max-width: 768px) {
+    .btn-lg {
+        font-size: 1.2rem;
+        padding: 0.75rem 1rem;
     }
-};
-</script>
+
+    .router-link-class {
+        border-radius: 10px;
+    }
+
+    .body-text {
+        font-size: 1.0rem;
+    }
+
+    .logotype {
+        width: 250px;
+        height: auto;
+    }
+}
+</style>

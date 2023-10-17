@@ -15,7 +15,7 @@ const history = require('connect-history-api-fallback');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const { generateSecretKey } = require('./utils/utils')
+const { generateSecretKey } = require('./utils/utils');
 
 // Import routes of the versioned API
 const v1Routes = require('./routes/v1');
@@ -25,7 +25,7 @@ require('dotenv').config(); // set-up environment variables (.env)
 
 // Attempt to access .env variables, otherwise replace by the default values
 const port = process.env.PORT || 3000;
-const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/testDatabaseNew';
+const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/SEManagerDB';
 const SESSION_SECRET = process.env.SESSION_SECRET || generateSecretKey();
 
 // Attempt to establish a connection with MongoDB
@@ -63,22 +63,39 @@ app.use(morgan('dev'));
 app.use(cors({ withCredentials: true, credentials: true, origin: true }));
 
 // Enable HTTP overriding (for multiple formats)
+// This means that all middleware can be reached by using the GET/POST
+// method given the method override parameter in the request body.
 app.use(methodOverride('X-HTTP-Method'));           // Microsoft
 app.use(methodOverride('X-HTTP-Method-Override'));  // Google/GData
 app.use(methodOverride('X-Method-Override'));       // IBM
 
 /* ---Middleware----------------------------------------------------------------------------- */
 
-// TODO: Add HATEOAS here to indicate to the client that the API is versioned.
 app.get('/api', (req, res) => {
-    res.json({ 'message': 'DIT342, Group 15 Backend.' });
+    const VERSION_LINKS = {
+        'v1': {
+            'status': 'stable',
+            'href': '/api/v1',
+            'type': 'application/json'
+        },
+        /* Add new API versions here.
+        'v1.x': {
+            'status': 'experimental',
+            'href': '/api/v1.x',
+            'type': 'application/json'
+        } */
+    };
+    res.json({
+        'message': 'Welcome to the SEManager API',
+        'version_links': VERSION_LINKS
+    });
 });
 
 /* ---VERSION 1.0 API--- */
 app.use('/api/v1', v1Routes);
 
 /* ---VERSION 1.x API--- */
-// TODO: increment the API version if required.
+// Increment the API version and add the new routes here
 
 // Handle all undefined routes
 app.use('/api/*', (req, res) => {
@@ -98,7 +115,7 @@ const client = path.join(root, 'client', 'dist');
 app.use(express.static(client));
 
 // Error handler (i.e., when exception is thrown) must be registered last
-const env = app.get('env');
+const env = process.env.NODE_ENV || 'development';
 
 // Note: if the product is in development mode, the returned JSON object
 // contains the full stack off the error.
@@ -122,6 +139,7 @@ app.listen(port, (err) => {
     console.log(`Express server listening on port ${port}, in ${env} mode`);
     console.log(`Backend: http://localhost:${port}/api/v${API_VERSION}`);
     console.log(`Frontend (production): http://localhost:${port}/`);
+    console.log(`Connected to MongoDB with URI: ${mongoURI}`);
 });
 
 module.exports = app;
