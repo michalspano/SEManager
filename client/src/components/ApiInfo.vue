@@ -30,7 +30,7 @@ const toggleInfoVisibility = () => {
     <div class="card border-none pastel-bg-primary subtle-shadow" style="border: none;">
         <div class="card-header">
             <p class="fs-3 card-title">API Version Information</p>
-            {{ apiErrorMsg ? `Error: ${apiErrorMsg}` : '' }}
+            <span class="text-danger">{{ apiErrorMsg ? `Error: ${apiErrorMsg}` : '' }}</span>
         </div>
         <div class="card-body">
             <button @click="toggleInfoVisibility" class="btn btn-primary mb-3" :class="{ 'disabled': apiErrorMsg }">
