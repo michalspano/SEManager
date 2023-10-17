@@ -93,21 +93,21 @@ const handleExpiredToken = () => {
             <div class="mb-3">
                 <label>Course code:</label>
                 <input type="text" id="entity-identifier" v-model="answer" class="form-control"
-                    v-bind:disabled="toDropCollection" v-bind:required="toDropCollection">
+                    v-bind:disabled="toDropCollection">
             </div>
         </form>
         <form v-else-if="formType === 'user'" @submit.prevent="onDelete">
             <div class="mb-3">
                 <label>Email address:</label>
                 <input type="text" id="entity-identifier" v-model="answer" class="form-control"
-                    v-bind:disabled="toDropCollection" v-bind:required="toDropCollection">
+                    v-bind:disabled="toDropCollection">
             </div>
         </form>
         <form v-else-if="formType === 'employee'" @submit.prevent="onDelete">
             <div class="mb-3">
                 <label>Email address:</label>
                 <input type="text" id="entity-identifier" v-model="answer" class="form-control"
-                    v-bind:disabled="toDropCollection" v-bind:required="toDropCollection">
+                    v-bind:disabled="toDropCollection">
             </div>
         </form>
 
