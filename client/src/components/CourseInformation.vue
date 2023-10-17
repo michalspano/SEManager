@@ -91,7 +91,7 @@ onBeforeRouteUpdate(() => {
             </span>
         </div>
 
-        <div class="pop-up row justify-content-center">
+        <div class="pop-up row justify-content-center pt-2">
             <EmployeePopUp v-if="activePopUp !== null"
             :emailAddress="employees[activePopUp].emailAddress"
             :name="employees[activePopUp].name"

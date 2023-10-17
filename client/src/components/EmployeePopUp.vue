@@ -9,7 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="employee-pop-up rounded-3 card-hoverable mb-4">
+    <div class="employee-pop-up rounded-3 card-hoverable mb-1">
         <div class="staff-member row">
             <p id="staff-name" class="col-8 mt-2">{{ props.name }}</p>
             <div class="col-4">
