@@ -1,12 +1,14 @@
 <template>
-    <div class="card" :class="courseCardClass" @click="handleCardClick">
-        <div class="card-header card-accent" :class="cardAccentClass">
-            <button class="btn bg-transparent" id="courseInfoButton" @click.stop="handleButtonClick"> {{ courseCode }}</button>
+    <div class="card card-container" :class="courseCardClass">
+        <div @click="handleCardClick">
+            <div class="card-header card-accent" :class="cardAccentClass">
+                {{ courseCode }}
+            </div>
+            <div class="card-body">{{ courseName }}</div>
         </div>
-        <div class="card-body">
-            {{ courseName }}
+        <div class="card-footer card-accent" :class="cardAccentClass">
+            <img src="@/assets/right-arrow-icon.png" @click="handleButtonClick" width="20" height="20" class="right-arrow">
         </div>
-        <div class="card-footer card-accent" :class="cardAccentClass"></div>
     </div>
 </template>
 
@@ -77,12 +79,13 @@ p {
     font-size: 130%;
 }
 
-.card {
-    transition: transform .2s;
+.card-container {
+    transition: transform .25s;
     border: 0px;
+    user-select: none;
 }
 
-.card:hover {
+.card-container:hover {
     transform: scale(1.02);
     box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 10px;
     cursor: pointer;
@@ -101,7 +104,7 @@ p {
 }
 
 .locked {
-    color: rgb(183, 183, 183);;
+    color: rgb(183, 183, 183);
 }
 
 .card-accent {
@@ -121,12 +124,11 @@ p {
     background-color: #0e742c;
 }
 
-.btn {
-    background-color: transparent;
-    box-shadow: 0px 0px 0px;
+.right-arrow {
+    transition: transform .2s;
 }
 
-#courseInfoButton:hover {
-    box-shadow: none !important;
+.right-arrow:hover {
+    transform: rotate(-5deg) scale(1.1);
 }
 </style>

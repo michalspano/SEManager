@@ -87,7 +87,8 @@ const getCourseStatus = (courseCode) => {
             break;
         }
     }
-    
+   
+    if (targetCourse === null) return 0;
     return targetCourse['courseStatus'];
 }
 
