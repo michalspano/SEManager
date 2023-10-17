@@ -3,12 +3,21 @@ import { ref, onMounted } from 'vue'
 import router from '@/router';
 import eventBus from '@/EventBus';
 
-// TODO: avoid magic strings
-const buttonMsg = ref(localStorage.getItem('token') ? 'Logout' : 'Login')
+/**
+ * The text that is displayed on the login/logout button.
+ */
+const BUTTON_STATES = Object.freeze({
+    LOGIN: 'Login',
+    LOGOUT: 'Logout'
+})
+
+// localStorage cannot be used dynamically in the template, so we use a ref
+// as a wrapper for the localStorage.
+const buttonMsg = ref(localStorage.getItem('token') ? BUTTON_STATES.LOGOUT : BUTTON_STATES.LOGIN)
 
 // Receive a signal from the EventBus
 onMounted(() => {
-    eventBus.on('login-success', () => buttonMsg.value = 'Logout');
+    eventBus.on('login-success', () => buttonMsg.value = BUTTON_STATES.LOGOUT)
 });
 
 /**
