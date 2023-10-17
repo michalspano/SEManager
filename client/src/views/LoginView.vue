@@ -1,11 +1,39 @@
-<!-- TODO: refactor to Composition API -->
+<script setup>
+import { ref } from 'vue'
+import { authenticateUser } from '@/api/v1/userApi'
+import eventBus from '@/EventBus'
+import router from '@/router'
+
+const username = ref('')
+const password = ref('')
+const errorMessage = ref('')
+
+/**
+ * A function that is called when the user clicks the login button.
+ * It sends a request to the server to authenticate the use and returns a token.
+ * @emits login-success - a signal that is emitted when the login is successful.
+ * @uses authenticateUser - function to perform the authentication on the server.
+ */
+const login = async () => {
+    authenticateUser(username.value, password.value)
+        .then((response) => {
+            localStorage.setItem('token', response.token)
+
+            eventBus.emit('login-success')
+            router.push('/')
+        }).catch(() => {
+            errorMessage.value = "Error: invalid password."
+        });
+}
+</script>
+
 <template>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="card mt-5">
+                <div class="card mt-5 login-card subtle-shadow">
                     <div class="card-header">
-                        <h2 class="text-center">Login</h2>
+                        <p class="text-center mt-2 fs-2 fw-bolder">Login</p>
                     </div>
                     <div class="card-body">
                         <form @submit.prevent="login">
@@ -18,10 +46,11 @@
                                 <input type="password" class="form-control" id="password" v-model="password" required />
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary" :disabled="!username || !password">Login</button>
+                                <button type="submit" class="btn btn-primary btn-lg"
+                                    :disabled="!username || !password">Login</button>
                             </div>
                         </form>
-                        <p v-if="errorMessage" class="text-danger mt-3">{{ errorMessage }}</p>
+                        <p v-if="errorMessage" class="text-danger mt-3 fs-5">{{ errorMessage }}</p>
                     </div>
                 </div>
             </div>
@@ -29,35 +58,10 @@
     </div>
 </template>
 
-<script>
-import { ref } from 'vue'
-import { authenticateUser } from '@/api/v1/userApi'
-import eventBus from '@/EventBus'
-
-export default {
-    name: 'Login',
-    setup() {
-        const username = ref();
-        const password = ref();
-        const errorMessage = ref();
-
-        // Expose the refs to the template and other API hooks
-        return { username, password, errorMessage }
-    },
-    methods: {
-        async login() {
-            authenticateUser(this.username, this.password).then((response) => {
-                localStorage.setItem('token', response.token);
-
-                eventBus.emit('login-success');
-                this.$router.push({ name: 'courses' });
-            }).catch(() => {
-                this.errorMessage = "Error: invalid password."
-            });
-        }
-    }
-}
-</script>
-
 <style>
+.login-card {
+    border-width: 2.5px;
+    border-style: outset;
+    border-color: var(--accent-color);
+}
 </style>
