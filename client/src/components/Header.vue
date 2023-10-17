@@ -27,6 +27,9 @@ const toggleLogin = () => {
     const token = localStorage.getItem('token')
     if (token) {
         // Remove the token and the graph state from the local storage
+        // TODO: for a future state of the system, the state of the graph should
+        // be stored in the database, so that it can be retrieved when the user
+        // logs in again.
         localStorage.clear()
 
         /* An alternative approach is to emit a signal to the event bus, using the following:
