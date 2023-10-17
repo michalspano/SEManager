@@ -162,12 +162,11 @@ const postEntity = async () => {
                 break
             case 'employee':
                 // Add the email address to the body
-                const employeeBody = answer.value[formType.value]
-                employeeBody.emailAddress = entityId.value
-                if (hasRelation) {
-                    await postEmployeeForCourse(relationId.value, employeeBody)
+                answer.value[formType.value].emailAddress = entityId.value
+                if (hasRelation.value) {
+                    await postEmployeeForCourse(relationId.value, answer.value[formType.value]);
                 } else {
-                    await postEmployee(employeeBody);
+                    await postEmployee(answer.value[formType.value]);
                 }
                 break
             default:
