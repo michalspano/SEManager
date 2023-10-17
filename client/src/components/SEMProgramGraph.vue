@@ -1,6 +1,11 @@
 <template>
     <div class="container-fluid text-center">
-        <div class="row gy-2">
+        <div v-if="graphData === null" class="row gy-2 justify-content-center">
+            <div class="alert alert-danger col-md-4 tex-center mt-5" role="alert">
+                Server Error
+            </div>
+        </div>
+        <div v-else class="row gy-2">
             <div class="col-md">
                 <YearContainer :yearNumber="1" :yearCourses="firstYearCourses" @sending-status="testStatus"></YearContainer>
             </div>
@@ -13,6 +18,12 @@
         </div>
     </div>
 </template>
+
+<style scoped>
+.alert-danger {
+    font-size: xx-large;
+}
+</style>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
