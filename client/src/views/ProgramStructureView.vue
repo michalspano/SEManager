@@ -11,17 +11,17 @@ const props = defineProps({
 <template>
     <div>
         <div class="container py-4">
-        <p class="fs-1 fw-bold text-center">Software Engineering and Management</p>
-        <div class="d-flex justify-content-center align-items-center">
-            <p class="fs-2 text-center">You're logged in as {{ userType === 'admin' ? 'an' : 'a' }}
-                <span v-if="userType === 'admin'" class="fw-bold" id="admin-redirect" @click="router.push('/admin')">
-                    {{ userType }}
-                </span>
-                <span v-else class="fw-bold">{{ userType }}</span>
-            </p>
+            <p class="fs-1 fw-bold text-center">Software Engineering and Management</p>
+            <div class="d-flex justify-content-center align-items-center">
+                <p class="fs-2 text-center">You're logged in as {{ userType === 'admin' ? 'an' : 'a' }}
+                    <span v-if="userType === 'admin'" class="fw-bold" id="admin-redirect" @click="router.push('/admin')">
+                        {{ userType }}
+                    </span>
+                    <span v-else class="fw-bold">{{ userType }}</span>
+                </p>
+            </div>
         </div>
-        </div>
-        <SEMProgramGraph/>
+        <SEMProgramGraph />
     </div>
 </template>
 
