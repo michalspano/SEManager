@@ -1,8 +1,11 @@
-# `DIT342` - Group 15 - SEManager 
+## SEManager - Empowering Your Academic Journey
 
 This project is adapted from the [Backend-Frontend](https://git.chalmers.se/courses/dit342/group-00-web) template and migrated to a
 later later version of `Vue.js` and `Bootstrap 5`. Hence, some of
 the documentation is outdated and will be updated if desired by the examiners.
+
+<details>
+<summary><b>Old Documentation</b></summary>
 
 ## Project Structure
 
@@ -56,6 +59,8 @@ npm run serve
 ## Visual Studio Code (VSCode) Support
 
 Open the `server` and `client` in separate VSCode workspaces or open the combined [backend-frontend.code-workspace](./backend-frontend.code-workspace). Otherwise, workspace-specific settings don't work properly.
+
+</details>
 
 ## System Definition (MS0)
 
