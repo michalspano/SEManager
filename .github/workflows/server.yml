@@ -1,0 +1,32 @@
+name: Express.js, Postman backend - SEManager 
+
+# On every push, the Backend shall be tested.
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      # URL and port definition for mongodb on the runner
+      MONGODB_URI: "mongodb://localhost:27017/serverTestDB"
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+        # Caching in monorepos (server)
+        cache-dependency-path: server/package-lock.json
+    - name: Start MongoDB service
+      # Using supercharge to setup/start the MongoDB service
+      uses: supercharge/mongodb-github-action@1.10.0
+      with:
+        mongodb-version: 4.4 
+    - name: Install dependencies
+      run: |
+        cd server
+        npm ci
+    - name: Test the backend
+      run: |
+        cd server
+        npm run ci-test

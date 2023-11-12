@@ -1,5 +1,7 @@
 ## SEManager - Empowering Your Academic Journey
 
+[![Express.js, Postman backend - SEManager](https://github.com/michalspano/SEManager/actions/workflows/server.yml/badge.svg)](https://github.com/michalspano/SEManager/actions/workflows/server.yml)
+
 This project is adapted from the [Backend-Frontend](https://git.chalmers.se/courses/dit342/group-00-web) template and migrated to a
 later later version of `Vue.js` and `Bootstrap 5`. Hence, some of
 the documentation is outdated and will be updated if desired by the examiners.
