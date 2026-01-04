@@ -113,8 +113,8 @@ In case the user tries to access a page that does not exist, the application wil
 
 ### Entity-Relationship (ER) Diagram
 
-![ER Diagram](./images/er_diagram.png)
+![ER Diagram](./docs/er_diagram.png)
 
 ## Teaser (MS3)
 
-![Teaser](./images/teaser.png)
+![Teaser](./docs/teaser.png)
